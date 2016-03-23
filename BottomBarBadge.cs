@@ -135,7 +135,6 @@ namespace BottomNavigationBar
             LayoutParameters.Height = size;
         }
 
-		[SuppressMessage("deprecation")]
         private void SetBackgroundCompat(Drawable background)
         {
             if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean)
@@ -144,11 +143,10 @@ namespace BottomNavigationBar
                 SetBackgroundDrawable(background);
         }
 
-		[SuppressMessage("deprecation")]
         public void OnGlobalLayout()
         {
             AdjustPositionAndSize(_tabToAddTo);
-            ViewTreeObserver obs = ViewTreeObserver;
+            var obs = ViewTreeObserver;
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean)
                 obs.RemoveOnGlobalLayoutListener(this);

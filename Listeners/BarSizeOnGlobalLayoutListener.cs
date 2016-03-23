@@ -17,7 +17,6 @@ namespace BottomNavigationBar.Listeners
 			_itemContainer = itemContainer;
 		}
 
-		[SuppressMessage("deprecation")]
 		public void OnGlobalLayout ()
 		{
 			_listener.OnSizeReady(_isTabletMode ? _itemContainer.Width : _itemContainer.Height);

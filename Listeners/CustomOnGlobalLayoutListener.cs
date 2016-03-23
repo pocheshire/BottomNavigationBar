@@ -22,7 +22,6 @@ namespace BottomNavigationBar.Listeners
             _viewTreeObserver = viewTreeObserver;
         }
 
-		[SuppressMessage("deprecation")]
         public void OnGlobalLayout()
         {
             if (!_shyHeightAlreadyCalculated)
@@ -30,7 +29,7 @@ namespace BottomNavigationBar.Listeners
                 _layoutParams.Behavior = new BottomNavigationBehavior<View>(_outerContainer.Height, 0);
             }
 
-            ViewTreeObserver obs = _viewTreeObserver;
+            var obs = _viewTreeObserver;
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean)
             {

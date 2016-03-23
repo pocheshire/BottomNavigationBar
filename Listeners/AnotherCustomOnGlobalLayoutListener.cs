@@ -20,7 +20,6 @@ namespace BottomNavigationBar.Listeners
             _navBarHeightCopy = navBarHeightCopy;
         }
 
-		[SuppressMessage("deprecation")]
         public void OnGlobalLayout()
         {
             _bottomBar.ShyHeightAlreadyCalculated = true;

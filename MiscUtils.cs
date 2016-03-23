@@ -146,7 +146,6 @@ namespace BottomNavigationBar
         /// </summary>
         /// <param name="textView">TextView which textAppearance to modify.</param>
         /// <param name="resId">style resource for the text appearance.</param>
-		[SuppressMessage("deprecation")]
         public static void SetTextAppearance(TextView textView, int resId)
         {
             if (Build.VERSION.SdkInt >= BuildVersionCodes.M)

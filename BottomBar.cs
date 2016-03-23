@@ -49,7 +49,12 @@ namespace BottomNavigationBar
         private bool _ignoreTabletLayout;
         private bool _isTabletMode;
 
-        private ViewGroup _itemContainer;
+		/// <summary>
+		/// Get the actual BottomBar that has the tabs inside it for whatever what you may want
+		/// to do with it.
+		/// </summary>
+		/// <value>The BottomBar</value>
+		public ViewGroup ItemContainer { get; private set; }
 
         private View _backgroundView;
         private View _backgroundOverlay;
@@ -320,8 +325,8 @@ namespace BottomNavigationBar
                     position + ". This BottomBar has no items at that position.");
             }
 
-            UnselectTab(_itemContainer.FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE), animate);
-            SelectTab(_itemContainer.GetChildAt(position), animate);
+            UnselectTab(ItemContainer.FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE), animate);
+            SelectTab(ItemContainer.GetChildAt(position), animate);
 
             UpdateSelectedTab(position);
         }
@@ -432,9 +437,9 @@ namespace BottomNavigationBar
             {
                 DarkThemeMagic();
 
-                for (int i = 0; i < _itemContainer.ChildCount; i++)
+                for (int i = 0; i < ItemContainer.ChildCount; i++)
                 {
-                    View bottomBarTab = _itemContainer.GetChildAt(i);
+                    View bottomBarTab = ItemContainer.GetChildAt(i);
                     ((ImageView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_icon)).SetColorFilter(_whiteColor);
 
                     if (i == _currentTabPosition)
@@ -503,7 +508,7 @@ namespace BottomNavigationBar
                     "index " + tabPosition + ". You have no BottomBar Tabs at that position.");
             }
 
-            BottomBarBadge badge = new BottomBarBadge(_context, _itemContainer.GetChildAt(tabPosition), backgroundColor);
+            BottomBarBadge badge = new BottomBarBadge(_context, ItemContainer.GetChildAt(tabPosition), backgroundColor);
             badge.Tag = (TAG_BADGE + tabPosition);
             badge.Count = initialCount;
 
@@ -544,11 +549,11 @@ namespace BottomNavigationBar
         {
             Typeface typeface = Typeface.CreateFromAsset(_context.Assets, typeFacePath);
 
-            if (_itemContainer != null && _itemContainer.ChildCount > 0)
+            if (ItemContainer != null && ItemContainer.ChildCount > 0)
             {
-                for (int i = 0; i < _itemContainer.ChildCount; i++)
+                for (int i = 0; i < ItemContainer.ChildCount; i++)
                 {
-                    View bottomBarTab = _itemContainer.GetChildAt(i);
+                    View bottomBarTab = ItemContainer.GetChildAt(i);
                     TextView title = (TextView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_title);
                     title.Typeface = typeface;
                 }
@@ -565,11 +570,11 @@ namespace BottomNavigationBar
         /// <param name="typeface">custom typeface in the assets directory.</param>
         public void SetTypeFace(Typeface typeface)
         {
-            if (_itemContainer != null && _itemContainer.ChildCount > 0)
+            if (ItemContainer != null && ItemContainer.ChildCount > 0)
             {
-                for (int i = 0; i < _itemContainer.ChildCount; i++)
+                for (int i = 0; i < ItemContainer.ChildCount; i++)
                 {
-                    View bottomBarTab = _itemContainer.GetChildAt(i);
+                    View bottomBarTab = ItemContainer.GetChildAt(i);
                     TextView title = (TextView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_title);
                     title.Typeface = typeface;
                 }
@@ -586,11 +591,11 @@ namespace BottomNavigationBar
         /// <param name="resId">path to the custom text appearance.</param>
         public void SetTextAppearance(int resId)
         {
-            if (_itemContainer != null && _itemContainer.ChildCount > 0)
+            if (ItemContainer != null && ItemContainer.ChildCount > 0)
             {
-                for (int i = 0; i < _itemContainer.ChildCount; i++)
+                for (int i = 0; i < ItemContainer.ChildCount; i++)
                 {
-                    View bottomBarTab = _itemContainer.GetChildAt(i);
+                    View bottomBarTab = ItemContainer.GetChildAt(i);
                     TextView title = (TextView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_title);
                     MiscUtils.SetTextAppearance(title, resId);
                 }
@@ -651,10 +656,10 @@ namespace BottomNavigationBar
 		/// <param name="listener">listener <see cref="IOnSizeDeterminedListener"/> to get the size when it's ready.</param>
 		public void GetBarSize(IOnSizeDeterminedListener listener)
 		{
-			int sizeCandidate = _isTabletMode ? _itemContainer.Width : _itemContainer.Height;
+			int sizeCandidate = _isTabletMode ? ItemContainer.Width : ItemContainer.Height;
 
 			if (sizeCandidate == 0) {
-				_itemContainer.ViewTreeObserver.AddOnGlobalLayoutListener(new BarSizeOnGlobalLayoutListener(listener, _isTabletMode, _itemContainer));
+				ItemContainer.ViewTreeObserver.AddOnGlobalLayoutListener(new BarSizeOnGlobalLayoutListener(listener, _isTabletMode, ItemContainer));
 				return;
 			}
 
@@ -734,7 +739,7 @@ namespace BottomNavigationBar
             _shadowView = rootView.FindViewById(Resource.Id.bb_bottom_bar_shadow);
 
             OuterContainer = (ViewGroup)rootView.FindViewById(Resource.Id.bb_bottom_bar_outer_container);
-            _itemContainer = (ViewGroup)rootView.FindViewById(Resource.Id.bb_bottom_bar_item_container);
+            ItemContainer = (ViewGroup)rootView.FindViewById(Resource.Id.bb_bottom_bar_item_container);
 
             _backgroundView = rootView.FindViewById(Resource.Id.bb_bottom_bar_background_view);
             _backgroundOverlay = rootView.FindViewById(Resource.Id.bb_bottom_bar_background_overlay);
@@ -851,7 +856,7 @@ namespace BottomNavigationBar
 
         private void UpdateItems(BottomBarItemBase[] bottomBarItems)
         {
-            if (_itemContainer == null)
+            if (ItemContainer == null)
             {
                 InitializeViews();
             }
@@ -941,7 +946,7 @@ namespace BottomNavigationBar
                 }
                 else
                 {
-                    _itemContainer.AddView(bottomBarTab);
+                    ItemContainer.AddView(bottomBarTab);
                 }
 
                 bottomBarTab.SetOnClickListener(this);
@@ -961,7 +966,7 @@ namespace BottomNavigationBar
                 foreach (var bottomBarView in viewsToAdd)
                 {
                     bottomBarView.LayoutParameters = param;
-                    _itemContainer.AddView(bottomBarView);
+                    ItemContainer.AddView(bottomBarView);
                 }
             }
 
@@ -986,7 +991,7 @@ namespace BottomNavigationBar
             }
             else
             {
-                _itemContainer.SetBackgroundColor(_darkBackgroundColor);
+                ItemContainer.SetBackgroundColor(_darkBackgroundColor);
                 _tabletRightBorder.SetBackgroundColor(new Color(ContextCompat.GetColor(_context, Resource.Color.bb_tabletRightBorderDark)));
             }
         }
@@ -1178,9 +1183,9 @@ namespace BottomNavigationBar
         {
             int position = 0;
 
-            for (int i = 0; i < _itemContainer.ChildCount; i++)
+            for (int i = 0; i < ItemContainer.ChildCount; i++)
             {
-                View candidate = _itemContainer.GetChildAt(i);
+                View candidate = ItemContainer.GetChildAt(i);
 
                 if (candidate.Equals(viewToFind))
                 {
@@ -1222,15 +1227,15 @@ namespace BottomNavigationBar
 
         private void ClearItems()
         {
-            if (_itemContainer != null)
+            if (ItemContainer != null)
             {
-                int childCount = _itemContainer.ChildCount;
+                int childCount = ItemContainer.ChildCount;
 
                 if (childCount > 0)
                 {
                     for (int i = 0; i < childCount; i++)
                     {
-                        _itemContainer.RemoveView(_itemContainer.GetChildAt(i));
+                        ItemContainer.RemoveView(ItemContainer.GetChildAt(i));
                     }
                 }
             }
