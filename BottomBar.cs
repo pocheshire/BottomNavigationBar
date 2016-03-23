@@ -644,6 +644,24 @@ namespace BottomNavigationBar
             _ignoreTabletLayout = true;
         }
 
+		/// <summary>
+		/// Get this BottomBar's height (or width), depending if the BottomBar
+		/// is on the bottom (phones) or the left (tablets) of the screen.
+		/// </summary>
+		/// <param name="listener">listener <see cref="IOnSizeDeterminedListener"/> to get the size when it's ready.</param>
+		public void GetBarSize(IOnSizeDeterminedListener listener)
+		{
+			int sizeCandidate = _isTabletMode ? _itemContainer.Width : _itemContainer.Height;
+
+			if (sizeCandidate == 0) {
+				_itemContainer.ViewTreeObserver.AddOnGlobalLayoutListener(new BarSizeOnGlobalLayoutListener(listener, _isTabletMode, _itemContainer));
+				return;
+			}
+
+			listener.OnSizeReady(sizeCandidate);
+		}
+
+
         /* ------------------ Super ugly hacks ------------------------- */
 
         /// <summary>

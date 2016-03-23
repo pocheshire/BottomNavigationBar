@@ -3,6 +3,7 @@ using Android.Views;
 using Android.Support.Design.Widget;
 using BottomNavigationBar.Scrollswetness;
 using Android.OS;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BottomNavigationBar.Listeners
 {
@@ -19,7 +20,7 @@ namespace BottomNavigationBar.Listeners
             _navBarHeightCopy = navBarHeightCopy;
         }
 
-        [Obsolete("deprecated")]
+		[SuppressMessage("deprecation")]
         public void OnGlobalLayout()
         {
             _bottomBar.ShyHeightAlreadyCalculated = true;

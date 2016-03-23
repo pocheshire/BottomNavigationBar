@@ -23,6 +23,7 @@ using Android.Views;
 using Android.OS;
 using Android.Graphics.Drawables;
 using Android.Graphics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BottomNavigationBar
 {
@@ -134,7 +135,7 @@ namespace BottomNavigationBar
             LayoutParameters.Height = size;
         }
 
-        [Obsolete("deprecated")]
+		[SuppressMessage("deprecation")]
         private void SetBackgroundCompat(Drawable background)
         {
             if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean)
@@ -143,7 +144,7 @@ namespace BottomNavigationBar
                 SetBackgroundDrawable(background);
         }
 
-        [Obsolete("deprecated")]
+		[SuppressMessage("deprecation")]
         public void OnGlobalLayout()
         {
             AdjustPositionAndSize(_tabToAddTo);

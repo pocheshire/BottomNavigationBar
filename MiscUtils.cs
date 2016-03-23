@@ -27,6 +27,7 @@ using Android.Graphics;
 using BottomNavigationBar.Adapters;
 using Android.Animation;
 using Android.App;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BottomNavigationBar
 {
@@ -145,7 +146,7 @@ namespace BottomNavigationBar
         /// </summary>
         /// <param name="textView">TextView which textAppearance to modify.</param>
         /// <param name="resId">style resource for the text appearance.</param>
-        [Obsolete("deprecated")]
+		[SuppressMessage("deprecation")]
         public static void SetTextAppearance(TextView textView, int resId)
         {
             if (Build.VERSION.SdkInt >= BuildVersionCodes.M)

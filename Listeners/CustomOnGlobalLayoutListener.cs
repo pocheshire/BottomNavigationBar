@@ -3,6 +3,7 @@ using Android.Views;
 using Android.Support.Design.Widget;
 using Android.OS;
 using BottomNavigationBar.Scrollswetness;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BottomNavigationBar.Listeners
 {
@@ -21,7 +22,7 @@ namespace BottomNavigationBar.Listeners
             _viewTreeObserver = viewTreeObserver;
         }
 
-        [Obsolete("deprecated")]
+		[SuppressMessage("deprecation")]
         public void OnGlobalLayout()
         {
             if (!_shyHeightAlreadyCalculated)
