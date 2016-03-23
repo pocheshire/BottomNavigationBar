@@ -1414,6 +1414,15 @@ namespace BottomNavigationBar
 			// aapt resource value: 0x7f060021
 			public static int abc_text_size_title_material_toolbar = 2131099681;
 			
+			// aapt resource value: 0x7f060068
+			public static int activity_horizontal_margin = 2131099752;
+			
+			// aapt resource value: 0x7f060069
+			public static int activity_vertical_margin = 2131099753;
+			
+			// aapt resource value: 0x7f06006a
+			public static int bottom_bar_elevation = 2131099754;
+			
 			// aapt resource value: 0x7f060008
 			public static int design_appbar_elevation = 2131099656;
 			
