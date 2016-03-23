@@ -426,7 +426,7 @@ namespace BottomNavigationBar
         /// <summary>
         /// Use dark theme instead of the light one.
         /// NOTE: You might want to change your active tab color to something else
-        /// using <see cref="setActiveTabColor(int)"/>, as the default primary color might
+        /// using <see cref="SetActiveTabColor(int)"/>, as the default primary color might
         /// not have enough contrast for the dark background.
         /// </summary>
         /// <param name="darkThemeEnabled">whether the dark the should be enabled or not.</param>
@@ -474,6 +474,9 @@ namespace BottomNavigationBar
         public void SetActiveTabColor(Color activeTabColor)
         {
             _customActiveTabColor = activeTabColor;
+
+			if (_items != null && _items.Length > 0)
+				SelectTabAtPosition (_currentTabPosition, false);
         }
 
         /// <summary>
