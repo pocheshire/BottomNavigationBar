@@ -1,4 +1,4 @@
-# BottomBar
+# BottomNavigationBar
 <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/scrolling_demo.gif" width="278" height="492" /> <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/demo2-badge.gif" width="278" height="492" />  
 
 **[How to contribute](https://github.com/pocheshire/BottomNavigationBar/blob/master/README.md#contributions)**
@@ -10,7 +10,7 @@
 
 A custom view component that mimics the new [Material Design Bottom Navigation pattern](https://www.google.com/design/spec/components/bottom-navigation.html).
 
-**(currently under active development, expect to see new releases almost daily)**
+**(currently under development)**
 
 ## MinSDK version
 
@@ -18,7 +18,7 @@ The current minSDK version is **API level 11 (Honeycomb).**
 
 ## How?
 
-BottomBar likes Fragments very much, but you can also handle your tab changes by yourself. You can add items by specifying an array of items or **by xml menu resources**.
+BottomNavigationBar likes Fragments very much, but you can also handle your tab changes by yourself. You can add items by specifying an array of items or **by xml menu resources**.
 
 #### Adding items from menu resource
 
@@ -77,7 +77,7 @@ public class MainActivity : AppCompatActivity, BottomNavigationBar.Listeners.IOn
 
 You can easily add badges for showing an unread message count or new items / whatever you like.
 
-```java
+```csharp
 // Make a Badge for the first tab, with red background color and a value of "13".
 BottomBarBadge unreadMessages = _bottomBar.MakeBadgeForTabAt(0, "#FF0000", 13);
 
@@ -97,7 +97,7 @@ unreadMessages.AutoShowAfterUnSelection = true;
 
 ## Customization
 
-```java
+```csharp
 // Disable the left bar on tablets and behave exactly the same on mobile and tablets instead.
 _bottomBar.NoTabletGoodness();
 
@@ -108,7 +108,7 @@ _bottomBar.UseDarkTheme(true);
 _bottomBar.SetActiveTabColor("#009688");
 
 // Use custom text appearance in tab titles.
-_bottomBar.SetTextAppearance(R.style.MyTextAppearance);
+_bottomBar.SetTextAppearance(Resource.Style.MyTextAppearance);
 
 // Use custom typeface that's located at the "/src/main/assets" directory. If using with
 // custom text appearance, set the text appearance first.
@@ -116,8 +116,6 @@ _bottomBar.SetTypeFace("MyFont.ttf");
 ```
 
 #### What about hiding it automatically on scroll?
-
-Easy-peasy!
 
 **MainActivity.cs:**
 
@@ -153,7 +151,7 @@ _bottomBar = BottomBar.AttachShy((CoordinatorLayout) FindViewById(Resource.Id.my
 Yep yep yep! Just call ```SetFragmentItems()``` instead of ```SetItemsFromMenu()```:
 
 ```csharp
-// If you use normal Fragments, just change the first argument to getFragmentManager(). It's pure magic!
+// If you use normal Fragments, just change the first argument to FragmentManager
 _bottomBar.SetFragmentItems(SupportFragmentManager, Resource.Id.fragmentContainer,
     new BottomBarFragment(SampleFragment.NewInstance("Content for recents."), Resource.Drawable.ic_recents, "Recents"),
     new BottomBarFragment(SampleFragment.NewInstance("Content for favorites."), Resource.Drawable.ic_favorites, "Favorites"),
@@ -219,9 +217,9 @@ It works nicely with tablets straight out of the box. When the library detects t
 
 #### What about the (insert thing that looks different than the specs here)?
 
-Just give me some time and **all your dreams will come true**.
+Just do it!
 
-## Apps using BottomBar
+## Apps using BottomNavigationBar
 
 Send me a pull request with modified README.md to get a shoutout!
 
@@ -229,9 +227,7 @@ Send me a pull request with modified README.md to get a shoutout!
 
 Feel free to create issues. 
 
-**Don't send me pull requests just yet, not until the dust settles.**
-
-I'm fixing issues and busting my ass to make this library better, _several hours_ every day. Your hard work could be for nothing, as I'm probably fixing / implementing the same problems that you are.
+I'm fixing issues _several hours_ every week. Your hard work could be for nothing, as I'm probably fixing / implementing the same problems that you are.
 
 ## License
 
