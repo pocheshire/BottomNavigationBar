@@ -331,6 +331,25 @@ namespace BottomNavigationBar
             UpdateSelectedTab(position);
         }
 
+		/// <summary>
+		/// Sets the default tab for this BottomBar that is shown until the user changes
+		/// the selection.
+		/// </summary>
+		/// <param name="defaultTabPosition">the default tab position.</param>
+		public void setDefaultTabPosition(int defaultTabPosition)
+		{
+			if (_items == null || _items.Length == 0)
+				throw new InvalidOperationException("Can't set default tab at " +
+					"position " + defaultTabPosition + ". This BottomBar has no items set yet.");
+			else if (defaultTabPosition > _items.Length - 1 || defaultTabPosition < 0)
+				throw new ArgumentOutOfRangeException("Can't set default tab at position " +
+					defaultTabPosition + ". This BottomBar has no items at that position.");
+
+			if (!_isComingFromRestoredState)
+				SelectTabAtPosition (defaultTabPosition, false);
+		}
+
+
         /// <summary>
         /// Call this method in your Activity's onSaveInstanceState to keep the BottomBar's state on configuration change.
         /// </summary>
