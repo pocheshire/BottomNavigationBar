@@ -354,6 +354,23 @@ namespace BottomNavigationBar
 				SelectTabAtPosition (defaultTabPosition, false);
 		}
 
+		/// <summary>
+		/// Hide the BottomBar.
+		/// </summary>
+		public void Hide() 
+		{
+			if (OuterContainer != null)
+				OuterContainer.Visibility = ViewStates.Gone;
+		}
+
+		/// <summary>
+		/// Show the BottomBar.
+		/// </summary>
+		public void Show() 
+		{
+			if (OuterContainer != null)
+				OuterContainer.Visibility = ViewStates.Visible;
+		}
 
         /// <summary>
         /// Call this method in your Activity's onSaveInstanceState to keep the BottomBar's state on configuration change.
