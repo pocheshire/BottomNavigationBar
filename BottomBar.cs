@@ -49,13 +49,6 @@ namespace BottomNavigationBar
         private bool _ignoreTabletLayout;
         private bool _isTabletMode;
 
-		/// <summary>
-		/// Get the actual BottomBar that has the tabs inside it for whatever what you may want
-		/// to do with it.
-		/// </summary>
-		/// <value>The BottomBar</value>
-		public ViewGroup ItemContainer { get; private set; }
-
         private View _backgroundView;
         private View _backgroundOverlay;
         private View _shadowView;
@@ -74,7 +67,6 @@ namespace BottomNavigationBar
         private IOnTabSelectedListener _listener;
         private IOnMenuTabSelectedListener _menuListener;
 
-        private int _currentTabPosition;
         private bool _isShiftingMode;
 
         private Java.Lang.Object _fragmentManager;
@@ -109,6 +101,19 @@ namespace BottomNavigationBar
         protected ViewGroup OuterContainer { get; set; }
         protected bool DrawBehindNavBar { get; set; }
         protected bool UseOnlyStatusbarOffset { get; set; }
+
+		/// <summary>
+		/// Get the actual BottomBar that has the tabs inside it for whatever what you may want
+		/// to do with it.
+		/// </summary>
+		/// <value>The BottomBar</value>
+		public ViewGroup ItemContainer { get; private set; }
+
+		/// <summary>
+		/// Gets the current tab position.
+		/// </summary>
+		/// <value>the position of currently selected tab.</value>
+		public int CurrentTabPosition { get; private set; }
 
         public bool UseExtraOffset { get; private set; }
 
@@ -356,7 +361,7 @@ namespace BottomNavigationBar
         /// <param name="outState">the Bundle to save data to.</param>
         public void OnSaveInstanceState(Bundle outState)
         {
-            outState.PutInt(STATE_CURRENT_SELECTED_TAB, _currentTabPosition);
+            outState.PutInt(STATE_CURRENT_SELECTED_TAB, CurrentTabPosition);
 
             if (_badgeMap != null && _badgeMap.Count > 0)
             {
@@ -383,7 +388,7 @@ namespace BottomNavigationBar
                 && _items != null
                 && _items is BottomBarFragment[])
             {
-                BottomBarFragment bottomBarFragment = (BottomBarFragment)_items[_currentTabPosition];
+                BottomBarFragment bottomBarFragment = (BottomBarFragment)_items[CurrentTabPosition];
 
                 if (bottomBarFragment.Fragment != null)
                 {
@@ -422,7 +427,7 @@ namespace BottomNavigationBar
                 _colorMap = new Dictionary<int, Color>();
             }
 
-            if (tabPosition == _currentTabPosition
+            if (tabPosition == CurrentTabPosition
                 && _currentBackgroundColor != color)
             {
                 _currentBackgroundColor = color;
@@ -461,7 +466,7 @@ namespace BottomNavigationBar
                     View bottomBarTab = ItemContainer.GetChildAt(i);
                     ((ImageView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_icon)).SetColorFilter(_whiteColor);
 
-                    if (i == _currentTabPosition)
+                    if (i == CurrentTabPosition)
                     {
                         SelectTab(bottomBarTab, false);
                     }
@@ -495,7 +500,7 @@ namespace BottomNavigationBar
             _customActiveTabColor = activeTabColor;
 
 			if (_items != null && _items.Length > 0)
-				SelectTabAtPosition (_currentTabPosition, false);
+				SelectTabAtPosition (CurrentTabPosition, false);
         }
 
         /// <summary>
@@ -550,7 +555,7 @@ namespace BottomNavigationBar
                 canShow = _badgeStateMap[tabPosition];
             }
 
-            if (canShow && _currentTabPosition != tabPosition
+            if (canShow && CurrentTabPosition != tabPosition
                 && initialCount != 0)
             {
                 badge.Show();
@@ -819,19 +824,19 @@ namespace BottomNavigationBar
 
         private void UpdateSelectedTab(int newPosition)
         {
-            if (newPosition != _currentTabPosition)
+            if (newPosition != CurrentTabPosition)
             {
-                HandleBadgeVisibility(_currentTabPosition, newPosition);
-                _currentTabPosition = newPosition;
+                HandleBadgeVisibility(CurrentTabPosition, newPosition);
+                CurrentTabPosition = newPosition;
 
                 if (_listener != null)
                 {
-                    _listener.OnItemSelected(_currentTabPosition);
+                    _listener.OnItemSelected(CurrentTabPosition);
                 }
 
                 if (_menuListener != null && _items is BottomBarTab[])
                 {
-                    _menuListener.OnMenuItemSelected(((BottomBarTab)_items[_currentTabPosition]).Id);
+                    _menuListener.OnMenuItemSelected(((BottomBarTab)_items[CurrentTabPosition]).Id);
                 }
 
                 UpdateCurrentFragment();
@@ -948,7 +953,7 @@ namespace BottomNavigationBar
                     bottomBarTab.Id = (((BottomBarTab)bottomBarItemBase).Id);
                 }
 
-                if (index == _currentTabPosition)
+                if (index == CurrentTabPosition)
                 {
                     SelectTab(bottomBarTab, false);
                 }
@@ -1022,12 +1027,12 @@ namespace BottomNavigationBar
         {
             if (savedInstanceState != null)
             {
-                _currentTabPosition = savedInstanceState.GetInt(STATE_CURRENT_SELECTED_TAB, -1);
+                CurrentTabPosition = savedInstanceState.GetInt(STATE_CURRENT_SELECTED_TAB, -1);
                 _badgeStateMap = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<int, bool>>(savedInstanceState.GetString(STATE_BADGE_STATES_BUNDLE));
 
-                if (_currentTabPosition == -1)
+                if (CurrentTabPosition == -1)
                 {
-                    _currentTabPosition = 0;
+                    CurrentTabPosition = 0;
                     Log.Error("BottomBar", "You must override the Activity's onSave" +
                         "InstanceState(Bundle outState) and call BottomBar.onSaveInstanc" +
                         "eState(outState) there to restore the state properly.");
@@ -1226,7 +1231,7 @@ namespace BottomNavigationBar
                 && _items != null
                 && _items is BottomBarFragment[])
             {
-                var newFragment = ((BottomBarFragment)_items[_currentTabPosition]);
+                var newFragment = ((BottomBarFragment)_items[CurrentTabPosition]);
 
                 if (_fragmentManager is Android.Support.V4.App.FragmentManager
                     && newFragment.SupportFragment != null)
