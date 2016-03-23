@@ -359,8 +359,7 @@ namespace BottomNavigationBar
 		/// </summary>
 		public void Hide() 
 		{
-			if (OuterContainer != null)
-				OuterContainer.Visibility = ViewStates.Gone;
+			SetBarVisibility(ViewStates.Gone);
 		}
 
 		/// <summary>
@@ -368,9 +367,21 @@ namespace BottomNavigationBar
 		/// </summary>
 		public void Show() 
 		{
-			if (OuterContainer != null)
-				OuterContainer.Visibility = ViewStates.Visible;
+			SetBarVisibility(ViewStates.Visible);
 		}
+
+		protected void SetBarVisibility(ViewStates visibility)
+		{
+			if (OuterContainer != null)
+				OuterContainer.Visibility = visibility;
+
+			if (_backgroundView != null)
+				_backgroundView.Visibility = visibility;
+
+			if (_backgroundOverlay != null)
+				_backgroundOverlay.Visibility = visibility;
+		}
+
 
         /// <summary>
         /// Call this method in your Activity's onSaveInstanceState to keep the BottomBar's state on configuration change.
