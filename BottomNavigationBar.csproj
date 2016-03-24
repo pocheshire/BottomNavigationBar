@@ -93,7 +93,6 @@
     <Folder Include="Scrollswetness\" />
     <Folder Include="Adapters\" />
     <Folder Include="Listeners\" />
-    <Folder Include="Resources\layout-sw600dp\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\attrs.xml" />
@@ -109,7 +108,5 @@
     <AndroidResource Include="Resources\drawable\bb_bottom_bar_top_shadow.xml" />
     <AndroidResource Include="Resources\values-sw600dp\bools.xml" />
     <AndroidResource Include="Resources\values\dimens.xml" />
-    <AndroidResource Include="Resources\layout-sw600dp\bb_bottom_bar_item_container.xml" />
-    <AndroidResource Include="Resources\layout-sw600dp\bb_bottom_bar_item_fixed.xml" />
   </ItemGroup>
 </Project>

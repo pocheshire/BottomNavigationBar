@@ -610,7 +610,8 @@ namespace BottomNavigationBar
                 {
                     View bottomBarTab = ItemContainer.GetChildAt(i);
                     TextView title = (TextView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_title);
-                    title.Typeface = typeface;
+                    if (title != null)
+                        title.Typeface = typeface;
                 }
             }
             else
@@ -631,7 +632,8 @@ namespace BottomNavigationBar
                 {
                     View bottomBarTab = ItemContainer.GetChildAt(i);
                     TextView title = (TextView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_title);
-                    title.Typeface = typeface;
+                    if (title != null)
+                        title.Typeface = typeface;
                 }
             }
             else
