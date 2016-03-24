@@ -64,8 +64,8 @@ namespace BottomNavigationBar
         private int _tenDp;
         private int _maxFixedItemWidth;
 
-		private Java.Lang.Object _listener;
-		private Java.Lang.Object _menuListener;
+		private Object _listener;
+		private Object _menuListener;
 
         private bool _isShiftingMode;
 
@@ -919,7 +919,7 @@ namespace BottomNavigationBar
 			}
         }
 
-		private void NotifyRegularListener(Java.Lang.Object listener, bool isReselection, int position)
+		private void NotifyRegularListener(Object listener, bool isReselection, int position)
 		{
 			if (listener is IOnTabClickListener)
 			{
@@ -937,7 +937,7 @@ namespace BottomNavigationBar
 			}
 		}
 
-		private void NotifyMenuListener(Java.Lang.Object listener, bool isReselection, int menuItemId)
+		private void NotifyMenuListener(Object listener, bool isReselection, int menuItemId)
 		{
 			if (listener is IOnMenuTabClickListener)
 			{

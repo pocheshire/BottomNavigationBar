@@ -162,8 +162,7 @@ namespace BottomNavigationBar
 		/// <param name="context">Context to get the configuration.</param>
 		public static bool IsNightMode(Context context)
 		{
-			int currentNightMode = context.Resources.Configuration.UiMode & UiMode.NightMask;
-			return currentNightMode == UiMode.NightYes;
+			return context.Resources.Configuration.UiMode == UiMode.NightYes;
 		}
     }
 }
