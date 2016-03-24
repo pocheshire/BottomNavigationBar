@@ -7,14 +7,14 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace BottomNavigationBar.Listeners
 {
-    public class CustomOnGlobalLayoutListener : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
+	internal class InitializeViewsOnGlobalLayoutListener : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
     {
         private readonly bool _shyHeightAlreadyCalculated;
         private readonly CoordinatorLayout.LayoutParams _layoutParams;
         private readonly View _outerContainer;
         private readonly ViewTreeObserver _viewTreeObserver;
 
-        public CustomOnGlobalLayoutListener(bool mShyHeightAlreadyCalculated, CoordinatorLayout.LayoutParams layoutParams, View outerContainer, ViewTreeObserver viewTreeObserver)
+        public InitializeViewsOnGlobalLayoutListener(bool mShyHeightAlreadyCalculated, CoordinatorLayout.LayoutParams layoutParams, View outerContainer, ViewTreeObserver viewTreeObserver)
         {
             _shyHeightAlreadyCalculated = mShyHeightAlreadyCalculated;
             _layoutParams = layoutParams;

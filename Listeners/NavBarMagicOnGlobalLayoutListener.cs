@@ -7,13 +7,13 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace BottomNavigationBar.Listeners
 {
-    public class AnotherCustomOnGlobalLayoutListener : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
+	internal class NavBarMagicOnGlobalLayoutListener : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
     {
         private readonly BottomBar _bottomBar;
         private readonly View _outerContainer;
         private readonly int _navBarHeightCopy;
 
-        public AnotherCustomOnGlobalLayoutListener(BottomBar bottomBar, View outerContainer, int navBarHeightCopy)
+        public NavBarMagicOnGlobalLayoutListener(BottomBar bottomBar, View outerContainer, int navBarHeightCopy)
         {
             _bottomBar = bottomBar;
             _outerContainer = outerContainer;

@@ -76,10 +76,10 @@
     <Compile Include="Listeners\IOnTabSelectedListener.cs" />
     <Compile Include="BottomBarFragment.cs" />
     <Compile Include="BottomBar.cs" />
-    <Compile Include="Listeners\CustomOnGlobalLayoutListener.cs" />
-    <Compile Include="Listeners\AnotherCustomOnGlobalLayoutListener.cs" />
     <Compile Include="Listeners\BarSizeOnGlobalLayoutListener.cs" />
     <Compile Include="Listeners\IOnSizeDeterminedListener.cs" />
+    <Compile Include="Listeners\NavBarMagicOnGlobalLayoutListener.cs" />
+    <Compile Include="Listeners\InitializeViewsOnGlobalLayoutListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

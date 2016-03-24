@@ -4,24 +4,24 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace BottomNavigationBar.Listeners
 {
-	public class BarSizeOnGlobalLayoutListener : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
+	internal class BarSizeOnGlobalLayoutListener : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
 	{
 		private readonly IOnSizeDeterminedListener _listener;
 		private readonly bool _isTabletMode;
-		private readonly ViewGroup _itemContainer;
+		private readonly ViewGroup _outerContainer;
 
-		public BarSizeOnGlobalLayoutListener (IOnSizeDeterminedListener listener, bool isTabletMode, ViewGroup itemContainer)
+		public BarSizeOnGlobalLayoutListener (IOnSizeDeterminedListener listener, bool isTabletMode, ViewGroup outerContainer)
 		{
 			_listener = listener;
 			_isTabletMode = isTabletMode;
-			_itemContainer = itemContainer;
+			_outerContainer = outerContainer;
 		}
 
 		public void OnGlobalLayout ()
 		{
-			_listener.OnSizeReady(_isTabletMode ? _itemContainer.Width : _itemContainer.Height);
+			_listener.OnSizeReady(_isTabletMode ? _outerContainer.Width : _outerContainer.Height);
 
-			var obs = _itemContainer.ViewTreeObserver;
+			var obs = _outerContainer.ViewTreeObserver;
 
             if (obs.IsAlive)
             {

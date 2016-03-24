@@ -99,16 +99,18 @@ namespace BottomNavigationBar
 
         protected View PendingUserContentView { get; set; }
         protected ViewGroup UserContainer { get; set; }
-        protected ViewGroup OuterContainer { get; set; }
+        
         protected bool DrawBehindNavBar { get; set; }
         protected bool UseOnlyStatusbarOffset { get; set; }
+
+		public ViewGroup ItemContainer { get; private set; }
 
 		/// <summary>
 		/// Get the actual BottomBar that has the tabs inside it for whatever what you may want
 		/// to do with it.
 		/// </summary>
 		/// <value>The BottomBar</value>
-		public ViewGroup ItemContainer { get; private set; }
+		public ViewGroup OuterContainer { get; protected set; }
 
 		/// <summary>
 		/// Gets the current tab position.
@@ -729,10 +731,10 @@ namespace BottomNavigationBar
 		/// <param name="listener">listener <see cref="IOnSizeDeterminedListener"/> to get the size when it's ready.</param>
 		public void GetBarSize(IOnSizeDeterminedListener listener)
 		{
-			int sizeCandidate = _isTabletMode ? ItemContainer.Width : ItemContainer.Height;
+			int sizeCandidate = _isTabletMode ? OuterContainer.Width : OuterContainer.Height;
 
 			if (sizeCandidate == 0) {
-				ItemContainer.ViewTreeObserver.AddOnGlobalLayoutListener(new BarSizeOnGlobalLayoutListener(listener, _isTabletMode, ItemContainer));
+				OuterContainer.ViewTreeObserver.AddOnGlobalLayoutListener(new BarSizeOnGlobalLayoutListener(listener, _isTabletMode, OuterContainer));
 				return;
 			}
 
@@ -842,7 +844,7 @@ namespace BottomNavigationBar
 
             if (IsShy && !_isTabletMode)
             {
-                ViewTreeObserver.AddOnGlobalLayoutListener(new CustomOnGlobalLayoutListener(ShyHeightAlreadyCalculated, ((CoordinatorLayout.LayoutParams)LayoutParameters), OuterContainer, ViewTreeObserver));
+                ViewTreeObserver.AddOnGlobalLayoutListener(new InitializeViewsOnGlobalLayoutListener(ShyHeightAlreadyCalculated, ((CoordinatorLayout.LayoutParams)LayoutParameters), OuterContainer, ViewTreeObserver));
             }
 
             AddView(rootView);
@@ -1420,7 +1422,7 @@ namespace BottomNavigationBar
 
                 View outerContainer = bottomBar.OuterContainer;
                 int navBarHeightCopy = navBarHeight;
-                bottomBar.ViewTreeObserver.AddOnGlobalLayoutListener(new AnotherCustomOnGlobalLayoutListener(bottomBar, outerContainer, navBarHeightCopy));
+                bottomBar.ViewTreeObserver.AddOnGlobalLayoutListener(new NavBarMagicOnGlobalLayoutListener(bottomBar, outerContainer, navBarHeightCopy));
             }
         }
     }
