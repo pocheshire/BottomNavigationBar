@@ -36,13 +36,12 @@ namespace BottomNavigationBar.Listeners
 
             ViewTreeObserver obs = _outerContainer.ViewTreeObserver;
 
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean)
+            if (obs.IsAlive)
             {
-                obs.RemoveOnGlobalLayoutListener(this);
-            }
-            else
-            {
-                obs.RemoveGlobalOnLayoutListener(this);
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean)
+                    obs.RemoveOnGlobalLayoutListener(this);
+                else
+                    obs.RemoveGlobalOnLayoutListener(this);
             }
         }
         

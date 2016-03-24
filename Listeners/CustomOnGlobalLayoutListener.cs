@@ -31,13 +31,12 @@ namespace BottomNavigationBar.Listeners
 
             var obs = _viewTreeObserver;
 
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean)
+            if (obs.IsAlive)
             {
-                obs.RemoveOnGlobalLayoutListener(this);
-            }
-            else
-            {
-                obs.RemoveGlobalOnLayoutListener(this);
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean)
+                    obs.RemoveOnGlobalLayoutListener(this);
+                else
+                    obs.RemoveGlobalOnLayoutListener(this);
             }
         }
     }

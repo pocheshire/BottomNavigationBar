@@ -23,10 +23,13 @@ namespace BottomNavigationBar.Listeners
 
 			var obs = _itemContainer.ViewTreeObserver;
 
-			if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.JellyBean)
-				obs.RemoveOnGlobalLayoutListener (this);
-			else
-				obs.RemoveGlobalOnLayoutListener (this);
+            if (obs.IsAlive)
+            {
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.JellyBean)
+                    obs.RemoveOnGlobalLayoutListener(this);
+                else
+                    obs.RemoveGlobalOnLayoutListener(this);
+            }
 		}
 	}
 }
