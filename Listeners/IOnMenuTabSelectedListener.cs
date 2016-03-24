@@ -19,6 +19,10 @@ using System;
 
 namespace BottomNavigationBar.Listeners
 {
+	[Obsolete("Deprecated")]
+	/// <summary>
+	/// Deprecated, use <see cref="IOnMenuTabClickListener"/>
+	/// </summary>
     public interface IOnMenuTabSelectedListener
     {
         /// <summary>

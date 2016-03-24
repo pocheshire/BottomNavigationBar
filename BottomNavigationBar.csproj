@@ -80,6 +80,8 @@
     <Compile Include="Listeners\IOnSizeDeterminedListener.cs" />
     <Compile Include="Listeners\NavBarMagicOnGlobalLayoutListener.cs" />
     <Compile Include="Listeners\InitializeViewsOnGlobalLayoutListener.cs" />
+    <Compile Include="Listeners\IOnMenuTabClickListener.cs" />
+    <Compile Include="Listeners\IOnTabClickListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

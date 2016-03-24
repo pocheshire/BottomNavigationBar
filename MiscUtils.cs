@@ -160,7 +160,7 @@ namespace BottomNavigationBar
 		/// </summary>
 		/// <returns><c>true</c>, if the night mode is enabled, <c>false</c> otherwise.</returns>
 		/// <param name="context">Context to get the configuration.</param>
-		protected static bool IsNightMode(Context context)
+		public static bool IsNightMode(Context context)
 		{
 			int currentNightMode = context.Resources.Configuration.UiMode & UiMode.NightMask;
 			return currentNightMode == UiMode.NightYes;

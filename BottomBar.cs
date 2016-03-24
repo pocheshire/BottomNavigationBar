@@ -64,8 +64,8 @@ namespace BottomNavigationBar
         private int _tenDp;
         private int _maxFixedItemWidth;
 
-        private IOnTabSelectedListener _listener;
-        private IOnMenuTabSelectedListener _menuListener;
+		private Java.Lang.Object _listener;
+		private Java.Lang.Object _menuListener;
 
         private bool _isShiftingMode;
 
@@ -294,10 +294,9 @@ namespace BottomNavigationBar
         }
 
         /// <summary>
-        /// Set items from an XML menu resource file.
+		/// Deprecated, use <see cref="SetItemsFromMenu(int menuRes, IOnMenuTabClickListener listener)"/> instead
         /// </summary>
-        /// <param name="menuRes">the menu resource to inflate items from.</param>
-        /// <param name="listener">listener for tab change events.</param>
+		[Obsolete("Deprecated")]
         public void SetItemsFromMenu(int menuRes, IOnMenuTabSelectedListener listener)
         {
             ClearItems();
@@ -306,14 +305,36 @@ namespace BottomNavigationBar
             UpdateItems(_items);
         }
 
-        /// <summary>
-        /// Set a listener that gets fired when the selected tab changes.
-        /// </summary>
-        /// <param name="listener">a listener for monitoring changes in tab selection.</param>
+		/// <summary>
+		/// Set items from an XML menu resource file.
+		/// </summary>
+		/// <param name="menuRes">the menu resource to inflate items from.</param>
+		/// <param name="listener">listener for tab change events.</param>
+		public void SetItemsFromMenu(int menuRes, IOnMenuTabClickListener listener)
+		{
+			ClearItems();
+			_items = MiscUtils.InflateMenuFromResource((Activity)Context, menuRes);
+			_menuListener = listener;
+			UpdateItems(_items);
+		}
+
+		/// <summary>
+		/// Deprecated, use <see cref="SetOnItemSelectedListener(IOnTabClickListener listener)"/> instead
+		/// </summary>
+		[Obsolete("Deprecated")]
         public void SetOnItemSelectedListener(IOnTabSelectedListener listener)
         {
             _listener = listener;
         }
+
+		/// <summary>
+		/// Set a listener that gets fired when the selected tab changes.
+		/// </summary>
+		/// <param name="listener">a listener for monitoring changes in tab selection.</param>
+		public void SetOnItemSelectedListener(IOnTabClickListener listener)
+		{
+			_listener = listener;
+		}
 
         /// <summary>
         /// Select a tab at the specified position.
@@ -866,30 +887,74 @@ namespace BottomNavigationBar
             {
                 UnselectTab(FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE), true);
                 SelectTab(v, true);
-                UpdateSelectedTab(FindItemPosition(v));
             }
+			UpdateSelectedTab(FindItemPosition(v));
         }
 
         private void UpdateSelectedTab(int newPosition)
         {
+			var notifyMenuListener = _menuListener != null && _items is BottomBarTab[];
+			var notifyRegularListener = _listener != null;
+
             if (newPosition != CurrentTabPosition)
             {
                 HandleBadgeVisibility(CurrentTabPosition, newPosition);
                 CurrentTabPosition = newPosition;
 
-                if (_listener != null)
-                {
-                    _listener.OnItemSelected(CurrentTabPosition);
-                }
+				if (notifyRegularListener)
+					NotifyRegularListener (_listener, false, CurrentTabPosition);
 
-                if (_menuListener != null && _items is BottomBarTab[])
-                {
-                    _menuListener.OnMenuItemSelected(((BottomBarTab)_items[CurrentTabPosition]).Id);
-                }
+				if (notifyMenuListener)
+					NotifyMenuListener (_menuListener, false, ((BottomBarTab)_items [CurrentTabPosition]).Id);
 
-                UpdateCurrentFragment();
-            }
+				UpdateCurrentFragment();
+			}
+			else
+			{
+				if (notifyRegularListener)
+					NotifyRegularListener (_listener, true, CurrentTabPosition);
+
+				if (notifyMenuListener && _menuListener is IOnMenuTabClickListener)
+					NotifyMenuListener (_menuListener, true, ((BottomBarTab)_items [CurrentTabPosition]).Id);
+			}
         }
+
+		private void NotifyRegularListener(Java.Lang.Object listener, bool isReselection, int position)
+		{
+			if (listener is IOnTabClickListener)
+			{
+				var onTabClickListener = (IOnTabClickListener) listener;
+				if (!isReselection) 
+					onTabClickListener.OnTabSelected(position);
+				else
+					onTabClickListener.OnTabReSelected(position);
+			}
+			else if (_listener is IOnTabSelectedListener)
+			{
+				var onTabSelectedListener = (IOnTabSelectedListener) listener;
+				if (!isReselection)
+					onTabSelectedListener.OnItemSelected(position);
+			}
+		}
+
+		private void NotifyMenuListener(Java.Lang.Object listener, bool isReselection, int menuItemId)
+		{
+			if (listener is IOnMenuTabClickListener)
+			{
+				var onMenuTabClickListener = (IOnMenuTabClickListener) listener;
+				if (!isReselection) 
+					onMenuTabClickListener.OnMenuTabSelected(menuItemId);
+				else
+					onMenuTabClickListener.OnMenuTabReSelected(menuItemId);
+			}
+			else if (_listener is IOnMenuTabSelectedListener)
+			{
+				var onMenuTabSelectedListener = (IOnMenuTabSelectedListener) listener;
+				if (!isReselection)
+					onMenuTabSelectedListener.OnMenuItemSelected(menuItemId);
+			}
+		}
+
 
         private void HandleBadgeVisibility(int oldPosition, int newPosition)
         {
