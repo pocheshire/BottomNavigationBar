@@ -28,6 +28,7 @@ using BottomNavigationBar.Adapters;
 using Android.Animation;
 using Android.App;
 using System.Diagnostics.CodeAnalysis;
+using Android.Content.Res;
 
 namespace BottomNavigationBar
 {
@@ -153,6 +154,17 @@ namespace BottomNavigationBar
             else
                 textView.SetTextAppearance(textView.Context, resId);
         }
+
+		/// <summary>
+		/// Determine if the current UI Mode is Night Mode.
+		/// </summary>
+		/// <returns><c>true</c>, if the night mode is enabled, <c>false</c> otherwise.</returns>
+		/// <param name="context">Context to get the configuration.</param>
+		protected static bool IsNightMode(Context context)
+		{
+			int currentNightMode = context.Resources.Configuration.UiMode & UiMode.NightMask;
+			return currentNightMode == UiMode.NightYes;
+		}
     }
 }
 

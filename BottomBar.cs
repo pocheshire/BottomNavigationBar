@@ -81,6 +81,7 @@ namespace BottomNavigationBar
         private Color _defaultBackgroundColor;
 
         private bool _isDarkTheme;
+		private bool _ignoreNightMode;
         private int _customActiveTabColor = -1;
 
         private int _pendingTextAppearance = -1;
@@ -508,6 +509,21 @@ namespace BottomNavigationBar
             _isDarkTheme = darkThemeEnabled;
         }
 
+		/// <summary>
+		/// Ignore the automatic Night Mode detection and use a light theme by default,
+		/// even if the Night Mode is on.
+		/// </summary>
+		public void IgnoreNightMode()
+		{
+			if (_items != null && _items.Length > 0) {
+				throw new InvalidOperationException("This BottomBar " +
+					"already has items! You must call ignoreNightMode() " +
+					"before setting any items.");
+			}
+
+			_ignoreNightMode = true;
+		}
+
         /// <summary>
         /// Set a custom color for an active tab when there's three or less items.
         /// NOTE: This value is ignored on mobile devices if you have more than three items.
@@ -913,14 +929,15 @@ namespace BottomNavigationBar
 
         private void UpdateItems(BottomBarItemBase[] bottomBarItems)
         {
-            if (ItemContainer == null)
-            {
-                InitializeViews();
-            }
+			if (ItemContainer == null)
+				InitializeViews ();
 
             int index = 0;
             int biggestWidth = 0;
             _isShiftingMode = MAX_FIXED_TAB_COUNT < bottomBarItems.Length;
+
+			if (!_isDarkTheme && !_ignoreNightMode && MiscUtils.IsNightMode (_context))
+				_isDarkTheme = true;
 
             if (!_isTabletMode && _isShiftingMode)
             {
