@@ -82,7 +82,7 @@ namespace BottomNavigationBar
 
         private bool _isDarkTheme;
 		private bool _ignoreNightMode;
-        private int _customActiveTabColor = -1;
+        private int _customActiveTabColor;
 
         private int _pendingTextAppearance = -1;
         private Typeface _pendingTypeface;
@@ -1100,7 +1100,7 @@ namespace BottomNavigationBar
 
             if (!_isShiftingMode || _isTabletMode)
             {
-                var activeColor = _customActiveTabColor != -1 ? new Color(_customActiveTabColor) : _primaryColor;
+                var activeColor = _customActiveTabColor != 0 ? new Color(_customActiveTabColor) : _primaryColor;
                 icon.SetColorFilter(activeColor);
 
                 if (title != null)
