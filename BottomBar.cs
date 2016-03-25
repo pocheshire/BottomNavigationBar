@@ -46,7 +46,6 @@ namespace BottomNavigationBar
 
         private Context _context;
         private bool _isComingFromRestoredState;
-		private bool _isClickedBefore;
         private bool _ignoreTabletLayout;
         private bool _isTabletMode;
 
@@ -319,6 +318,9 @@ namespace BottomNavigationBar
 			_items = MiscUtils.InflateMenuFromResource((Activity)Context, menuRes);
 			_menuListener = listener;
 			UpdateItems(_items);
+
+			if (_items != null && _items.Length > 0 && _items is BottomBarTab[])
+				listener.OnMenuTabSelected (((BottomBarTab)_items [CurrentTabPosition]).Id);
 		}
 
 		/// <summary>
@@ -339,7 +341,7 @@ namespace BottomNavigationBar
 			_listener = listener;
 
 			if (_items != null && _items.Length > 0)
-				listener.OnTabSelected (0);
+				listener.OnTabSelected (CurrentTabPosition);
 		}
 
         /// <summary>
@@ -902,7 +904,7 @@ namespace BottomNavigationBar
 			var notifyMenuListener = _menuListener != null && _items is BottomBarTab[];
 			var notifyRegularListener = _listener != null;
 
-			if (newPosition != CurrentTabPosition || _isClickedBefore)
+			if (newPosition != CurrentTabPosition)
             {
                 HandleBadgeVisibility(CurrentTabPosition, newPosition);
                 CurrentTabPosition = newPosition;
@@ -923,8 +925,6 @@ namespace BottomNavigationBar
 				if (notifyMenuListener && _menuListener is IOnMenuTabClickListener)
 					NotifyMenuListener (_menuListener, true, ((BottomBarTab)_items [CurrentTabPosition]).Id);
 			}
-
-			_isClickedBefore = true;
         }
 
 		private void NotifyRegularListener(Object listener, bool isReselection, int position)
@@ -1118,8 +1118,6 @@ namespace BottomNavigationBar
                     ItemContainer.AddView(bottomBarView);
                 }
             }
-
-			UpdateSelectedTab (CurrentTabPosition);
 
             if (_pendingTextAppearance != -1)
             {
