@@ -23,8 +23,9 @@ namespace BottomNavigationBar.Listeners
 	{
 		/// <summary>
 		/// The method being called when currently visible <see cref="BottomBarTab"/> changes.
-		/// This listener won't be fired until the user changes the selected item the
-		/// first time. So you won't get this event when you're just initialized the BottomBar.
+		/// This listener is fired for the first time after the items have been set and
+		/// also after a configuration change, such as when screen orientation changes
+		/// from portrait to landscape.
 		/// </summary>
 		/// <param name="position">position the new visible <see cref="BottomBarTab"/></param>
 		void OnTabSelected(int position);

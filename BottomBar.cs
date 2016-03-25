@@ -46,6 +46,7 @@ namespace BottomNavigationBar
 
         private Context _context;
         private bool _isComingFromRestoredState;
+		private bool _isClickedBefore;
         private bool _ignoreTabletLayout;
         private bool _isTabletMode;
 
@@ -216,8 +217,8 @@ namespace BottomNavigationBar
 		/// Deprecated
 		/// 
 		/// Use either <see cref="SetItems(BottomBarTab...)"/> or
-		/// <see cref="SetItemsFromMenu(int, OnMenuTabClickListener)"/>
-		/// <see cref="SetOnTabClickListener(OnTabClickListener) to handle tab changes by yourself."/>
+		/// <see cref="SetItemsFromMenu(int, IOnMenuTabClickListener)"/> and add a listener using
+		/// <see cref="SetOnTabClickListener(IOnTabClickListener) to handle tab changes by yourself."/>
         /// </summary>
 		[Obsolete("Deprecated")]
         public void SetFragmentItems(Android.App.FragmentManager fragmentManager, int containerResource, BottomBarFragment[] fragmentItems)
@@ -252,8 +253,8 @@ namespace BottomNavigationBar
 		/// Deprecated
 		/// 
 		/// Use either <see cref="SetItems(BottomBarTab...)"/> or
-		/// <see cref="SetItemsFromMenu(int, OnMenuTabClickListener)"/>
-		/// <see cref="SetOnTabClickListener(OnTabClickListener) to handle tab changes by yourself."/>
+		/// <see cref="SetItemsFromMenu(int, IOnMenuTabClickListener)"/> and add a listener using
+		/// <see cref="SetOnTabClickListener(IOnTabClickListener) to handle tab changes by yourself."/>
 		/// </summary>
 		[Obsolete("Deprecated")]
         public void SetFragmentItems(Android.Support.V4.App.FragmentManager fragmentManager, int containerResource, BottomBarFragment[] fragmentItems)
@@ -333,9 +334,12 @@ namespace BottomNavigationBar
 		/// Set a listener that gets fired when the selected tab changes.
 		/// </summary>
 		/// <param name="listener">a listener for monitoring changes in tab selection.</param>
-		public void SetOnItemSelectedListener(IOnTabClickListener listener)
+		public void SetOnTabClickListener(IOnTabClickListener listener)
 		{
 			_listener = listener;
+
+			if (_items != null && _items.Length > 0)
+				listener.OnTabSelected (0);
 		}
 
         /// <summary>
@@ -367,7 +371,7 @@ namespace BottomNavigationBar
 		/// the selection.
 		/// </summary>
 		/// <param name="defaultTabPosition">the default tab position.</param>
-		public void setDefaultTabPosition(int defaultTabPosition)
+		public void SetDefaultTabPosition(int defaultTabPosition)
 		{
 			if (_items == null || _items.Length == 0)
 				throw new InvalidOperationException("Can't set default tab at " +
@@ -898,7 +902,7 @@ namespace BottomNavigationBar
 			var notifyMenuListener = _menuListener != null && _items is BottomBarTab[];
 			var notifyRegularListener = _listener != null;
 
-            if (newPosition != CurrentTabPosition)
+			if (newPosition != CurrentTabPosition || _isClickedBefore)
             {
                 HandleBadgeVisibility(CurrentTabPosition, newPosition);
                 CurrentTabPosition = newPosition;
@@ -919,6 +923,8 @@ namespace BottomNavigationBar
 				if (notifyMenuListener && _menuListener is IOnMenuTabClickListener)
 					NotifyMenuListener (_menuListener, true, ((BottomBarTab)_items [CurrentTabPosition]).Id);
 			}
+
+			_isClickedBefore = true;
         }
 
 		private void NotifyRegularListener(Object listener, bool isReselection, int position)
@@ -1113,7 +1119,7 @@ namespace BottomNavigationBar
                 }
             }
 
-            UpdateCurrentFragment();
+			UpdateSelectedTab (CurrentTabPosition);
 
             if (_pendingTextAppearance != -1)
             {
