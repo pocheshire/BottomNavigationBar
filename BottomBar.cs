@@ -213,12 +213,13 @@ namespace BottomNavigationBar
         }
 
         /// <summary>
-        /// Set tabs and fragments for this BottomBar. When setting more than 3 items,
-        /// only the icons will show by default, but the selected item will have the text visible.
+		/// Deprecated
+		/// 
+		/// Use either <see cref="SetItems(BottomBarTab...)"/> or
+		/// <see cref="SetItemsFromMenu(int, OnMenuTabClickListener)"/>
+		/// <see cref="SetOnTabClickListener(OnTabClickListener) to handle tab changes by yourself."/>
         /// </summary>
-        /// <param name="fragmentManager">a FragmentManager for managing the Fragments.</param>
-        /// <param name="containerResource">id for the layout to inflate Fragments to.</param>
-        /// <param name="fragmentItems">an array of <see cref="BottomBarFragment"/> objects.</param>
+		[Obsolete("Deprecated")]
         public void SetFragmentItems(Android.App.FragmentManager fragmentManager, int containerResource, BottomBarFragment[] fragmentItems)
         {
             if (fragmentItems.Length > 0)
@@ -247,13 +248,14 @@ namespace BottomNavigationBar
             UpdateItems(_items);
         }
 
-        /// <summary>
-        /// Set tabs and fragments for this BottomBar. When setting more than 3 items,
-        /// only the icons will show by default, but the selected item will have the text visible.
-        /// </summary>
-        /// <param name="fragmentManager">a FragmentManager for managing the Fragments.</param>
-        /// <param name="containerResource">id for the layout to inflate Fragments to.</param>
-        /// <param name="fragmentItems">an array of <see cref="BottomBarFragment"/> objects.</param>
+		/// <summary>
+		/// Deprecated
+		/// 
+		/// Use either <see cref="SetItems(BottomBarTab...)"/> or
+		/// <see cref="SetItemsFromMenu(int, OnMenuTabClickListener)"/>
+		/// <see cref="SetOnTabClickListener(OnTabClickListener) to handle tab changes by yourself."/>
+		/// </summary>
+		[Obsolete("Deprecated")]
         public void SetFragmentItems(Android.Support.V4.App.FragmentManager fragmentManager, int containerResource, BottomBarFragment[] fragmentItems)
         {
             if (fragmentItems.Length > 0)

@@ -3,6 +3,7 @@ using Android.Graphics.Drawables;
 
 namespace BottomNavigationBar
 {
+	[Obsolete("Deprecated")]
     public class BottomBarFragment : BottomBarItemBase
     {
         public Android.App.Fragment Fragment
