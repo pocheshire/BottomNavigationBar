@@ -14,9 +14,6 @@
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <AssemblyName>BottomNavigationBar</AssemblyName>
     <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
-    <ReleaseVersion>1.0.3</ReleaseVersion>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -82,6 +79,7 @@
     <Compile Include="Listeners\InitializeViewsOnGlobalLayoutListener.cs" />
     <Compile Include="Listeners\IOnMenuTabClickListener.cs" />
     <Compile Include="Listeners\IOnTabClickListener.cs" />
+    <Compile Include="Utils\RunnableHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -96,6 +94,7 @@
     <Folder Include="Scrollswetness\" />
     <Folder Include="Adapters\" />
     <Folder Include="Listeners\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\attrs.xml" />

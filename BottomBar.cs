@@ -30,6 +30,9 @@ using Android.Util;
 using Android.Annotation;
 using Android.Support.V4.Content;
 using Android.Content.Res;
+using Android.Support.V4.View.Animation;
+using Android.Views.Animations;
+using BottomNavigationBar.Utils;
 
 namespace BottomNavigationBar
 {
@@ -86,6 +89,10 @@ namespace BottomNavigationBar
 
         private int _pendingTextAppearance = -1;
         private Typeface _pendingTypeface;
+
+        private bool _animationStarted;
+        private ViewPropertyAnimatorCompat _translationAnimator;
+        private static readonly IInterpolator INTERPOLATOR = new LinearOutSlowInInterpolator();
 
         // For fragment state restoration
         private bool _shouldUpdateFragmentInitially;
@@ -387,22 +394,49 @@ namespace BottomNavigationBar
 		}
 
 		/// <summary>
-		/// Hide the BottomBar.
+        /// Hide the BottomBar with or without animation.
 		/// </summary>
-		public void Hide() 
+        public void Hide(bool animated) 
 		{
-			SetBarVisibility(ViewStates.Gone);
+            if (!animated)
+                SetBarVisibility(ViewStates.Gone);
+            else
+                AnimateOffset(this.Height);
 		}
 
 		/// <summary>
-		/// Show the BottomBar.
+		/// Show the BottomBar with or without animation.
 		/// </summary>
-		public void Show() 
+        public void Show(bool animated) 
 		{
-			SetBarVisibility(ViewStates.Visible);
+            if (!animated)
+                SetBarVisibility(ViewStates.Visible);
+            else
+                AnimateOffset(0);
 		}
 
-		protected void SetBarVisibility(ViewStates visibility)
+        private void AnimateOffset(int offset)
+        {
+            if (_translationAnimator == null)
+            {
+                _translationAnimator = ViewCompat.Animate(this);
+                _translationAnimator.SetDuration(300);
+                _translationAnimator.SetInterpolator(INTERPOLATOR);
+            }
+
+            if (!_animationStarted)
+                _translationAnimator
+                    .TranslationY(offset)
+                    .WithStartAction (new RunnableHelper(() => {
+                        _animationStarted = true;
+                    }))
+                    .WithEndAction (new RunnableHelper(() => {
+                        _animationStarted = false;
+                    }))
+                    .Start();
+        }
+
+		private void SetBarVisibility(ViewStates visibility)
 		{
 			if (OuterContainer != null)
 				OuterContainer.Visibility = visibility;
