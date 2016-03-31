@@ -1,5 +1,5 @@
 # BottomNavigationBar
-<img src="https://raw.githubusercontent.com/roughike/BottomBar/master/scrolling_demo.gif" width="278" height="492" /> <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/demo2-badge.gif" width="278" height="492" />  
+<img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/scrolling_demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/demo2.gif" width="30%" />  
 
 **[How to contribute](https://github.com/pocheshire/BottomNavigationBar/blob/master/README.md#contributions)**
 
