@@ -66,6 +66,9 @@ namespace BottomNavigationBar
         private int _twoDp;
         private int _tenDp;
         private int _maxFixedItemWidth;
+		private int _maxInActiveShiftingItemWidth;
+		private int _inActiveShiftingItemWidth;
+		private int _activeShiftingItemWidth;
 
 		private Object _listener;
 		private Object _menuListener;
@@ -129,6 +132,8 @@ namespace BottomNavigationBar
 
         public bool IsShy { get; internal set; }
         public bool ShyHeightAlreadyCalculated { get; internal set; }
+
+		public bool IgnoreShiftingResize { get; set; }
 
         /// <summary>
         /// Bind the BottomBar to your Activity, and inflate your layout here.
@@ -864,6 +869,7 @@ namespace BottomNavigationBar
             _twoDp = MiscUtils.DpToPixel(_context, 2);
             _tenDp = MiscUtils.DpToPixel(_context, 10);
             _maxFixedItemWidth = MiscUtils.DpToPixel(_context, 168);
+			_maxInActiveShiftingItemWidth = MiscUtils.DpToPixel(_context, 96);
         }
 
         private void InitializeViews()
@@ -929,8 +935,19 @@ namespace BottomNavigationBar
         {
             if (v.Tag.Equals(TAG_BOTTOM_BAR_VIEW_INACTIVE))
             {
-                UnselectTab(FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE), true);
-                SelectTab(v, true);
+//                UnselectTab(FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE), true);
+//                SelectTab(v, true);
+				var oldTab = FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE);
+
+				UnselectTab(oldTab, true);
+				SelectTab(v, true);
+
+				if (!_isTabletMode && _isShiftingMode && !IgnoreShiftingResize) 
+				{
+					MiscUtils.ResizeTab(oldTab, oldTab.Width, _inActiveShiftingItemWidth);
+					MiscUtils.ResizeTab(v, v.Width, _activeShiftingItemWidth);
+				}
+
             }
 			UpdateSelectedTab(FindItemPosition(v));
         }
@@ -1146,10 +1163,27 @@ namespace BottomNavigationBar
                                             _maxFixedItemWidth
                                         );
 
-                var param = new LinearLayout.LayoutParams(proposedItemWidth, LinearLayout.LayoutParams.WrapContent);
+				_inActiveShiftingItemWidth = (int) (proposedItemWidth * 0.9);
+				_activeShiftingItemWidth = (int) (proposedItemWidth + (proposedItemWidth * (bottomBarItems.Length * 0.1)));
 
                 foreach (var bottomBarView in viewsToAdd)
                 {
+					LinearLayout.LayoutParams param;
+
+					if (_isShiftingMode && !IgnoreShiftingResize)
+					{
+						if (TAG_BOTTOM_BAR_VIEW_ACTIVE.Equals (bottomBarView.Tag))
+							param = new LinearLayout.LayoutParams (_activeShiftingItemWidth,
+								LinearLayout.LayoutParams.WrapContent);
+						else
+							param = new LinearLayout.LayoutParams (_inActiveShiftingItemWidth,
+								LinearLayout.LayoutParams.WrapContent);
+					} 
+					else
+						param = new LinearLayout.LayoutParams (proposedItemWidth,
+							LinearLayout.LayoutParams.WrapContent);
+
+
                     bottomBarView.LayoutParameters = param;
                     ItemContainer.AddView(bottomBarView);
                 }

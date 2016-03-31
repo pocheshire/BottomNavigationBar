@@ -29,6 +29,7 @@ using Android.Animation;
 using Android.App;
 using System.Diagnostics.CodeAnalysis;
 using Android.Content.Res;
+using BottomNavigationBar.Listeners;
 
 namespace BottomNavigationBar
 {
@@ -164,6 +165,21 @@ namespace BottomNavigationBar
 		{
 			return context.Resources.Configuration.UiMode == UiMode.NightYes;
 		}
+
+		/// <summary>
+		/// A method for animating width for the tabs.
+		/// </summary>
+		/// <param name="tab">tab to animate.</param>
+		/// <param name="start">starting width.</param>
+		/// <param name="end">final width after animation.</param>
+		public static void ResizeTab(View tab, float start, float end)
+		{
+			ValueAnimator animator = ValueAnimator.OfFloat(start, end);
+			animator.SetDuration(150);
+			animator.AddUpdateListener (new ResizeTabAnimatorUpdateListener (tab, animator));
+			animator.Start();
+		}
+
     }
 }
 
