@@ -870,6 +870,8 @@ namespace BottomNavigationBar
         {
             _isTabletMode = !_ignoreTabletLayout && _context.Resources.GetBoolean(Resource.Boolean.bb_bottom_bar_is_tablet_mode);
 
+			ViewCompat.SetElevation(this, MiscUtils.DpToPixel(_context, 8));
+
             View rootView = View.Inflate(_context, _isTabletMode ? Resource.Layout.bb_bottom_bar_item_container_tablet : Resource.Layout.bb_bottom_bar_item_container, null);
             _tabletRightBorder = rootView.FindViewById(Resource.Id.bb_tablet_right_border);
 
@@ -907,7 +909,7 @@ namespace BottomNavigationBar
 
             if (IsShy && !_isTabletMode)
             {
-                ViewTreeObserver.AddOnGlobalLayoutListener(new InitializeViewsOnGlobalLayoutListener(ShyHeightAlreadyCalculated, ((CoordinatorLayout.LayoutParams)LayoutParameters), OuterContainer, ViewTreeObserver));
+				ViewTreeObserver.AddOnGlobalLayoutListener(new InitializeViewsOnGlobalLayoutListener(ShyHeightAlreadyCalculated, ((CoordinatorLayout.LayoutParams)LayoutParameters), OuterContainer, ViewTreeObserver, IsShy, _isTabletMode));
             }
 
             AddView(rootView);
@@ -1527,7 +1529,7 @@ namespace BottomNavigationBar
 
                 View outerContainer = bottomBar.OuterContainer;
                 int navBarHeightCopy = navBarHeight;
-                bottomBar.ViewTreeObserver.AddOnGlobalLayoutListener(new NavBarMagicOnGlobalLayoutListener(bottomBar, outerContainer, navBarHeightCopy));
+				bottomBar.ViewTreeObserver.AddOnGlobalLayoutListener(new NavBarMagicOnGlobalLayoutListener(bottomBar, outerContainer, navBarHeightCopy, this.IsShy, this._isTabletMode));
             }
         }
     }

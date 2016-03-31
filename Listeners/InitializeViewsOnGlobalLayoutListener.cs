@@ -13,20 +13,24 @@ namespace BottomNavigationBar.Listeners
         private readonly CoordinatorLayout.LayoutParams _layoutParams;
         private readonly View _outerContainer;
         private readonly ViewTreeObserver _viewTreeObserver;
+		private readonly bool _isShy;
+		private readonly bool _isTabletMode;
 
-        public InitializeViewsOnGlobalLayoutListener(bool mShyHeightAlreadyCalculated, CoordinatorLayout.LayoutParams layoutParams, View outerContainer, ViewTreeObserver viewTreeObserver)
+		public InitializeViewsOnGlobalLayoutListener(bool mShyHeightAlreadyCalculated, CoordinatorLayout.LayoutParams layoutParams, View outerContainer, ViewTreeObserver viewTreeObserver, bool isShy, bool isTabletMode)
         {
             _shyHeightAlreadyCalculated = mShyHeightAlreadyCalculated;
             _layoutParams = layoutParams;
             _outerContainer = outerContainer;
             _viewTreeObserver = viewTreeObserver;
+			_isShy = isShy;
+			_isTabletMode = isTabletMode;
         }
 
         public void OnGlobalLayout()
         {
             if (!_shyHeightAlreadyCalculated)
             {
-                _layoutParams.Behavior = new BottomNavigationBehavior<View>(_outerContainer.Height, 0);
+                _layoutParams.Behavior = new BottomNavigationBehavior<View>(_outerContainer.Height, 0, _isShy, _isTabletMode);
             }
 
             var obs = _viewTreeObserver;

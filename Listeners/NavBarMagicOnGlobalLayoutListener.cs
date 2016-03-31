@@ -12,12 +12,16 @@ namespace BottomNavigationBar.Listeners
         private readonly BottomBar _bottomBar;
         private readonly View _outerContainer;
         private readonly int _navBarHeightCopy;
+		private readonly bool _isShy;
+		private readonly bool _isTabletMode;
 
-        public NavBarMagicOnGlobalLayoutListener(BottomBar bottomBar, View outerContainer, int navBarHeightCopy)
+		public NavBarMagicOnGlobalLayoutListener(BottomBar bottomBar, View outerContainer, int navBarHeightCopy, bool isShy, bool isTabletMode)
         {
             _bottomBar = bottomBar;
             _outerContainer = outerContainer;
             _navBarHeightCopy = navBarHeightCopy;
+			_isShy = isShy;
+			_isTabletMode = isTabletMode;
         }
 
         public void OnGlobalLayout()
@@ -31,7 +35,7 @@ namespace BottomNavigationBar.Listeners
             {
                 int defaultOffset = _bottomBar.UseExtraOffset ? _navBarHeightCopy : 0;
                 _bottomBar.TranslationY = defaultOffset;
-                ((CoordinatorLayout.LayoutParams)_bottomBar.LayoutParameters).Behavior = new BottomNavigationBehavior<View>(newHeight, defaultOffset);
+                ((CoordinatorLayout.LayoutParams)_bottomBar.LayoutParameters).Behavior = new BottomNavigationBehavior<View>(newHeight, defaultOffset, _isShy, _isTabletMode);
             }
 
             ViewTreeObserver obs = _outerContainer.ViewTreeObserver;
