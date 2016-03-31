@@ -29,7 +29,7 @@ namespace BottomNavigationBar.Scrollswetness
 
         private ViewPropertyAnimatorCompat mTranslationAnimator;
         private bool hidden = false;
-		private int _snackbarHeight;
+		private int _snackbarHeight = -1;
 		private readonly IBottomNavigationWithSnackbar _withSnackBarImpl = Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop ? new LollipopBottomNavWithSnackBarImpl() : new PreLollipopBottomNavWithSnackBarImpl();
 		private bool _scrollingEnabled = true;
 
