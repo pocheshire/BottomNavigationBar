@@ -136,7 +136,7 @@ namespace BottomNavigationBar.Scrollswetness
 					if (_snackbarHeight == -1)
 						_snackbarHeight = dependency.Height;
 					
-					int targetPadding = _bottomNavHeight + _snackbarHeight;
+					int targetPadding = _bottomNavHeight + _snackbarHeight - _defaultOffset;
 
 					ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) dependency.LayoutParameters;
 					layoutParams.BottomMargin = targetPadding;
@@ -160,7 +160,8 @@ namespace BottomNavigationBar.Scrollswetness
 					if (_snackbarHeight == -1)
 						_snackbarHeight = dependency.Height;
 					
-					int targetPadding = (_snackbarHeight + _bottomNavHeight);
+					int targetPadding = _snackbarHeight +  _bottomNavHeight - _defaultOffset;
+
 					dependency.SetPadding (
 						dependency.PaddingLeft, dependency.PaddingTop, dependency.PaddingRight, targetPadding
 					);
