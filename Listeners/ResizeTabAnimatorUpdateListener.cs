@@ -21,7 +21,7 @@ namespace BottomNavigationBar.Listeners
 			LinearLayout.LayoutParams pars = (LinearLayout.LayoutParams) _tab.LayoutParameters;
 			if (pars == null) return;
 
-			pars.Width = Math.Round((float) _animator.AnimatedValue);
+            pars.Width = (int)Math.Round((float)_animator.AnimatedValue);
 			_tab.LayoutParameters = pars;
 		}
 	}

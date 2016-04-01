@@ -1563,7 +1563,7 @@ namespace BottomNavigationBar
 
                 View outerContainer = bottomBar.OuterContainer;
                 int navBarHeightCopy = navBarHeight;
-				bottomBar.ViewTreeObserver.AddOnGlobalLayoutListener(new NavBarMagicOnGlobalLayoutListener(bottomBar, outerContainer, navBarHeightCopy, this.IsShy, this._isTabletMode));
+                bottomBar.ViewTreeObserver.AddOnGlobalLayoutListener(new NavBarMagicOnGlobalLayoutListener(bottomBar, outerContainer, navBarHeightCopy, bottomBar.IsShy, bottomBar._isTabletMode));
             }
         }
     }

@@ -22,31 +22,36 @@ namespace BottomNavigationBar.Scrollswetness
         where V : View
     {
         private static readonly IInterpolator INTERPOLATOR = new LinearOutSlowInInterpolator();
-		private readonly int _bottomNavHeight;
-		private readonly int _defaultOffset;
-		private readonly bool _isShy = false;
-		private readonly bool _isTablet = false;
+        private readonly int _bottomNavHeight;
+        private readonly int _defaultOffset;
+        private readonly bool _isShy = false;
+        private readonly bool _isTablet = false;
 
         private ViewPropertyAnimatorCompat mTranslationAnimator;
         private bool hidden = false;
-		private int _snackbarHeight = -1;
-		private readonly IBottomNavigationWithSnackbar _withSnackBarImpl = Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop ? new LollipopBottomNavWithSnackBarImpl() : new PreLollipopBottomNavWithSnackBarImpl();
-		private bool _scrollingEnabled = true;
+        private int _snackbarHeight = -1;
+        private readonly IBottomNavigationWithSnackbar _withSnackBarImpl;
+        private bool _scrollingEnabled = true;
 
-		public BottomNavigationBehavior(int bottomNavHeight, int defaultOffset, bool shy, bool tablet)
+        public BottomNavigationBehavior(int bottomNavHeight, int defaultOffset, bool shy, bool tablet)
         {
             _bottomNavHeight = bottomNavHeight;
             _defaultOffset = defaultOffset;
-			_isShy = shy;
-			_isTablet = tablet;
+            _isShy = shy;
+            _isTablet = tablet;
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+                _withSnackBarImpl = new LollipopBottomNavWithSnackBarImpl(_isTablet, _isShy, _snackbarHeight, _bottomNavHeight, _defaultOffset);
+            else
+                _withSnackBarImpl = new PreLollipopBottomNavWithSnackBarImpl(_isTablet, _isShy, _snackbarHeight, _bottomNavHeight, _defaultOffset);
         }
 
         #region implemented abstract members of VerticalScrollingBehavior
 
         private void HandleDirection(V child, ScrollDirection scrollDirection)
         {
-			if (!_scrollingEnabled)
-				return;
+            if (!_scrollingEnabled)
+                return;
             if (scrollDirection == ScrollDirection.SCROLL_DIRECTION_DOWN && hidden)
             {
                 hidden = false;
@@ -95,79 +100,109 @@ namespace BottomNavigationBar.Scrollswetness
             HandleDirection(child, scrollDirection);
         }
 
-		public override bool LayoutDependsOn (CoordinatorLayout parent, Java.Lang.Object child, View dependency)
-		{
-			_withSnackBarImpl.UpdateSnackbar(parent, dependency, child);
-			return dependency is Snackbar.SnackbarLayout;
-		}
+        public override bool LayoutDependsOn(CoordinatorLayout parent, Java.Lang.Object child, View dependency)
+        {
+            _withSnackBarImpl.UpdateSnackbar(parent, dependency, (View)child);
+            return dependency is Snackbar.SnackbarLayout;
+        }
 
-		public override void OnDependentViewRemoved (CoordinatorLayout parent, Java.Lang.Object child, View dependency)
-		{
-			UpdateScrollingForSnackbar(dependency, true);
-			base.OnDependentViewRemoved (parent, child, dependency);
-		}
+        public override void OnDependentViewRemoved(CoordinatorLayout parent, Java.Lang.Object child, View dependency)
+        {
+            UpdateScrollingForSnackbar(dependency, true);
+            base.OnDependentViewRemoved(parent, child, dependency);
+        }
 
-		private void UpdateScrollingForSnackbar(View dependency, bool enabled) 
-		{
-			if (!_isTablet && dependency is Snackbar.SnackbarLayout)
-				_scrollingEnabled = enabled;
-		}
+        private void UpdateScrollingForSnackbar(View dependency, bool enabled)
+        {
+            if (!_isTablet && dependency is Snackbar.SnackbarLayout)
+                _scrollingEnabled = enabled;
+        }
 
 
-		public override bool OnDependentViewChanged (CoordinatorLayout parent, Java.Lang.Object child, View dependency)
-		{
-			UpdateScrollingForSnackbar(dependency, false);
-			return base.OnDependentViewChanged (parent, child, dependency);
-		}
+        public override bool OnDependentViewChanged(CoordinatorLayout parent, Java.Lang.Object child, View dependency)
+        {
+            UpdateScrollingForSnackbar(dependency, false);
+            return base.OnDependentViewChanged(parent, child, dependency);
+        }
 
         #endregion
 
-		private interface IBottomNavigationWithSnackbar 
-		{
-			void UpdateSnackbar(CoordinatorLayout parent, View dependency, View child);
-		}
+        private interface IBottomNavigationWithSnackbar
+        {
+            void UpdateSnackbar(CoordinatorLayout parent, View dependency, View child);
+        }
 
-		private class PreLollipopBottomNavWithSnackBarImpl : IBottomNavigationWithSnackbar 
-		{
-			public void UpdateSnackbar(CoordinatorLayout parent, View dependency, View child)
-			{
-				if (!_isTablet && _isShy && dependency is Snackbar.SnackbarLayout)
-				{
-					if (_snackbarHeight == -1)
-						_snackbarHeight = dependency.Height;
+        private class PreLollipopBottomNavWithSnackBarImpl : IBottomNavigationWithSnackbar
+        {
+            private readonly bool _isShy = false;
+            private readonly bool _isTablet = false;
+            private int _snackbarHeight = -1;
+            private readonly int _defaultOffset;
+            private readonly int _bottomNavHeight;
+
+            public PreLollipopBottomNavWithSnackBarImpl(bool shy, bool tablet, int snackbarHeight, int bottomNavHeight, int defaultOffset)
+            {
+                _isShy = shy;
+                _isTablet = tablet;
+                _snackbarHeight = snackbarHeight;
+                _bottomNavHeight = bottomNavHeight;
+                _defaultOffset = defaultOffset;
+            }
+
+            public void UpdateSnackbar(CoordinatorLayout parent, View dependency, View child)
+            {
+                if (!_isTablet && _isShy && dependency is Snackbar.SnackbarLayout)
+                {
+                    if (_snackbarHeight == -1)
+                        _snackbarHeight = dependency.Height;
 					
-					int targetPadding = _bottomNavHeight + _snackbarHeight - _defaultOffset;
+                    int targetPadding = _bottomNavHeight + _snackbarHeight - _defaultOffset;
 
-					ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) dependency.LayoutParameters;
-					layoutParams.BottomMargin = targetPadding;
+                    ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)dependency.LayoutParameters;
+                    layoutParams.BottomMargin = targetPadding;
 
-					child.BringToFront();
-					child.Parent.RequestLayout();
+                    child.BringToFront();
+                    child.Parent.RequestLayout();
 
-					if (Build.VERSION.SdkInt < BuildVersionCodes.Kitkat)
-						((View)child.Parent).Invalidate ();
+                    if (Build.VERSION.SdkInt < BuildVersionCodes.Kitkat)
+                        ((View)child.Parent).Invalidate();
 
-				}
-			}
-		}
+                }
+            }
+        }
 
-		private class LollipopBottomNavWithSnackBarImpl : IBottomNavigationWithSnackbar 
-		{	
-			public void UpdateSnackbar(CoordinatorLayout parent, View dependency, View child)
-			{
-				if (!_isTablet && _isShy && dependency is Snackbar.SnackbarLayout)
-				{
-					if (_snackbarHeight == -1)
-						_snackbarHeight = dependency.Height;
+        private class LollipopBottomNavWithSnackBarImpl : IBottomNavigationWithSnackbar
+        {
+            private readonly bool _isShy = false;
+            private readonly bool _isTablet = false;
+            private int _snackbarHeight = -1;
+            private readonly int _defaultOffset;
+            private readonly int _bottomNavHeight;
+
+            public LollipopBottomNavWithSnackBarImpl(bool shy, bool tablet, int snackbarHeight, int bottomNavHeight, int defaultOffset)
+            {
+                _isShy = shy;
+                _isTablet = tablet;
+                _snackbarHeight = snackbarHeight;
+                _bottomNavHeight = bottomNavHeight;
+                _defaultOffset = defaultOffset;
+            }
+
+            public void UpdateSnackbar(CoordinatorLayout parent, View dependency, View child)
+            {
+                if (!_isTablet && _isShy && dependency is Snackbar.SnackbarLayout)
+                {
+                    if (_snackbarHeight == -1)
+                        _snackbarHeight = dependency.Height;
 					
-					int targetPadding = _snackbarHeight +  _bottomNavHeight - _defaultOffset;
+                    int targetPadding = _snackbarHeight + _bottomNavHeight - _defaultOffset;
 
-					dependency.SetPadding (
-						dependency.PaddingLeft, dependency.PaddingTop, dependency.PaddingRight, targetPadding
-					);
-				}
-			}
-		}
+                    dependency.SetPadding(
+                        dependency.PaddingLeft, dependency.PaddingTop, dependency.PaddingRight, targetPadding
+                    );
+                }
+            }
+        }
     }
 }
 
