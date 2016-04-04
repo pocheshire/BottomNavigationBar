@@ -113,6 +113,8 @@ namespace BottomNavigationBar
         protected bool DrawBehindNavBar { get; set; }
         protected bool UseOnlyStatusbarOffset { get; set; }
 
+        public BottomBarItemBase[] Items { get { return _items; } }
+
 		public ViewGroup ItemContainer { get; private set; }
 
 		/// <summary>
@@ -411,8 +413,8 @@ namespace BottomNavigationBar
 		{
             if (!animated)
                 SetBarVisibility(ViewStates.Gone);
-            else
-                AnimateOffset(this.Height);
+
+            AnimateOffset(this.Height, !animated);
 		}
 
 		/// <summary>
@@ -422,16 +424,16 @@ namespace BottomNavigationBar
 		{
             if (!animated)
                 SetBarVisibility(ViewStates.Visible);
-            else
-                AnimateOffset(0);
+
+            AnimateOffset(0, !animated);
 		}
 
-        private void AnimateOffset(int offset)
+        private void AnimateOffset(int offset, bool fast)
         {
             if (_translationAnimator == null)
             {
                 _translationAnimator = ViewCompat.Animate(this);
-                _translationAnimator.SetDuration(300);
+                _translationAnimator.SetDuration(fast ? 1 : 300);
                 _translationAnimator.SetInterpolator(INTERPOLATOR);
             }
 
