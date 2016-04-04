@@ -553,16 +553,18 @@ namespace BottomNavigationBar
         }
 
         /// <summary>
-        /// Use dark theme instead of the light one.
-        /// NOTE: You might want to change your active tab color to something else
-        /// using <see cref="SetActiveTabColor(int)"/>, as the default primary color might
-        /// not have enough contrast for the dark background.
+        /// Deprecated. Use <see cref="UseDarkTheme()" instead/>
         /// </summary>
-        /// <param name="darkThemeEnabled">whether the dark the should be enabled or not.</param>
+        [Obsolete("Deprecated")]
         public void UseDarkTheme(bool darkThemeEnabled)
         {
-            if (!_isDarkTheme && darkThemeEnabled
-                && _items != null && _items.Length > 0)
+            _isDarkTheme = darkThemeEnabled;
+            UseDarkTheme();
+        }
+
+        public void UseDarkTheme()
+        {
+            if (!_isDarkTheme && _items != null && _items.Length > 0)
             {
                 DarkThemeMagic();
 
@@ -582,7 +584,7 @@ namespace BottomNavigationBar
                 }
             }
 
-            _isDarkTheme = darkThemeEnabled;
+            _isDarkTheme = true;
         }
 
 		/// <summary>
@@ -1382,7 +1384,7 @@ namespace BottomNavigationBar
 
         private void HandleBackgroundColorChange(int tabPosition, View tab)
         {
-            if (!_isShiftingMode || _isTabletMode)
+            if (_isDarkTheme || !_isShiftingMode || _isTabletMode)
                 return;
 
             if (_colorMap != null && _colorMap.ContainsKey(tabPosition))
