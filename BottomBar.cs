@@ -524,7 +524,7 @@ namespace BottomNavigationBar
                     "index " + tabPosition + ". You have no BottomBar Tabs at that position.");
             }
 
-            if (!_isShiftingMode || _isTabletMode)
+            if (_isDarkTheme || !_isShiftingMode || _isTabletMode)
                 return;
 
             if (_colorMap == null)
@@ -1077,7 +1077,9 @@ namespace BottomNavigationBar
 			if (!_isDarkTheme && !_ignoreNightMode && MiscUtils.IsNightMode (_context))
 				_isDarkTheme = true;
 
-            if (!_isTabletMode && _isShiftingMode)
+            if (_isDarkTheme)
+                DarkThemeMagic(); 
+            else if (!_isTabletMode && _isShiftingMode)
             {
                 _defaultBackgroundColor = _currentBackgroundColor = _primaryColor;
                 _backgroundView.SetBackgroundColor(_defaultBackgroundColor);
@@ -1086,10 +1088,6 @@ namespace BottomNavigationBar
                 {
                     NavBarMagic((Activity)_context, this);
                 }
-            }
-            else if (_isDarkTheme)
-            {
-                DarkThemeMagic();
             }
 
             View[] viewsToAdd = new View[bottomBarItems.Length];
