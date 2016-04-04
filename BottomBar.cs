@@ -374,10 +374,14 @@ namespace BottomNavigationBar
                     position + ". This BottomBar has no items at that position.");
             }
 
-            UnselectTab(ItemContainer.FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE), animate);
-            SelectTab(ItemContainer.GetChildAt(position), animate);
+            var oldTab = ItemContainer.FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE);
+            var newTab = ItemContainer.GetChildAt(position);
+
+            UnselectTab(oldTab, animate);
+            SelectTab(newTab, animate);
 
             UpdateSelectedTab(position);
+            ShiftingMagic(oldTab, newTab);
         }
 
 		/// <summary>
@@ -387,10 +391,12 @@ namespace BottomNavigationBar
 		/// <param name="defaultTabPosition">the default tab position.</param>
 		public void SetDefaultTabPosition(int defaultTabPosition)
 		{
-			if (_items == null || _items.Length == 0)
-				throw new InvalidOperationException("Can't set default tab at " +
-					"position " + defaultTabPosition + ". This BottomBar has no items set yet.");
-			else if (defaultTabPosition > _items.Length - 1 || defaultTabPosition < 0)
+			if (_items == null)
+            {
+                CurrentTabPosition = defaultTabPosition;
+                return;
+            }
+            else if (_items.Length == 0 || defaultTabPosition > _items.Length - 1 || defaultTabPosition < 0)
 				throw new ArgumentOutOfRangeException("Can't set default tab at position " +
 					defaultTabPosition + ". This BottomBar has no items at that position.");
 
@@ -935,21 +941,23 @@ namespace BottomNavigationBar
         {
             if (v.Tag.Equals(TAG_BOTTOM_BAR_VIEW_INACTIVE))
             {
-//                UnselectTab(FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE), true);
-//                SelectTab(v, true);
 				var oldTab = FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE);
 
 				UnselectTab(oldTab, true);
 				SelectTab(v, true);
 
-				if (!_isTabletMode && _isShiftingMode && !IgnoreShiftingResize) 
-				{
-					MiscUtils.ResizeTab(oldTab, oldTab.Width, _inActiveShiftingItemWidth);
-					MiscUtils.ResizeTab(v, v.Width, _activeShiftingItemWidth);
-				}
-
+                ShiftingMagic(oldTab, v);
             }
 			UpdateSelectedTab(FindItemPosition(v));
+        }
+
+        private void ShiftingMagic (View oldTab, View newTab)
+        {
+            if (!_isTabletMode && _isShiftingMode && !IgnoreShiftingResize) 
+            {
+                MiscUtils.ResizeTab(oldTab, oldTab.Width, _inActiveShiftingItemWidth);
+                MiscUtils.ResizeTab(newTab, newTab.Width, _activeShiftingItemWidth);
+            }
         }
 
         private void UpdateSelectedTab(int newPosition)
