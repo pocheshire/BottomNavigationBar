@@ -50,7 +50,7 @@ public class MainActivity : AppCompatActivity, BottomNavigationBar.Listeners.IOn
         _bottomBar = BottomBar.Attach(this, bundle);
         _bottomBar.SetItemsFromMenu(Resource.Menu.bottombar_menu, this);
         _bottomBar.HideShadow();
-        _bottomBar.UseDarkTheme(true);
+        _bottomBar.UseDarkTheme();
         _bottomBar.SetTypeFace("Roboto-Regular.ttf");
 
         var badge = _bottomBar.MakeBadgeForTabAt(1, Color.ParseColor("#f02d4c"), 1);
