@@ -18,7 +18,7 @@ namespace BottomNavigationBar.Listeners
 
 		public void OnAnimationUpdate (ValueAnimator animation)
 		{
-			LinearLayout.LayoutParams pars = (LinearLayout.LayoutParams) _tab.LayoutParameters;
+            ViewGroup.LayoutParams pars = _tab.LayoutParameters;
 			if (pars == null) return;
 
             pars.Width = (int)Math.Round((float)_animator.AnimatedValue);

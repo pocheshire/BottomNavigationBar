@@ -659,7 +659,7 @@ namespace BottomNavigationBar
                     "index " + tabPosition + ". You have no BottomBar Tabs at that position.");
             }
 
-            BottomBarBadge badge = new BottomBarBadge(_context, ItemContainer.GetChildAt(tabPosition), backgroundColor);
+            BottomBarBadge badge = new BottomBarBadge(_context, tabPosition, ItemContainer.GetChildAt(tabPosition), backgroundColor);
             badge.Tag = (TAG_BADGE + tabPosition);
             badge.Count = initialCount;
 
@@ -669,7 +669,6 @@ namespace BottomNavigationBar
             }
 
             _badgeMap.Add(tabPosition, badge.Tag);
-            OuterContainer.AddView(badge);
 
             bool canShow = true;
 

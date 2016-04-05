@@ -139,7 +139,7 @@ namespace BottomNavigationBar
                 ((Animator)animator).Start();
             }
 
-            bgOverlay.SetBackgroundColor(new Color(newColor)); //TODO: check this);
+            bgOverlay.SetBackgroundColor(new Color(newColor));
             bgOverlay.Visibility = ViewStates.Visible;
         }
 

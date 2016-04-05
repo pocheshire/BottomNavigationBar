@@ -107,13 +107,15 @@ namespace BottomNavigationBar
                 .Start();
         }
 
-        public BottomBarBadge(Context context, View tabToAddTo, // Rhyming accidentally! That's a Smoove Move!
+        public BottomBarBadge(Context context, int position, View tabToAddTo, // Rhyming accidentally! That's a Smoove Move!
                                  Color backgroundColor)
             : base(context)
         {
             _tabToAddTo = tabToAddTo;
 
-            LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+            var lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+
+            LayoutParameters = lp;
             Gravity = GravityFlags.Center;
             SetTextAppearance(context, Resource.Style.BB_BottomBarBadge_Text);
 
@@ -122,12 +124,27 @@ namespace BottomNavigationBar
             SetPadding(three, three, three, three);
             SetBackgroundCompat(backgroundCircle);
 
-            ViewTreeObserver.AddOnGlobalLayoutListener(this);
+            var container = new FrameLayout(context);
+            container.LayoutParameters = lp;
+
+            var parent = (ViewGroup)tabToAddTo.Parent;
+            parent.RemoveView(tabToAddTo);
+            container.AddView(tabToAddTo);
+            container.AddView(this);
+            parent.AddView(container, position);
+
+            container.ViewTreeObserver.AddOnGlobalLayoutListener(this);
+        }
+
+        protected void AdjustPosition(View tabToAddTo) 
+        {
+            SetX((float)(tabToAddTo.X + (tabToAddTo.Width / 1.75)));
         }
 
         private void AdjustPositionAndSize(View tabToAddTo)
         {
-            SetX((float)(tabToAddTo.GetX() + (tabToAddTo.Width / 1.75)));
+            AdjustPosition(tabToAddTo);
+
             TranslationY = 10;
 
             int size = Math.Max(Width, Height);

@@ -14,7 +14,7 @@ namespace BottomNavigationBar.Adapters
         public CustomViewPropertyAnimatorListenerAdapter(View backgroundView, int newColor, View bgOverlay)
         {
             _backgroundView = backgroundView;
-            _newColor = new Color(newColor); //TODO: check this
+            _newColor = new Color(newColor);
             _bgOverlay = bgOverlay;
         }
 
