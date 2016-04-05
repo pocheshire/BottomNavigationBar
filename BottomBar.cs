@@ -433,9 +433,10 @@ namespace BottomNavigationBar
             if (_translationAnimator == null)
             {
                 _translationAnimator = ViewCompat.Animate(this);
-                _translationAnimator.SetDuration(fast ? 1 : 300);
                 _translationAnimator.SetInterpolator(INTERPOLATOR);
             }
+
+            _translationAnimator.SetDuration(fast ? 1 : 300);
 
             if (!_animationStarted)
                 _translationAnimator
