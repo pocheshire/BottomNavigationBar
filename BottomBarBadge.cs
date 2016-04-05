@@ -138,7 +138,7 @@ namespace BottomNavigationBar
 
         protected void AdjustPosition(View tabToAddTo) 
         {
-            SetX((float)(tabToAddTo.X + (tabToAddTo.Width / 1.75)));
+            SetX((float)(tabToAddTo.GetX() + (tabToAddTo.Width / 1.75)));
         }
 
         private void AdjustPositionAndSize(View tabToAddTo)
