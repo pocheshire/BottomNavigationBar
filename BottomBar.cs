@@ -414,7 +414,7 @@ namespace BottomNavigationBar
             if (!animated)
                 SetBarVisibility(ViewStates.Gone);
 
-            AnimateOffset(this.Height, !animated);
+            AnimateOffset(OuterContainer.Height, !animated);
 		}
 
 		/// <summary>
@@ -436,7 +436,7 @@ namespace BottomNavigationBar
                 _translationAnimator.SetInterpolator(INTERPOLATOR);
             }
 
-            if (!_animationStarted)
+            if (!_animationStarted && this.GetY() != offset)
             {
                 _animationStarted = true;
                 _translationAnimator.SetDuration(fast ? 1 : 300);
