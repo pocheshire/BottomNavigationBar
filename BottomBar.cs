@@ -436,18 +436,18 @@ namespace BottomNavigationBar
                 _translationAnimator.SetInterpolator(INTERPOLATOR);
             }
 
-            _translationAnimator.SetDuration(fast ? 1 : 300);
-
             if (!_animationStarted)
+            {
+                _animationStarted = true;
+                _translationAnimator.SetDuration(fast ? 1 : 300);
                 _translationAnimator
                     .TranslationY(offset)
-                    .WithStartAction (new RunnableHelper(() => {
-                        _animationStarted = true;
-                    }))
-                    .WithEndAction (new RunnableHelper(() => {
-                        _animationStarted = false;
-                    }))
+                    .WithEndAction(new RunnableHelper(() =>
+                        {
+                            _animationStarted = false;
+                        }))
                     .Start();
+            }
         }
 
 		private void SetBarVisibility(ViewStates visibility)
