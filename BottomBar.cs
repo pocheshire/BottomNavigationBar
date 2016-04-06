@@ -383,7 +383,7 @@ namespace BottomNavigationBar
             SelectTab(newTab, animate);
 
             UpdateSelectedTab(position);
-            ShiftingMagic(oldTab, newTab);
+            ShiftingMagic(oldTab, newTab, false);
         }
 
 		/// <summary>
@@ -660,9 +660,13 @@ namespace BottomNavigationBar
                     "index " + tabPosition + ". You have no BottomBar Tabs at that position.");
             }
 
-            BottomBarBadge badge = new BottomBarBadge(_context, tabPosition, ItemContainer.GetChildAt(tabPosition), backgroundColor);
+            var tab = ItemContainer.GetChildAt(tabPosition);
+
+            BottomBarBadge badge = new BottomBarBadge(_context, tabPosition, tab, backgroundColor);
             badge.Tag = (TAG_BADGE + tabPosition);
             badge.Count = initialCount;
+
+            tab.SetOnClickListener(new OnTabClickListener (() => HandleClick((View)tab.Parent)));
 
             if (_badgeMap == null)
             {
@@ -943,6 +947,11 @@ namespace BottomNavigationBar
 
         public void OnClick(View v)
         {
+            HandleClick(v);
+        }
+
+        public void HandleClick (View v)
+        {
             if (v.Tag.Equals(TAG_BOTTOM_BAR_VIEW_INACTIVE))
             {
 				var oldTab = FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE);
@@ -950,17 +959,30 @@ namespace BottomNavigationBar
 				UnselectTab(oldTab, true);
 				SelectTab(v, true);
 
-                ShiftingMagic(oldTab, v);
+                ShiftingMagic(oldTab, v, true);
             }
 			UpdateSelectedTab(FindItemPosition(v));
         }
 
-        private void ShiftingMagic (View oldTab, View newTab)
+        private void ShiftingMagic (View oldTab, View newTab, bool animate)
         {
             if (!_isTabletMode && _isShiftingMode && !IgnoreShiftingResize) 
             {
-                MiscUtils.ResizeTab(oldTab, oldTab.Width, _inActiveShiftingItemWidth);
-                MiscUtils.ResizeTab(newTab, newTab.Width, _activeShiftingItemWidth);
+                if (oldTab is FrameLayout)
+                    oldTab = ((FrameLayout) oldTab).GetChildAt(0);
+                if (newTab is FrameLayout)
+                    newTab = ((FrameLayout) newTab).GetChildAt(0);
+                
+                if (animate)
+                {
+                    MiscUtils.ResizeTab(oldTab, oldTab.Width, _inActiveShiftingItemWidth);
+                    MiscUtils.ResizeTab(newTab, newTab.Width, _activeShiftingItemWidth);
+                }
+                else
+                {
+                    oldTab.LayoutParameters.Width = _inActiveShiftingItemWidth;
+                    newTab.LayoutParameters.Width = _activeShiftingItemWidth;
+                }
             }
         }
 

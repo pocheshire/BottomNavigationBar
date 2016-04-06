@@ -87,6 +87,7 @@
     <Compile Include="Listeners\IOnTabClickListener.cs" />
     <Compile Include="Utils\RunnableHelper.cs" />
     <Compile Include="Listeners\ResizeTabAnimatorUpdateListener.cs" />
+    <Compile Include="Listeners\OnTabClickListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

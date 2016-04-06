@@ -129,8 +129,11 @@ namespace BottomNavigationBar
 
             var parent = (ViewGroup)tabToAddTo.Parent;
             parent.RemoveView(tabToAddTo);
+
+            container.Tag = tabToAddTo.Tag;
             container.AddView(tabToAddTo);
             container.AddView(this);
+
             parent.AddView(container, position);
 
             container.ViewTreeObserver.AddOnGlobalLayoutListener(this);
