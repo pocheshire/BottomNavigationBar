@@ -667,6 +667,7 @@ namespace BottomNavigationBar
             badge.Count = initialCount;
 
             tab.SetOnClickListener(new OnTabClickListener (() => HandleClick((View)tab.Parent)));
+            tab.SetOnLongClickListener(new OnTabLongClickListener (() => HandleLongClick((View)tab.Parent)));
 
             if (_badgeMap == null)
             {
@@ -1080,6 +1081,11 @@ namespace BottomNavigationBar
         }
 
         public bool OnLongClick(View v)
+        {
+            return HandleLongClick(v);
+        }
+
+        private bool HandleLongClick(View v)
         {
             if ((_isShiftingMode || _isTabletMode) && v.Tag.Equals(TAG_BOTTOM_BAR_VIEW_INACTIVE))
             {
