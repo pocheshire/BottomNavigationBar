@@ -55,12 +55,18 @@ namespace BottomNavigationBar.Scrollswetness
             if (scrollDirection == ScrollDirection.SCROLL_DIRECTION_DOWN && hidden)
             {
                 hidden = false;
-                AnimateOffset(child, _defaultOffset);
+                if (child is BottomBar)
+                    (child as BottomBar).Show(true);
+                else
+                    AnimateOffset(child, _defaultOffset);
             }
             else if (scrollDirection == ScrollDirection.SCROLL_DIRECTION_UP && !hidden)
             {
                 hidden = true;
-                AnimateOffset(child, _bottomNavHeight + _defaultOffset);
+                if (child is BottomBar)
+                    (child as BottomBar).Hide(true);
+                else
+                    AnimateOffset(child, _bottomNavHeight + _defaultOffset);
             }
         }
 

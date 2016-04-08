@@ -137,6 +137,12 @@ namespace BottomNavigationBar
 
 		public bool IgnoreShiftingResize { get; set; }
 
+        public EventHandler BarWillShow;
+        public EventHandler BarDidShow;
+
+        public EventHandler BarWillHide;
+        public EventHandler BarDidHide;
+
         /// <summary>
         /// Bind the BottomBar to your Activity, and inflate your layout here.
         /// Remember to also call <seealso cref="OnRestoreInstanceState(Bundle)"/> inside
@@ -411,6 +417,8 @@ namespace BottomNavigationBar
 		/// </summary>
         public void Hide(bool animated) 
 		{
+            BarWillHide?.Invoke(this, EventArgs.Empty);
+
             if (!animated)
                 SetBarVisibility(ViewStates.Gone);
 
@@ -422,6 +430,8 @@ namespace BottomNavigationBar
 		/// </summary>
         public void Show(bool animated) 
 		{
+            BarWillShow?.Invoke(this, EventArgs.Empty);
+            
             if (!animated)
                 SetBarVisibility(ViewStates.Visible);
 
@@ -445,6 +455,11 @@ namespace BottomNavigationBar
                     .WithEndAction(new RunnableHelper(() =>
                         {
                             _animationStarted = false;
+
+                            if (offset == 0)
+                                BarDidShow?.Invoke(this, EventArgs.Empty);
+                            else
+                                BarDidHide?.Invoke(this, EventArgs.Empty);
                         }))
                     .Start();
             }
