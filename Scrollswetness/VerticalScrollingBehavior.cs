@@ -124,7 +124,7 @@ namespace BottomNavigationBar.Scrollswetness
                 totalDy = 0;
                 _scrollDirection = ScrollDirection.SCROLL_DIRECTION_UP;
             }
-            else if (dy < 0 && totalDy > 0)
+            else if (dy < 0 && totalDy >= 0)
             {
                 totalDy = 0;
                 _scrollDirection = ScrollDirection.SCROLL_DIRECTION_DOWN;

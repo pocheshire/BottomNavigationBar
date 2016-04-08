@@ -137,6 +137,8 @@ namespace BottomNavigationBar
 
 		public bool IgnoreShiftingResize { get; set; }
 
+        public bool Hidden { get; private set; }
+
         public EventHandler BarWillShow;
         public EventHandler BarDidShow;
 
@@ -423,6 +425,8 @@ namespace BottomNavigationBar
                 SetBarVisibility(ViewStates.Gone);
 
             AnimateOffset(OuterContainer.Height, !animated);
+
+            Hidden = true;
 		}
 
 		/// <summary>
@@ -436,6 +440,8 @@ namespace BottomNavigationBar
                 SetBarVisibility(ViewStates.Visible);
 
             AnimateOffset(0, !animated);
+
+            Hidden = false;
 		}
 
         private void AnimateOffset(int offset, bool fast)

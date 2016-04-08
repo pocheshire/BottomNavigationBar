@@ -28,7 +28,6 @@ namespace BottomNavigationBar.Scrollswetness
         private readonly bool _isTablet = false;
 
         private ViewPropertyAnimatorCompat mTranslationAnimator;
-        private bool hidden = false;
         private int _snackbarHeight = -1;
         private readonly IBottomNavigationWithSnackbar _withSnackBarImpl;
         private bool _scrollingEnabled = true;
@@ -52,21 +51,16 @@ namespace BottomNavigationBar.Scrollswetness
         {
             if (!_scrollingEnabled)
                 return;
-            if (scrollDirection == ScrollDirection.SCROLL_DIRECTION_DOWN && hidden)
+            var bottomBar = (child as BottomBar);
+            if (scrollDirection == ScrollDirection.SCROLL_DIRECTION_DOWN && bottomBar.Hidden)
             {
-                hidden = false;
-                if (child is BottomBar)
-                    (child as BottomBar).Show(true);
-                else
-                    AnimateOffset(child, _defaultOffset);
+                bottomBar.Show(true);
+//                    AnimateOffset(child, _defaultOffset);
             }
-            else if (scrollDirection == ScrollDirection.SCROLL_DIRECTION_UP && !hidden)
+            else if (scrollDirection == ScrollDirection.SCROLL_DIRECTION_UP && !bottomBar.Hidden)
             {
-                hidden = true;
-                if (child is BottomBar)
-                    (child as BottomBar).Hide(true);
-                else
-                    AnimateOffset(child, _bottomNavHeight + _defaultOffset);
+                bottomBar.Hide(true);
+//                    AnimateOffset(child, _bottomNavHeight + _defaultOffset);
             }
         }
 
