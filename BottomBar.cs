@@ -424,7 +424,8 @@ namespace BottomNavigationBar
             if (!animated)
                 SetBarVisibility(ViewStates.Gone);
 
-            AnimateOffset(OuterContainer.Height, !animated);
+            if (OuterContainer != null)
+                AnimateOffset(OuterContainer.Height, !animated);
 
             Hidden = true;
 		}
