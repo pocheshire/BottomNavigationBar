@@ -138,7 +138,13 @@ namespace BottomNavigationBar
         public int MaxFixedTabCount
         {
             get { return _maxFixedTabCount; }
-            set { _maxFixedTabCount = value; }
+            set 
+            { 
+                if (_items != null)
+                    throw new InvalidOperationException("This BottomBar already has items! " +
+                        "You must set MaxFixedTabCount before specifying any items.");
+                _maxFixedTabCount = value;
+            }
         }
 
 		public bool IgnoreShiftingResize { get; set; }
