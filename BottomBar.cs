@@ -1360,11 +1360,16 @@ namespace BottomNavigationBar
 
             if (animate)
             {
-                ViewCompat.Animate(title)
+                var titleAnimator = ViewCompat.Animate(title)
                     .SetDuration(ANIMATION_DURATION)
                     .ScaleX(1)
-                    .ScaleY(1)
-                    .Start();
+                    .ScaleY(1);
+
+                if (_isShiftingMode)
+                    titleAnimator.Alpha(1.0f);
+
+                titleAnimator.Start();
+
                 ViewCompat.Animate(tab)
                     .SetDuration(ANIMATION_DURATION)
                     .TranslationY(-translationY)
@@ -1389,6 +1394,7 @@ namespace BottomNavigationBar
                 if (_isShiftingMode)
                 {
                     ViewCompat.SetAlpha(icon, 1.0f);
+                    ViewCompat.SetAlpha(title, 1.0f);
                 }
             }
         }
@@ -1430,11 +1436,16 @@ namespace BottomNavigationBar
 
             if (animate)
             {
-                ViewCompat.Animate(title)
+                var titleAnimator = ViewCompat.Animate(title)
                     .SetDuration(ANIMATION_DURATION)
                     .ScaleX(scale)
-                    .ScaleY(scale)
-                    .Start();
+                    .ScaleY(scale);
+
+                if (_isShiftingMode)
+                    titleAnimator.Alpha(0);
+
+                titleAnimator.Start();
+
                 ViewCompat.Animate(tab)
                     .SetDuration(ANIMATION_DURATION)
                     .TranslationY(0)
@@ -1457,6 +1468,7 @@ namespace BottomNavigationBar
                 if (_isShiftingMode)
                 {
                     ViewCompat.SetAlpha(icon, 0.6f);
+                    ViewCompat.SetAlpha(title, 0);
                 }
             }
         }
