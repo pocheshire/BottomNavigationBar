@@ -135,6 +135,11 @@ namespace BottomNavigationBar
         public bool ShyHeightAlreadyCalculated { get; internal set; }
 
         private int _maxFixedTabCount = 3;
+        /// <summary>
+        /// Set the maximum number of tabs, after which the tabs should be shifting ones with a background color.
+        /// NOTE: You must call this method before setting any items.
+        /// </summary>
+        /// <value>count maximum number of fixed tabs.</value>
         public int MaxFixedTabCount
         {
             get { return _maxFixedTabCount; }
@@ -452,6 +457,17 @@ namespace BottomNavigationBar
 
             Hidden = false;
 		}
+
+        /// <summary>
+        /// Always show the titles and icons also on inactive tabs, even if there's more than three of them.
+        /// </summary>
+        public void UseFixedMode ()
+        {
+            if (_items != null)
+                throw new InvalidOperationException("This BottomBar already has items! " +
+                    "You must call the forceFixedMode() method before specifying any items.");
+            _maxFixedTabCount = -1;
+        }
 
         private void AnimateOffset(int offset, bool fast)
         {
@@ -1137,7 +1153,7 @@ namespace BottomNavigationBar
 
             int index = 0;
             int biggestWidth = 0;
-            _isShiftingMode = MaxFixedTabCount < bottomBarItems.Length;
+            _isShiftingMode = MaxFixedTabCount >= 0 && MaxFixedTabCount < bottomBarItems.Length;
 
 			if (!_isDarkTheme && !_ignoreNightMode && MiscUtils.IsNightMode (_context))
 				_isDarkTheme = true;
