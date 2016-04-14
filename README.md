@@ -1,5 +1,5 @@
 # BottomNavigationBar
-<img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/scrolling_demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/demo2.gif" width="30%" />  
+<img src="https://raw.githubusercontent.com/roughike/BottomBar/master/scrolling_demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/demo_shifting.gif" width="30%" /> <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/screenshot_tablet.png" width="33%" /> 
 
 **[How to contribute](https://github.com/pocheshire/BottomNavigationBar/blob/master/README.md#contributions)**
 
@@ -18,7 +18,7 @@ The current minSDK version is **API level 11 (Honeycomb).**
 
 ## How?
 
-BottomNavigationBar likes Fragments very much, but you can also handle your tab changes by yourself. You can add items by specifying an array of items or **by xml menu resources**.
+You can add items by specifying an array of items or **by xml menu resources**.
 
 #### Adding items from menu resource
 
@@ -49,12 +49,14 @@ public class MainActivity : AppCompatActivity, BottomNavigationBar.Listeners.IOn
 
         _bottomBar = BottomBar.Attach(this, bundle);
         _bottomBar.SetItemsFromMenu(Resource.Menu.bottombar_menu, this);
-        _bottomBar.HideShadow();
-        _bottomBar.UseDarkTheme();
-        _bottomBar.SetTypeFace("Roboto-Regular.ttf");
-
-        var badge = _bottomBar.MakeBadgeForTabAt(1, Color.ParseColor("#f02d4c"), 1);
-        badge.AutoShowAfterUnSelection = true;
+        
+        // Setting colors for different tabs when there's more than three of them.
+        // You can set colors for tabs in three different ways as shown below.
+        _bottomBar.MapColorForTab(0, ContextCompat.GetColor(this, Resource.Color.colorAccent));
+        _bottomBar.MapColorForTab(1, 0xFF5D4037);
+        _bottomBar.MapColorForTab(2, "#7B1FA2");
+        _bottomBar.MapColorForTab(3, "#FF5252");
+        _bottomBar.MapColorForTab(4, "#FF9800");
     }
     
     public void OnMenuItemSelected(int menuItemId)
@@ -101,8 +103,11 @@ unreadMessages.AutoShowAfterUnSelection = true;
 // Disable the left bar on tablets and behave exactly the same on mobile and tablets instead.
 _bottomBar.NoTabletGoodness();
 
-// Use the dark theme. Ignored on mobile when there are more than three tabs.
-_bottomBar.UseDarkTheme(true);
+// Show all titles even when there's more than three tabs.
+mBottomBar.UseFixedMode();
+
+// Use the dark theme
+_bottomBar.UseDarkTheme();
 
 // Set the color for the active tab. Ignored on mobile when there are more than three tabs.
 _bottomBar.SetActiveTabColor("#009688");
@@ -146,32 +151,17 @@ _bottomBar = BottomBar.AttachShy((CoordinatorLayout) FindViewById(Resource.Id.my
 </android.support.design.widget.CoordinatorLayout>
 ```
 
-#### Can it handle my Fragments and replace them automagically when a different tab is selected?
+#### I don't want to set items from a menu resource!
 
-Yep yep yep! Just call ```SetFragmentItems()``` instead of ```SetItemsFromMenu()```:
+That's alright, you can also do it the hard way if you like living on the edge.
 
 ```csharp
 // If you use normal Fragments, just change the first argument to FragmentManager
-_bottomBar.SetFragmentItems(SupportFragmentManager, Resource.Id.fragmentContainer,
-    new BottomBarFragment(SampleFragment.NewInstance("Content for recents."), Resource.Drawable.ic_recents, "Recents"),
-    new BottomBarFragment(SampleFragment.NewInstance("Content for favorites."), Resource.Drawable.ic_favorites, "Favorites"),
-    new BottomBarFragment(SampleFragment.NewInstance("Content for nearby stuff."), Resource.Drawable.ic_nearby, "Nearby")
-);
-```
-
-#### I hate Fragments and wanna do everything by myself!
-
-That's alright, you can also do it the hard way if you're living on the edge.
-
-```csharp
 _bottomBar.SetItems(
-        new BottomBarTab(Resource.Drawable.ic_recents, "Recents"),
-        new BottomBarTab(Resource.Drawable.ic_favorites, "Favorites"),
-        new BottomBarTab(Resource.Drawable.ic_nearby, "Nearby")
+    new BottomBarTab(Resource.Drawable.ic_recents, "Recents"),
+    new BottomBarTab(Resource.Drawable.ic_favorites, "Favorites"),
+    new BottomBarTab(Resource.Drawable.ic_nearby, "Nearby")
 );
-
-// Listen for tab changes
-_bottomBar.SetOnItemSelectedListener(new OnTabSelectedListener());
 ```
 
 For a working example, refer to [the sample app](https://github.com/roughike/BottomBar/tree/master/app/src/main).
@@ -215,10 +205,6 @@ _bottomBar.Attach(FindViewById(Resource.Id.fragmentContainer), savedInstanceStat
 It works nicely with tablets straight out of the box. When the library detects that the user has a tablet, the BottomBar will become a "LeftBar", just like [in the Material Design Guidelines](https://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B3321sZLoP_HSTd3UFY2aEp2ZDg/components_bottomnavigation_usage2.png).
 
 
-#### What about the (insert thing that looks different than the specs here)?
-
-Just do it!
-
 ## Apps using BottomNavigationBar
 
 Send me a pull request with modified README.md to get a shoutout!
@@ -226,8 +212,6 @@ Send me a pull request with modified README.md to get a shoutout!
 ## Contributions
 
 Feel free to create issues. 
-
-I'm fixing issues _several hours_ every week. Your hard work could be for nothing, as I'm probably fixing / implementing the same problems that you are.
 
 ## License
 
