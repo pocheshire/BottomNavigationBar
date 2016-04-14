@@ -419,8 +419,6 @@ namespace BottomNavigationBar
 		/// </summary>
         public void Hide(bool animated) 
 		{
-            BarWillHide?.Invoke(this, EventArgs.Empty);
-
             if (!animated)
                 SetBarVisibility(ViewStates.Gone);
 
@@ -435,8 +433,6 @@ namespace BottomNavigationBar
 		/// </summary>
         public void Show(bool animated) 
 		{
-            BarWillShow?.Invoke(this, EventArgs.Empty);
-            
             if (!animated)
                 SetBarVisibility(ViewStates.Visible);
 
@@ -455,6 +451,11 @@ namespace BottomNavigationBar
 
             if (!_animationStarted && this.GetY() != offset)
             {
+                if (offset == 0)
+                    BarWillShow?.Invoke(this, EventArgs.Empty);
+                else
+                    BarWillHide?.Invoke(this, EventArgs.Empty);
+
                 _animationStarted = true;
                 _translationAnimator.SetDuration(fast ? 1 : 300);
                 _translationAnimator
