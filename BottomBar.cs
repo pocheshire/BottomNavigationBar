@@ -533,10 +533,8 @@ namespace BottomNavigationBar
                 {
                     BottomBarBadge badgeCandidate = (BottomBarBadge)OuterContainer.FindViewWithTag(_badgeMap[key]);
 
-                    if (badgeCandidate != null)
-                    {
+                    if (badgeCandidate != null && !_badgeStateMap.ContainsKey(key))
                         _badgeStateMap.Add(key, badgeCandidate.IsVisible);
-                    }
                 }
 
                 outState.PutString(STATE_BADGE_STATES_BUNDLE, Newtonsoft.Json.JsonConvert.SerializeObject(_badgeStateMap));
