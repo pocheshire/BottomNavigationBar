@@ -39,7 +39,6 @@ namespace BottomNavigationBar
     public class BottomBar : FrameLayout, View.IOnClickListener, View.IOnLongClickListener
     {
         private const long ANIMATION_DURATION = 150;
-        private const int MAX_FIXED_TAB_COUNT = 3;
 
         private const String STATE_CURRENT_SELECTED_TAB = "STATE_CURRENT_SELECTED_TAB";
         private const String STATE_BADGE_STATES_BUNDLE = "STATE_BADGE_STATES_BUNDLE";
@@ -134,6 +133,13 @@ namespace BottomNavigationBar
 
         public bool IsShy { get; internal set; }
         public bool ShyHeightAlreadyCalculated { get; internal set; }
+
+        private int _maxFixedTabCount = 3;
+        public int MaxFixedTabCount
+        {
+            get { return _maxFixedTabCount; }
+            set { _maxFixedTabCount = value; }
+        }
 
 		public bool IgnoreShiftingResize { get; set; }
 
@@ -1125,7 +1131,7 @@ namespace BottomNavigationBar
 
             int index = 0;
             int biggestWidth = 0;
-            _isShiftingMode = MAX_FIXED_TAB_COUNT < bottomBarItems.Length;
+            _isShiftingMode = MaxFixedTabCount < bottomBarItems.Length;
 
 			if (!_isDarkTheme && !_ignoreNightMode && MiscUtils.IsNightMode (_context))
 				_isDarkTheme = true;
