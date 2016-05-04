@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>BottomNavigationBar</id>
-    <version>0.0.1</version>
+    <version>1.0.7</version>
     <title>BottomNavigationBar</title>
     <authors>pocheshire</authors>
     <owners>pocheshire</owners>
@@ -24,6 +24,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Bin\Release\BottomNavigationBar.dll" target="lib\MonoAndroid403\BottomNavigationBar.dll" /> 
+    <file src="bin/release/BottomNavigationBar.dll" target="lib/MonoAndroid403/BottomNavigationBar.dll" /> 
 </files>
 </package>
