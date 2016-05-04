@@ -12,6 +12,10 @@ A custom view component that mimics the new [Material Design Bottom Navigation p
 
 **(currently under development)**
 
+##NuGet package
+
+Yes! It's currently available like [BottomNavigationBar](https://www.nuget.org/packages/BottomNavigationBar) package.
+
 ## MinSDK version
 
 The current minSDK version is **API level 11 (Honeycomb).**
