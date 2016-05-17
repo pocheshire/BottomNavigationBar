@@ -25,6 +25,6 @@
   </metadata>
   <files>
     <file src="bin/release/BottomNavigationBar.dll" target="lib/MonoAndroid403/BottomNavigationBar.dll" /> 
-    <file src="bin/release/BottomNavigationBar.xml" target="lib/MonoAndroid403/BottomNavigationBar.dll" /> 
+    <file src="bin/release/BottomNavigationBar.xml" target="lib/MonoAndroid403/BottomNavigationBar.xml" /> 
 </files>
 </package>
