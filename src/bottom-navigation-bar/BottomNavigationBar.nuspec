@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>BottomNavigationBar</id>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <title>BottomNavigationBar</title>
     <authors>pocheshire</authors>
     <owners>pocheshire</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/pocheshire/BottomNavigationBar</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A custom view component that mimics the new Material Design Bottom Navigation pattern.</description>
-    <releaseNotes>Initial release</releaseNotes>
+    <releaseNotes>Added Xml Documentation</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>XamarinAndroid Xamarin Android BottomNavigationBar Bottom Navigation Bar</tags>
 	<dependencies>
@@ -25,5 +25,6 @@
   </metadata>
   <files>
     <file src="bin/release/BottomNavigationBar.dll" target="lib/MonoAndroid403/BottomNavigationBar.dll" /> 
+    <file src="bin/release/BottomNavigationBar.xml" target="lib/MonoAndroid403/BottomNavigationBar.dll" /> 
 </files>
 </package>
