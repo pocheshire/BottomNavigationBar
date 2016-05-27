@@ -10,8 +10,6 @@
 
 A custom view component that mimics the new [Material Design Bottom Navigation pattern](https://www.google.com/design/spec/components/bottom-navigation.html).
 
-**(currently under development)**
-
 ##NuGet package
 
 Yes! It's currently available like [BottomNavigationBar](https://www.nuget.org/packages/BottomNavigationBar) package.
@@ -219,6 +217,8 @@ It works nicely with tablets straight out of the box. When the library detects t
 
 
 ## Apps using BottomNavigationBar
+
+ * [LetMeGet](https://play.google.com/store/apps/details?id=com.notissimus.letmeget) : BottomNavigationBar is used in the LetMeGet app.
 
 Send me a pull request with modified README.md to get a shoutout!
 
