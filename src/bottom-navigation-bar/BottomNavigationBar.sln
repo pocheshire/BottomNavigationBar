@@ -6,7 +6,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{11C5F090-98D7-4AC6-A42A-9C0EF3986723}"
 	ProjectSection(SolutionItems) = preProject
 		BottomNavigationBar.nuspec = BottomNavigationBar.nuspec
-		README.md = README.md
+		..\..\README.md = ..\..\README.md
 	EndProjectSection
 EndProject
 Global
@@ -181,6 +181,6 @@ Global
 		$31.NamingStyle = PascalCase
 		$31.IncludeInstanceMembers = True
 		$31.IncludeStaticEntities = True
-		version = 1.0.8
+		version = 1.0.9
 	EndGlobalSection
 EndGlobal

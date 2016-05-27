@@ -64,7 +64,7 @@
       <HintPath>..\packages\Xamarin.Android.Support.Design.23.3.0\lib\MonoAndroid43\Xamarin.Android.Support.Design.dll</HintPath>
     </Reference>
     <Reference Include="BottomNavigationBar">
-      <HintPath>..\packages\BottomNavigationBar.1.0.7\lib\MonoAndroid403\BottomNavigationBar.dll</HintPath>
+      <HintPath>..\..\..\bottom-navigation-bar\bin\Debug\BottomNavigationBar.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

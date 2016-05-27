@@ -86,6 +86,7 @@ namespace BottomNavigationBar
         private Color _defaultBackgroundColor;
 
         private bool _isDarkTheme;
+		private bool _useDarkThemeAlpha;
 		private bool _ignoreNightMode;
         private int _customActiveTabColor;
 
@@ -605,7 +606,7 @@ namespace BottomNavigationBar
         }
 
         /// <summary>
-        /// Deprecated. Use <see cref="UseDarkTheme()" instead/>
+		/// Deprecated. Use <see cref="UseDarkTheme(bool useDarkThemeAlpha)" instead/>
         /// </summary>
         [Obsolete("Deprecated")]
         public void UseDarkTheme(bool darkThemeEnabled)
@@ -614,7 +615,7 @@ namespace BottomNavigationBar
             UseDarkTheme();
         }
 
-        public void UseDarkTheme()
+		public void UseDarkTheme()
         {
             if (!_isDarkTheme && _items != null && _items.Length > 0)
             {
@@ -638,6 +639,17 @@ namespace BottomNavigationBar
 
             _isDarkTheme = true;
         }
+
+		/// <summary>
+		/// Apply the dark theme
+		/// </summary>
+		/// <param name="useDarkThemeAlpha">If set to <c>true</c> change alpha for icon and title when tab unselected.</param>
+		public void UseDarkThemeWithAlpha (bool useDarkThemeAlpha = true)
+		{
+			_useDarkThemeAlpha = useDarkThemeAlpha;
+
+			UseDarkTheme ();
+		}
 
 		/// <summary>
 		/// Ignore the automatic Night Mode detection and use a light theme by default,
@@ -1339,7 +1351,7 @@ namespace BottomNavigationBar
                 }
             }
 
-            if (_isDarkTheme)
+			if (_isDarkTheme && _useDarkThemeAlpha)
             {
                 if (title != null)
                 {
@@ -1415,12 +1427,10 @@ namespace BottomNavigationBar
                 }
             }
 
-            if (_isDarkTheme)
+            if (_isDarkTheme && _useDarkThemeAlpha)
             {
-                if (title != null)
-                {
-                    ViewCompat.SetAlpha(title, 0.6f);
-                }
+				if (title != null)
+					ViewCompat.SetAlpha (title, 0.6f);
 
                 ViewCompat.SetAlpha(icon, 0.6f);
             }

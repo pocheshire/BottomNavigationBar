@@ -14,6 +14,7 @@ using Android.Widget;
 using BottomNavigationBar;
 using Android.Support.Design.Widget;
 using BottomNavigationBar.Listeners;
+using Android.Graphics;
 
 namespace Demo.Views
 {
@@ -35,8 +36,10 @@ namespace Demo.Views
             _bottomBar = BottomBar.AttachShy(FindViewById<CoordinatorLayout>(Resource.Id.myCoordinator), 
                 FindViewById(Resource.Id.myScrollingContent), savedInstanceState);
 
-            _bottomBar.UseDarkTheme();
             _bottomBar.UseFixedMode();
+            _bottomBar.UseDarkTheme();
+//            update BottomNavigationBar nuget package to 1.0.9
+//            _bottomBar.UseDarkThemeWithAlpha(false);
 
             _bottomBar.SetItems(new [] {
                 new BottomBarTab(Resource.Drawable.ic_recents, "Recents"),
@@ -46,7 +49,8 @@ namespace Demo.Views
 
             _bottomBar.SetOnTabClickListener(this);
 
-            _bottomBar.SetActiveTabColor(Resources.GetColor(Resource.Color.colorAccent, Theme));
+            _bottomBar.SetActiveTabColor(Color.Red);
+//            _bottomBar.SetActiveTabColor(Resources.GetColor(Resource.Color.colorAccent, Theme));
         }
 
         #region IOnTabClickListener implementation
