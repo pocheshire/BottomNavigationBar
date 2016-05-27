@@ -409,7 +409,7 @@ namespace BottomNavigationBar
             SelectTab(newTab, animate);
 
             UpdateSelectedTab(position);
-            ShiftingMagic(oldTab, newTab, false);
+			ShiftingMagic(oldTab, newTab, animate);
         }
 
 		/// <summary>
