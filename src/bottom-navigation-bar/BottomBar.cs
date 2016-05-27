@@ -1141,7 +1141,8 @@ namespace BottomNavigationBar
             if (_badgeMap.ContainsKey(newPosition))
             {
                 BottomBarBadge newBadge = (BottomBarBadge)OuterContainer.FindViewWithTag(_badgeMap[newPosition]);
-                newBadge.Hide();
+				if (newBadge.AutoHideWhenSelection)
+					newBadge.Hide();
             }
         }
 

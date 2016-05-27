@@ -81,6 +81,12 @@ namespace BottomNavigationBar
             private set;
         }
 
+		/// <summary>
+		/// Controls whether you want this Badge to be hidden automatically when the BottomBar tab containing it is selected.
+		/// </summary>
+		/// <value><c>false</c> false if you don't want this Badge to hide every time the BottomBar tab containing it is selected; otherwise, <c>true</c>.</value>
+		public bool AutoHideWhenSelection { get; set; }
+
         /// <summary>
         /// Shows the badge with a neat little scale animation.
         /// </summary>
@@ -112,6 +118,8 @@ namespace BottomNavigationBar
             : base(context)
         {
             _tabToAddTo = tabToAddTo;
+
+			AutoHideWhenSelection = true;
 
             var lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
 
