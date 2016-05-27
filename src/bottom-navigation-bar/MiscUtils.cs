@@ -38,7 +38,7 @@ namespace BottomNavigationBar
         public static int GetColor(Context context, int color)
         {
             var tv = new Android.Util.TypedValue();
-            context.Theme.ResolveAttribute(Resource.Attribute.colorPrimary, tv, true);
+			context.Theme.ResolveAttribute(color, tv, true);
             return tv.Data;
         }
 
