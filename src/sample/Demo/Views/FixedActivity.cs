@@ -37,9 +37,8 @@ namespace Demo.Views
                 FindViewById(Resource.Id.myScrollingContent), savedInstanceState);
 
             _bottomBar.UseFixedMode();
-            _bottomBar.UseDarkTheme();
 //            update BottomNavigationBar nuget package to 1.0.9
-//            _bottomBar.UseDarkThemeWithAlpha(false);
+            _bottomBar.UseDarkThemeWithAlpha(false);
 
             _bottomBar.SetItems(new [] {
                 new BottomBarTab(Resource.Drawable.ic_recents, "Recents"),

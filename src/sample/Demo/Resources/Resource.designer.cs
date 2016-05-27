@@ -486,6 +486,7 @@ namespace Demo
 			global::BottomNavigationBar.Resource.Dimension.abc_text_size_title_material_toolbar = global::Demo.Resource.Dimension.abc_text_size_title_material_toolbar;
 			global::BottomNavigationBar.Resource.Dimension.activity_horizontal_margin = global::Demo.Resource.Dimension.activity_horizontal_margin;
 			global::BottomNavigationBar.Resource.Dimension.activity_vertical_margin = global::Demo.Resource.Dimension.activity_vertical_margin;
+			global::BottomNavigationBar.Resource.Dimension.bb_height = global::Demo.Resource.Dimension.bb_height;
 			global::BottomNavigationBar.Resource.Dimension.bottom_bar_elevation = global::Demo.Resource.Dimension.bottom_bar_elevation;
 			global::BottomNavigationBar.Resource.Dimension.design_appbar_elevation = global::Demo.Resource.Dimension.design_appbar_elevation;
 			global::BottomNavigationBar.Resource.Dimension.design_bottom_sheet_modal_elevation = global::Demo.Resource.Dimension.design_bottom_sheet_modal_elevation;
@@ -833,11 +834,13 @@ namespace Demo
 			global::BottomNavigationBar.Resource.Style.Animation_AppCompat_DropDownUp = global::Demo.Resource.Style.Animation_AppCompat_DropDownUp;
 			global::BottomNavigationBar.Resource.Style.Animation_Design_BottomSheetDialog = global::Demo.Resource.Style.Animation_Design_BottomSheetDialog;
 			global::BottomNavigationBar.Resource.Style.BB_BottomBarBadge_Text = global::Demo.Resource.Style.BB_BottomBarBadge_Text;
+			global::BottomNavigationBar.Resource.Style.BB_BottomBarItem = global::Demo.Resource.Style.BB_BottomBarItem;
 			global::BottomNavigationBar.Resource.Style.BB_BottomBarItem_Fixed = global::Demo.Resource.Style.BB_BottomBarItem_Fixed;
-			global::BottomNavigationBar.Resource.Style.BB_BottomBarItem_Fixed_Title = global::Demo.Resource.Style.BB_BottomBarItem_Fixed_Title;
+			global::BottomNavigationBar.Resource.Style.BB_BottomBarItem_Fixed_TitleAppearance = global::Demo.Resource.Style.BB_BottomBarItem_Fixed_TitleAppearance;
 			global::BottomNavigationBar.Resource.Style.BB_BottomBarItem_Shifting = global::Demo.Resource.Style.BB_BottomBarItem_Shifting;
-			global::BottomNavigationBar.Resource.Style.BB_BottomBarItem_Shifting_Title = global::Demo.Resource.Style.BB_BottomBarItem_Shifting_Title;
+			global::BottomNavigationBar.Resource.Style.BB_BottomBarItem_Shifting_TitleAppearance = global::Demo.Resource.Style.BB_BottomBarItem_Shifting_TitleAppearance;
 			global::BottomNavigationBar.Resource.Style.BB_BottomBarItem_Tablet = global::Demo.Resource.Style.BB_BottomBarItem_Tablet;
+			global::BottomNavigationBar.Resource.Style.BB_BottomBarItem_TitleStyle = global::Demo.Resource.Style.BB_BottomBarItem_TitleStyle;
 			global::BottomNavigationBar.Resource.Style.Base_AlertDialog_AppCompat = global::Demo.Resource.Style.Base_AlertDialog_AppCompat;
 			global::BottomNavigationBar.Resource.Style.Base_AlertDialog_AppCompat_Light = global::Demo.Resource.Style.Base_AlertDialog_AppCompat_Light;
 			global::BottomNavigationBar.Resource.Style.Base_Animation_AppCompat_Dialog = global::Demo.Resource.Style.Base_Animation_AppCompat_Dialog;
@@ -3060,6 +3063,9 @@ namespace Demo
 			// aapt resource value: 0x7f06006c
 			public const int activity_vertical_margin = 2131099756;
 			
+			// aapt resource value: 0x7f06006e
+			public const int bb_height = 2131099758;
+			
 			// aapt resource value: 0x7f06006d
 			public const int bottom_bar_elevation = 2131099757;
 			
@@ -4252,26 +4258,32 @@ namespace Demo
 			// aapt resource value: 0x7f050001
 			public const int Animation_Design_BottomSheetDialog = 2131034113;
 			
-			// aapt resource value: 0x7f05015d
-			public const int AppTheme = 2131034461;
+			// aapt resource value: 0x7f05015f
+			public const int AppTheme = 2131034463;
 			
-			// aapt resource value: 0x7f05015c
-			public const int BB_BottomBarBadge_Text = 2131034460;
+			// aapt resource value: 0x7f05015e
+			public const int BB_BottomBarBadge_Text = 2131034462;
 			
 			// aapt resource value: 0x7f050157
-			public const int BB_BottomBarItem_Fixed = 2131034455;
+			public const int BB_BottomBarItem = 2131034455;
 			
 			// aapt resource value: 0x7f050158
-			public const int BB_BottomBarItem_Fixed_Title = 2131034456;
-			
-			// aapt resource value: 0x7f050159
-			public const int BB_BottomBarItem_Shifting = 2131034457;
+			public const int BB_BottomBarItem_Fixed = 2131034456;
 			
 			// aapt resource value: 0x7f05015a
-			public const int BB_BottomBarItem_Shifting_Title = 2131034458;
+			public const int BB_BottomBarItem_Fixed_TitleAppearance = 2131034458;
 			
 			// aapt resource value: 0x7f05015b
-			public const int BB_BottomBarItem_Tablet = 2131034459;
+			public const int BB_BottomBarItem_Shifting = 2131034459;
+			
+			// aapt resource value: 0x7f05015c
+			public const int BB_BottomBarItem_Shifting_TitleAppearance = 2131034460;
+			
+			// aapt resource value: 0x7f05015d
+			public const int BB_BottomBarItem_Tablet = 2131034461;
+			
+			// aapt resource value: 0x7f050159
+			public const int BB_BottomBarItem_TitleStyle = 2131034457;
 			
 			// aapt resource value: 0x7f0500a3
 			public const int Base_AlertDialog_AppCompat = 2131034275;
