@@ -62,8 +62,10 @@ namespace BottomNavigationBar
         private Color _whiteColor;
 
         private int _screenWidth;
-        private int _twoDp;
         private int _tenDp;
+		private int _sixDp;
+		private int _sixteenDp;
+		private int _eightDp;
         private int _maxFixedItemWidth;
 		private int _maxInActiveShiftingItemWidth;
 		private int _inActiveShiftingItemWidth;
@@ -942,8 +944,10 @@ namespace BottomNavigationBar
             _inActiveColor = new Color(ContextCompat.GetColor(Context, Resource.Color.bb_inActiveBottomBarItemColor));
 
             _screenWidth = MiscUtils.GetScreenWidth(_context);
-            _twoDp = MiscUtils.DpToPixel(_context, 2);
             _tenDp = MiscUtils.DpToPixel(_context, 10);
+			_sixteenDp = MiscUtils.DpToPixel (_context, 16);
+			_sixDp = MiscUtils.DpToPixel (_context, 6);
+			_eightDp = MiscUtils.DpToPixel (_context, 8);
             _maxFixedItemWidth = MiscUtils.DpToPixel(_context, 168);
 			_maxInActiveShiftingItemWidth = MiscUtils.DpToPixel(_context, 96);
         }
@@ -1265,6 +1269,7 @@ namespace BottomNavigationBar
 				_inActiveShiftingItemWidth = (int) (proposedItemWidth * 0.9);
 				_activeShiftingItemWidth = (int) (proposedItemWidth + (proposedItemWidth * (bottomBarItems.Length * 0.1)));
 
+				var height = (int)Math.Round (_context.Resources.GetDimension (Resource.Dimension.bb_height));
                 foreach (var bottomBarView in viewsToAdd)
                 {
 					LinearLayout.LayoutParams param;
@@ -1272,15 +1277,12 @@ namespace BottomNavigationBar
 					if (_isShiftingMode && !IgnoreShiftingResize)
 					{
 						if (TAG_BOTTOM_BAR_VIEW_ACTIVE.Equals (bottomBarView.Tag))
-							param = new LinearLayout.LayoutParams (_activeShiftingItemWidth,
-								LinearLayout.LayoutParams.WrapContent);
+							param = new LinearLayout.LayoutParams (_activeShiftingItemWidth, height);
 						else
-							param = new LinearLayout.LayoutParams (_inActiveShiftingItemWidth,
-								LinearLayout.LayoutParams.WrapContent);
+							param = new LinearLayout.LayoutParams (_inActiveShiftingItemWidth, height);
 					} 
 					else
-						param = new LinearLayout.LayoutParams (proposedItemWidth,
-							LinearLayout.LayoutParams.WrapContent);
+						param = new LinearLayout.LayoutParams (proposedItemWidth, height);
 
 
                     bottomBarView.LayoutParameters = param;
@@ -1298,6 +1300,43 @@ namespace BottomNavigationBar
                 _pendingTypeface = null;
             }
         }
+
+		protected override void OnLayout (bool changed, int left, int top, int right, int bottom)
+		{
+			base.OnLayout (changed, left, top, right, bottom);
+
+			if (changed)
+				UpdateTitleBottomPadding ();
+		}
+
+		/// <summary>
+		/// Material Design specify that there should be a 10dp padding under the text, it seems that
+		/// it means 10dp starting from the text baseline.
+		/// This method takes care of calculating the amount of padding that needs to be added to the
+		/// Title TextView in order to comply with the Material Design specifications.
+		/// </summary>
+		private void UpdateTitleBottomPadding()
+		{
+			var childCount = ItemContainer.ChildCount;
+
+			for (int i = 0; i < childCount; i++) 
+			{
+				var tab = ItemContainer.GetChildAt (i);
+				var title = (TextView)tab.FindViewById (Resource.Id.bb_bottom_bar_title);
+
+				if (title == null)
+					continue;
+
+				var baseline = title.Baseline;
+				// Height already includes any possible top/bottom padding
+				var height = title.Height;
+				var paddingInsideTitle = height - baseline;
+				var missingPadding = _tenDp - paddingInsideTitle;
+				if (missingPadding > 0)
+					// Only update the padding if really needed
+					title.SetPadding (title.PaddingLeft, title.PaddingTop, title.PaddingRight, missingPadding + title.PaddingBottom);	
+			}
+		}
 
         private void DarkThemeMagic()
         {
@@ -1366,8 +1405,6 @@ namespace BottomNavigationBar
                 return;
             }
 
-            int translationY = _isShiftingMode ? _tenDp : _twoDp;
-
             if (animate)
             {
                 var titleAnimator = ViewCompat.Animate(title)
@@ -1380,10 +1417,9 @@ namespace BottomNavigationBar
 
                 titleAnimator.Start();
 
-                ViewCompat.Animate(tab)
-                    .SetDuration(ANIMATION_DURATION)
-                    .TranslationY(-translationY)
-                    .Start();
+				// We only want to animate the icon to avoid moving the title
+				// Shifting or fixed the padding above icon is always 6dp
+				MiscUtils.ResizePaddingTop(icon, icon.PaddingTop, _sixDp, ANIMATION_DURATION);
 
                 if (_isShiftingMode)
                 {
@@ -1399,7 +1435,8 @@ namespace BottomNavigationBar
             {
                 ViewCompat.SetScaleX(title, 1);
                 ViewCompat.SetScaleY(title, 1);
-                ViewCompat.SetTranslationY(tab, -translationY);
+
+				icon.SetPadding(icon.PaddingLeft, _sixDp, icon.PaddingRight, icon.PaddingBottom);				
 
                 if (_isShiftingMode)
                 {
@@ -1441,6 +1478,7 @@ namespace BottomNavigationBar
             }
 
             float scale = _isShiftingMode ? 0 : 0.86f;
+			int iconPaddingTop = _isShiftingMode ? _sixteenDp : _eightDp;
 
             if (animate)
             {
@@ -1454,10 +1492,7 @@ namespace BottomNavigationBar
 
                 titleAnimator.Start();
 
-                ViewCompat.Animate(tab)
-                    .SetDuration(ANIMATION_DURATION)
-                    .TranslationY(0)
-                    .Start();
+				MiscUtils.ResizePaddingTop(icon, icon.PaddingTop, iconPaddingTop, ANIMATION_DURATION);
 
                 if (_isShiftingMode)
                 {
@@ -1471,7 +1506,8 @@ namespace BottomNavigationBar
             {
                 ViewCompat.SetScaleX(title, scale);
                 ViewCompat.SetScaleY(title, scale);
-                ViewCompat.SetTranslationY(tab, 0);
+                
+				icon.SetPadding(icon.PaddingLeft, iconPaddingTop, icon.PaddingRight, icon.PaddingBottom);
 
                 if (_isShiftingMode)
                 {

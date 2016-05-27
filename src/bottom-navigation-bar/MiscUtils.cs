@@ -180,6 +180,15 @@ namespace BottomNavigationBar
 			animator.Start();
 		}
 
+		public static void ResizePaddingTop (View icon, int start, int end, long duration)
+		{
+			var paddingAnimator = ValueAnimator.OfInt (start, end);
+			paddingAnimator.AddUpdateListener (new ResizePaddingTopAnimatorUpdateListener(icon));
+			paddingAnimator.SetDuration (duration);
+			paddingAnimator.Start ();
+		}
+
+
     }
 }
 

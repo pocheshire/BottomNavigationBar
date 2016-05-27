@@ -94,6 +94,7 @@
     <Compile Include="Listeners\ResizeTabAnimatorUpdateListener.cs" />
     <Compile Include="Listeners\OnTabClickListener.cs" />
     <Compile Include="Listeners\OnTabLongClickListener.cs" />
+    <Compile Include="Listeners\ResizePaddingTopAnimatorUpdateListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

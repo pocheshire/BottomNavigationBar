@@ -1459,6 +1459,9 @@ namespace BottomNavigationBar
 			// aapt resource value: 0x7f06006c
 			public static int activity_vertical_margin = 2131099756;
 			
+			// aapt resource value: 0x7f06006e
+			public static int bb_height = 2131099758;
+			
 			// aapt resource value: 0x7f06006d
 			public static int bottom_bar_elevation = 2131099757;
 			
@@ -2575,23 +2578,29 @@ namespace BottomNavigationBar
 			// aapt resource value: 0x7f050001
 			public static int Animation_Design_BottomSheetDialog = 2131034113;
 			
-			// aapt resource value: 0x7f05015c
-			public static int BB_BottomBarBadge_Text = 2131034460;
+			// aapt resource value: 0x7f05015e
+			public static int BB_BottomBarBadge_Text = 2131034462;
 			
 			// aapt resource value: 0x7f050157
-			public static int BB_BottomBarItem_Fixed = 2131034455;
+			public static int BB_BottomBarItem = 2131034455;
 			
 			// aapt resource value: 0x7f050158
-			public static int BB_BottomBarItem_Fixed_Title = 2131034456;
-			
-			// aapt resource value: 0x7f050159
-			public static int BB_BottomBarItem_Shifting = 2131034457;
+			public static int BB_BottomBarItem_Fixed = 2131034456;
 			
 			// aapt resource value: 0x7f05015a
-			public static int BB_BottomBarItem_Shifting_Title = 2131034458;
+			public static int BB_BottomBarItem_Fixed_TitleAppearance = 2131034458;
 			
 			// aapt resource value: 0x7f05015b
-			public static int BB_BottomBarItem_Tablet = 2131034459;
+			public static int BB_BottomBarItem_Shifting = 2131034459;
+			
+			// aapt resource value: 0x7f05015c
+			public static int BB_BottomBarItem_Shifting_TitleAppearance = 2131034460;
+			
+			// aapt resource value: 0x7f05015d
+			public static int BB_BottomBarItem_Tablet = 2131034461;
+			
+			// aapt resource value: 0x7f050159
+			public static int BB_BottomBarItem_TitleStyle = 2131034457;
 			
 			// aapt resource value: 0x7f0500a3
 			public static int Base_AlertDialog_AppCompat = 2131034275;
