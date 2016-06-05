@@ -139,6 +139,7 @@ namespace BottomNavigationBar
             parent.RemoveView(tabToAddTo);
 
             container.Tag = tabToAddTo.Tag;
+            tabToAddTo.Tag = null;
             container.AddView(tabToAddTo);
             container.AddView(this);
 

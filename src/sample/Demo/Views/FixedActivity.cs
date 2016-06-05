@@ -37,8 +37,7 @@ namespace Demo.Views
                 FindViewById(Resource.Id.myScrollingContent), savedInstanceState);
 
             _bottomBar.UseFixedMode();
-//            update BottomNavigationBar nuget package to 1.0.9
-            _bottomBar.UseDarkThemeWithAlpha(false);
+            _bottomBar.UseDarkThemeWithAlpha();
 
             _bottomBar.SetItems(new [] {
                 new BottomBarTab(Resource.Drawable.ic_recents, "Recents"),
@@ -50,6 +49,10 @@ namespace Demo.Views
 
             _bottomBar.SetActiveTabColor(Color.Red);
 //            _bottomBar.SetActiveTabColor(Resources.GetColor(Resource.Color.colorAccent, Theme));
+
+            var badge = _bottomBar.MakeBadgeForTabAt(0, Color.Green, 10);
+            var lp = (FrameLayout.LayoutParams)badge.LayoutParameters;
+            lp.Gravity = GravityFlags.Left;
         }
 
         #region IOnTabClickListener implementation

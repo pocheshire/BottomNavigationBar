@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{19930DA0-B058-4518-B71B-64E4E76E3102}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BottomNavigationBar", "..\bottom-navigation-bar\BottomNavigationBar.csproj", "{C8C91CD6-8B01-4C58-BDEA-6C416795DDEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +15,9 @@ Global
 		{19930DA0-B058-4518-B71B-64E4E76E3102}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19930DA0-B058-4518-B71B-64E4E76E3102}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19930DA0-B058-4518-B71B-64E4E76E3102}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8C91CD6-8B01-4C58-BDEA-6C416795DDEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8C91CD6-8B01-4C58-BDEA-6C416795DDEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8C91CD6-8B01-4C58-BDEA-6C416795DDEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8C91CD6-8B01-4C58-BDEA-6C416795DDEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -63,9 +63,6 @@
     <Reference Include="Xamarin.Android.Support.Design">
       <HintPath>..\packages\Xamarin.Android.Support.Design.23.3.0\lib\MonoAndroid43\Xamarin.Android.Support.Design.dll</HintPath>
     </Reference>
-    <Reference Include="BottomNavigationBar">
-      <HintPath>..\..\bottom-navigation-bar\bin\Release\BottomNavigationBar.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
@@ -129,4 +126,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\bottom-navigation-bar\BottomNavigationBar.csproj">
+      <Project>{C8C91CD6-8B01-4C58-BDEA-6C416795DDEB}</Project>
+      <Name>BottomNavigationBar</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
