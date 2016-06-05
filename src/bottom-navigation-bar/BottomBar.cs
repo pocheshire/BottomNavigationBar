@@ -760,6 +760,59 @@ namespace BottomNavigationBar
             return badge;
         }
 
+        public void MakeBadgeForTab(BottomBarBadge badge)
+        {
+            var tabPosition = badge.TabPosition;
+
+            if (_items == null || _items.Length == 0)
+            {
+                throw new InvalidOperationException("You have no BottomBar Tabs set yet. " +
+                    "Please set them first before calling the makeBadgeForTabAt() method.");
+            }
+            else if (tabPosition > _items.Length - 1 || tabPosition < 0)
+            {
+                throw new ArgumentOutOfRangeException("Cant make a Badge for Tab " +
+                    "index " + tabPosition + ". You have no BottomBar Tabs at that position.");
+            }
+
+            var tab = ItemContainer.GetChildAt(tabPosition);
+
+            badge.AddBadgeToTab(_context, tab);
+            badge.Tag = (TAG_BADGE + tabPosition);
+
+            tab.SetOnClickListener(new OnTabClickListener (() => HandleClick((View)tab.Parent)));
+            tab.SetOnLongClickListener(new OnTabLongClickListener (() => HandleLongClick((View)tab.Parent)));
+
+            if (_badgeMap == null)
+            {
+                _badgeMap = new Dictionary<int, Java.Lang.Object>();
+            }
+
+            _badgeMap.Add(tabPosition, badge.Tag);
+
+            bool canShow = true;
+
+            if (_isComingFromRestoredState && _badgeStateMap != null
+                && _badgeStateMap.ContainsKey(tabPosition))
+            {
+                canShow = _badgeStateMap[tabPosition];
+            }
+
+            if (canShow && CurrentTabPosition != tabPosition
+                && badge.Count != 0)
+            {
+                badge.Show();
+            }
+            else if (badge.AutoHideWhenSelection)
+            {
+                badge.Hide();
+            }
+        }
+
+        /// <summary>
+        /// Removes the badge at tabPosition.
+        /// </summary>
+        /// <param name="tabPosition">Tab position.</param>
         public void RemoveBadgeAt(int tabPosition)
         {
             if (_badgeMap.ContainsKey(tabPosition) && _badgeStateMap.ContainsKey(tabPosition))
@@ -1366,6 +1419,7 @@ namespace BottomNavigationBar
             if (savedInstanceState != null)
             {
                 CurrentTabPosition = savedInstanceState.GetInt(STATE_CURRENT_SELECTED_TAB, -1);
+
                 _badgeStateMap = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<int, bool>>(savedInstanceState.GetString(STATE_BADGE_STATES_BUNDLE));
 
                 if (CurrentTabPosition == -1)

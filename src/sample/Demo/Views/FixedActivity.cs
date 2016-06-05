@@ -15,6 +15,7 @@ using BottomNavigationBar;
 using Android.Support.Design.Widget;
 using BottomNavigationBar.Listeners;
 using Android.Graphics;
+using Demo.Controls;
 
 namespace Demo.Views
 {
@@ -25,6 +26,10 @@ namespace Demo.Views
     public class FixedActivity : Activity, IOnTabClickListener
     {
         private BottomBar _bottomBar;
+
+        BottomBarBadge _badge0;
+        BottomBarBadge _badge1;
+        BottomBarBadge _badge2;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -44,21 +49,35 @@ namespace Demo.Views
                 new BottomBarTab(Resource.Drawable.ic_favorites, "Favorites"),
                 new BottomBarTab(Resource.Drawable.ic_nearby, "Nearby")
             });
+            _badge0 = _bottomBar.MakeBadgeForTabAt(0, Color.Green, 100);
+            _badge0.AutoShowAfterUnSelection = true;
+
+            _badge1 = _bottomBar.MakeBadgeForTabAt(1, Color.Green, 100);
+            _badge1.AutoShowAfterUnSelection = true;
+            _badge1.Position = BottomNavigationBar.Enums.BadgePosition.Left;
+
+            _badge2 = new CustomBottomBarBadge(this, 2, Color.Green);
+            _badge2.Count = 100;
+            _bottomBar.MakeBadgeForTab(_badge2);
 
             _bottomBar.SetOnTabClickListener(this);
 
             _bottomBar.SetActiveTabColor(Color.Red);
-//            _bottomBar.SetActiveTabColor(Resources.GetColor(Resource.Color.colorAccent, Theme));
+        }
 
-            var badge = _bottomBar.MakeBadgeForTabAt(0, Color.Green, 10);
-            var lp = (FrameLayout.LayoutParams)badge.LayoutParameters;
-            lp.Gravity = GravityFlags.Left;
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+
+            // Necessary to restore the BottomBar's state, otherwise we would
+            // lose the current tab on orientation change.
+            _bottomBar.OnSaveInstanceState(outState);
         }
 
         #region IOnTabClickListener implementation
 
         public void OnTabSelected(int position)
-        {
+        {            
             Toast.MakeText(ApplicationContext, "Tab selected!", ToastLength.Short).Show();
         }
 

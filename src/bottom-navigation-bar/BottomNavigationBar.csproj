@@ -93,6 +93,7 @@
     <Compile Include="Listeners\OnTabClickListener.cs" />
     <Compile Include="Listeners\OnTabLongClickListener.cs" />
     <Compile Include="Listeners\ResizePaddingTopAnimatorUpdateListener.cs" />
+    <Compile Include="Enums\BadgePosition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -110,6 +111,7 @@
     <Folder Include="Adapters\" />
     <Folder Include="Listeners\" />
     <Folder Include="Utils\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\attrs.xml" />

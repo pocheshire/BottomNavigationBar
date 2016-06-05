@@ -24,18 +24,21 @@ using Android.OS;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 using System.Diagnostics.CodeAnalysis;
+using BottomNavigationBar.Enums;
 
 namespace BottomNavigationBar
 {
     public class BottomBarBadge : TextView, ViewTreeObserver.IOnGlobalLayoutListener
     {
-        private readonly View _tabToAddTo;
+        private View _tabToAddTo;
 
+        internal int TabPosition { get; private set; }
+
+        private int _count;
         /// <summary>
         /// Gets or sets the unread / new item / whatever count for this Badge.
         /// </summary>
         /// <value>the value this Badge should show</value>
-        private int _count;
         public int Count
         {
             get
@@ -60,11 +63,11 @@ namespace BottomNavigationBar
             set;
         }
 
+        private long _animationDuration = 150;
         /// <summary>
         /// Gets or sets the scale animation duration in milliseconds.
         /// </summary>
         /// <value>animation duration in milliseconds.</value>
-        private long _animationDuration = 150;
         public long AnimationDuration
         {
             get { return _animationDuration; }
@@ -86,6 +89,12 @@ namespace BottomNavigationBar
 		/// </summary>
 		/// <value><c>false</c> false if you don't want this Badge to hide every time the BottomBar tab containing it is selected; otherwise, <c>true</c>.</value>
 		public bool AutoHideWhenSelection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position of badge in tab.
+        /// </summary>
+        /// <value>Left or Right (default – Right)</value>
+        public BadgePosition Position { get; set; }
 
         /// <summary>
         /// Shows the badge with a neat little scale animation.
@@ -113,27 +122,37 @@ namespace BottomNavigationBar
                 .Start();
         }
 
-        public BottomBarBadge(Context context, int position, View tabToAddTo, // Rhyming accidentally! That's a Smoove Move!
-                                 Color backgroundColor)
+        public BottomBarBadge(Context context, int position, Color backgroundColor)
             : base(context)
         {
-            _tabToAddTo = tabToAddTo;
+            AutoHideWhenSelection = true;
+            Position = BadgePosition.Right;
 
-			AutoHideWhenSelection = true;
+            TabPosition = position;
 
-            var lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-
-            LayoutParameters = lp;
+            LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
             Gravity = GravityFlags.Center;
-            SetTextAppearance(context, Resource.Style.BB_BottomBarBadge_Text);
+            SetTextAppearance(Resource.Style.BB_BottomBarBadge_Text);
 
             int three = MiscUtils.DpToPixel(context, 3);
             ShapeDrawable backgroundCircle = BadgeCircle.Make(three * 3, backgroundColor);
             SetPadding(three, three, three, three);
             SetBackgroundCompat(backgroundCircle);
+        }
+
+        internal BottomBarBadge(Context context, int position, View tabToAddTo, // Rhyming accidentally! That's a Smoove Move!
+                                 Color backgroundColor)
+            : this(context, position, backgroundColor)
+        {
+            AddBadgeToTab(context, tabToAddTo);
+        }
+
+        internal void AddBadgeToTab(Context context, View tabToAddTo)
+        {
+            _tabToAddTo = tabToAddTo;
 
             var container = new FrameLayout(context);
-            container.LayoutParameters = lp;
+            container.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
 
             var parent = (ViewGroup)tabToAddTo.Parent;
             parent.RemoveView(tabToAddTo);
@@ -143,14 +162,14 @@ namespace BottomNavigationBar
             container.AddView(tabToAddTo);
             container.AddView(this);
 
-            parent.AddView(container, position);
+            parent.AddView(container, TabPosition);
 
             container.ViewTreeObserver.AddOnGlobalLayoutListener(this);
         }
 
-        protected void AdjustPosition(View tabToAddTo) 
+        protected virtual void AdjustPosition(View tabToAddTo) 
         {
-            SetX((float)(tabToAddTo.GetX() + (tabToAddTo.Width / 1.75)));
+            SetX( (float)(tabToAddTo.GetX() + (tabToAddTo.Width / (Position == BadgePosition.Right ? 1.75 : 5.25))) );
         }
 
         private void AdjustPositionAndSize(View tabToAddTo)
