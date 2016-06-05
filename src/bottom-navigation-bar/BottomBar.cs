@@ -760,6 +760,15 @@ namespace BottomNavigationBar
             return badge;
         }
 
+        public void RemoveBadgeAt(int tabPosition)
+        {
+            if (_badgeMap.ContainsKey(tabPosition) && _badgeStateMap.ContainsKey(tabPosition))
+            {
+                _badgeMap.Remove(tabPosition);
+                _badgeStateMap.Remove(tabPosition);
+            }
+        }
+
         /// <summary>
         /// Set a custom TypeFace for the tab titles. The .ttf file should be located at "/src/main/assets".
         /// </summary>
