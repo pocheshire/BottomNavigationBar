@@ -25,12 +25,17 @@ using Android.Graphics.Drawables;
 using Android.Graphics;
 using System.Diagnostics.CodeAnalysis;
 using BottomNavigationBar.Enums;
+using System.Threading.Tasks;
 
 namespace BottomNavigationBar
 {
     public class BottomBarBadge : TextView, ViewTreeObserver.IOnGlobalLayoutListener
     {
         private View _tabToAddTo;
+
+        private static bool _needUpdateLayout;
+
+        private Action OnLayoutUpdated { get; set; }
 
         internal int TabPosition { get; private set; }
 
@@ -101,12 +106,18 @@ namespace BottomNavigationBar
         /// </summary>
         public void Show()
         {
+            if (_needUpdateLayout)
+            {
+                OnLayoutUpdated = Show;
+                return;
+            }
+
             IsVisible = true;
             ViewCompat.Animate(this)
-                .SetDuration(_animationDuration)
-                .ScaleX(1)
-                .ScaleY(1)
-                .Start();
+            .SetDuration(_animationDuration)
+            .ScaleX(1)
+            .ScaleY(1)
+            .Start();
         }
 
         /// <summary>
@@ -125,6 +136,8 @@ namespace BottomNavigationBar
         public BottomBarBadge(Context context, int position, Color backgroundColor)
             : base(context)
         {
+            _needUpdateLayout = true;
+
             AutoHideWhenSelection = true;
             Position = BadgePosition.Right;
 
@@ -179,8 +192,12 @@ namespace BottomNavigationBar
             TranslationY = 10;
 
             int size = Math.Max(Width, Height);
-            LayoutParameters.Width = size;
-            LayoutParameters.Height = size;
+
+            var lp = LayoutParameters;
+            lp.Width = size;
+            lp.Height = size;
+
+            LayoutParameters = lp;
         }
 
         private void SetBackgroundCompat(Drawable background)
@@ -200,6 +217,11 @@ namespace BottomNavigationBar
                 obs.RemoveOnGlobalLayoutListener(this);
             else
                 obs.RemoveGlobalOnLayoutListener(this);
+
+            _needUpdateLayout = false;
+
+            OnLayoutUpdated?.Invoke();
+            OnLayoutUpdated = null;
         }
     }
 }

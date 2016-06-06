@@ -815,11 +815,20 @@ namespace BottomNavigationBar
         /// <param name="tabPosition">Tab position.</param>
         public void RemoveBadgeAt(int tabPosition)
         {
-            if (_badgeMap.ContainsKey(tabPosition) && _badgeStateMap.ContainsKey(tabPosition))
-            {
+            if (_badgeMap == null)
+                return;
+
+            var badgeToRemove = (BottomBarBadge)OuterContainer.FindViewWithTag(_badgeMap[tabPosition]);
+            if (badgeToRemove == null)
+                throw new NullReferenceException("Cant find a Badge for Tab index " + tabPosition);
+
+            OuterContainer.RemoveView(badgeToRemove);
+
+            if (_badgeMap.ContainsKey(tabPosition))
                 _badgeMap.Remove(tabPosition);
+            
+            if (_badgeStateMap != null && _badgeStateMap.ContainsKey(tabPosition))
                 _badgeStateMap.Remove(tabPosition);
-            }
         }
 
         /// <summary>
