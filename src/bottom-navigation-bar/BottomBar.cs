@@ -338,7 +338,20 @@ namespace BottomNavigationBar
         }
 
         /// <summary>
-		/// Deprecated, use <see cref="SetItemsFromMenu(int menuRes, IOnMenuTabClickListener listener)"/> instead
+        /// Set items for this BottomBar from an XML menu resource file.
+        /// When setting more than 3 items, only the icons will show by
+        /// default, but the selected item will have the text visible.
+        /// </summary>
+        /// <param name="menuRes">the menu resource to inflate items from.</param>
+        public void SetItems (int menuRes)
+        {
+            ClearItems();
+            _items = MiscUtils.InflateMenuFromResource((Activity)Context, menuRes);
+            UpdateItems(_items);
+        }
+
+        /// <summary>
+        /// Deprecated, use <see cref="SetItems(int menuRes)"/> and <see cref="SetOnMenuTabClickListener(IOnMenuTabClickListener listener)"/> instead
         /// </summary>
 		[Obsolete("Deprecated")]
         public void SetItemsFromMenu(int menuRes, IOnMenuTabSelectedListener listener)
@@ -349,11 +362,10 @@ namespace BottomNavigationBar
             UpdateItems(_items);
         }
 
-		/// <summary>
-		/// Set items from an XML menu resource file.
-		/// </summary>
-		/// <param name="menuRes">the menu resource to inflate items from.</param>
-		/// <param name="listener">listener for tab change events.</param>
+        /// <summary>
+        /// Deprecated, use <see cref="SetItems(int menuRes)"/> and <see cref="SetOnMenuTabClickListener(IOnMenuTabClickListener listener)"/> instead
+        /// </summary>
+        [Obsolete("Deprecated")]
 		public void SetItemsFromMenu(int menuRes, IOnMenuTabClickListener listener)
 		{
 			ClearItems();
@@ -380,13 +392,21 @@ namespace BottomNavigationBar
         /// will be immediately called for the currently selected tab
 		/// </summary>
 		/// <param name="listener">a listener for monitoring changes in tab selection.</param>
-		public void SetOnTabClickListener(IOnTabClickListener listener)
+        public void SetOnTabClickListener(IOnTabClickListener listener)
 		{
 			_listener = listener;
 
 			if (_listener != null && _items != null && _items.Length > 0)
 				listener.OnTabSelected (CurrentTabPosition);
 		}
+
+        public void SetOnMenuTabClickListener(IOnMenuTabClickListener listener)
+        {
+            _menuListener = listener;
+
+            if (_menuListener != null && _items != null && _items.Length > 0)
+                _menuListener.OnMenuTabSelected (CurrentTabPosition);
+        }
 
         /// <summary>
         /// Select a tab at the specified position.
