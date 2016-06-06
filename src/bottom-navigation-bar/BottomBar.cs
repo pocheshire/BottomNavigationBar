@@ -167,8 +167,8 @@ namespace BottomNavigationBar
 
         /// <summary>
         /// Bind the BottomBar to your Activity, and inflate your layout here.
-        /// Remember to also call <seealso cref="OnRestoreInstanceState(Bundle)"/> inside
-        /// of your <seealso cref="Activity.OnRestoreInstanceState(Bundle)"/> to restore the state.
+        /// Remember to also call <seealso cref="OnSaveInstanceState(Bundle)"/> inside
+        /// of your <seealso cref="Activity.OnSaveInstanceState(Bundle)"/> to restore the state.
         /// </summary>
         /// <param name="activity">an Activity to attach to.</param>
         /// <param name="savedInstanceState">a Bundle for restoring the state on configuration change.</param>
