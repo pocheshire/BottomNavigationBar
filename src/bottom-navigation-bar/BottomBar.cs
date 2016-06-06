@@ -1720,6 +1720,8 @@ namespace BottomNavigationBar
         private static void NavBarMagic(Activity activity, BottomBar bottomBar)
         {
             var res = activity.Resources;
+
+            int softMenuIdentifier = res.GetIdentifier("config_showNavigationBar", "bool", "android");
             int navBarIdentifier = res.GetIdentifier("navigation_bar_height", "dimen", "android");
             int navBarHeight = 0;
 
