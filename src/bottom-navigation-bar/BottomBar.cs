@@ -376,13 +376,15 @@ namespace BottomNavigationBar
 
 		/// <summary>
 		/// Set a listener that gets fired when the selected tab changes.
+        /// Note: If listener is set after items are added to the BottomBar, OnTabSelected 
+        /// will be immediately called for the currently selected tab
 		/// </summary>
 		/// <param name="listener">a listener for monitoring changes in tab selection.</param>
 		public void SetOnTabClickListener(IOnTabClickListener listener)
 		{
 			_listener = listener;
 
-			if (_items != null && _items.Length > 0)
+			if (_listener != null && _items != null && _items.Length > 0)
 				listener.OnTabSelected (CurrentTabPosition);
 		}
 
