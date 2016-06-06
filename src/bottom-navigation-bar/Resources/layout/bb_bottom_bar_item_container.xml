@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
     <FrameLayout
         android:id="@+id/bb_user_content_container"
         android:layout_width="match_parent"
@@ -42,4 +39,4 @@
             android:gravity="center_horizontal"
             android:orientation="horizontal" />
     </FrameLayout>
-</RelativeLayout>
+</merge>

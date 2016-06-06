@@ -36,7 +36,7 @@ using BottomNavigationBar.Utils;
 
 namespace BottomNavigationBar
 {
-    public class BottomBar : FrameLayout, View.IOnClickListener, View.IOnLongClickListener
+    public class BottomBar : RelativeLayout, View.IOnClickListener, View.IOnLongClickListener
     {
         private const long ANIMATION_DURATION = 150;
 
@@ -1055,7 +1055,9 @@ namespace BottomNavigationBar
 
 			ViewCompat.SetElevation(this, MiscUtils.DpToPixel(_context, 8));
 
-            View rootView = View.Inflate(_context, _isTabletMode ? Resource.Layout.bb_bottom_bar_item_container_tablet : Resource.Layout.bb_bottom_bar_item_container, null);
+            View rootView = Inflate(_context,
+                _isTabletMode ? Resource.Layout.bb_bottom_bar_item_container_tablet : Resource.Layout.bb_bottom_bar_item_container, 
+                this);
             _tabletRightBorder = rootView.FindViewById(Resource.Id.bb_tablet_right_border);
 
             UserContainer = (ViewGroup)rootView.FindViewById(Resource.Id.bb_user_content_container);
@@ -1094,8 +1096,6 @@ namespace BottomNavigationBar
             {
 				ViewTreeObserver.AddOnGlobalLayoutListener(new InitializeViewsOnGlobalLayoutListener(ShyHeightAlreadyCalculated, ((CoordinatorLayout.LayoutParams)LayoutParameters), OuterContainer, ViewTreeObserver, IsShy, _isTabletMode));
             }
-
-            AddView(rootView);
         }
 
         /// <summary>
@@ -1742,6 +1742,10 @@ namespace BottomNavigationBar
                 return;
             }
 
+            if (Build.VERSION.SdkInt < Build.VERSION_CODES.JellyBeanMr1 && 
+                (!(softMenuIdentifier > 0 && res.GetBoolean(softMenuIdentifier))))
+                return;
+            
             /* Copy-paste coding made possible by: http://stackoverflow.com/a/14871974/940036 */
             if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBeanMr1)
             {
