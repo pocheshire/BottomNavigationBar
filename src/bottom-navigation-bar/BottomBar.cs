@@ -405,7 +405,11 @@ namespace BottomNavigationBar
             _menuListener = listener;
 
             if (_menuListener != null && _items != null && _items.Length > 0)
-                _menuListener.OnMenuTabSelected (CurrentTabPosition);
+            {
+                var tab = (BottomBarTab)_items[CurrentTabPosition];
+                if (tab != null)
+                    listener.OnMenuTabSelected(tab.Id);
+            }
         }
 
         /// <summary>
@@ -1716,7 +1720,6 @@ namespace BottomNavigationBar
         private static void NavBarMagic(Activity activity, BottomBar bottomBar)
         {
             var res = activity.Resources;
-            int softMenuIdentifier = res.GetIdentifier("config_showNavigationBar", "bool", "android");
             int navBarIdentifier = res.GetIdentifier("navigation_bar_height", "dimen", "android");
             int navBarHeight = 0;
 
@@ -1726,8 +1729,7 @@ namespace BottomNavigationBar
             }
 
             if (!bottomBar.DrawBehindNavBar
-                || navBarHeight == 0
-                || (!(softMenuIdentifier > 0 && res.GetBoolean(softMenuIdentifier))))
+                || navBarHeight == 0)
             {
                 return;
             }
