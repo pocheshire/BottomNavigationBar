@@ -155,7 +155,20 @@ namespace BottomNavigationBar
             }
         }
 
-		public bool IgnoreShiftingResize { get; set; }
+        private bool _ignoreShiftingResize;
+		public bool IgnoreShiftingResize 
+        { 
+            get { return _ignoreShiftingResize; }
+            set
+            {
+                if (_items == null)
+                    throw new InvalidOperationException("This BottomBar already has items! "
+                        + "You must call noResizeGoodness() before setting the items, preferably "
+                        + "right after attaching it to your layout.");
+                
+                _ignoreShiftingResize = value;
+            }
+        }
 
         public bool Hidden { get; private set; }
 
