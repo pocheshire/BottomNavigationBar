@@ -30,138 +30,140 @@ using Android.App;
 using System.Diagnostics.CodeAnalysis;
 using Android.Content.Res;
 using BottomNavigationBar.Listeners;
+using Android.Util;
 
 namespace BottomNavigationBar
 {
-    internal static class MiscUtils
-    {
-        public static int GetColor(Context context, int color)
-        {
-            var tv = new Android.Util.TypedValue();
-			context.Theme.ResolveAttribute(color, tv, true);
-            return tv.Data;
-        }
+	internal static class MiscUtils
+	{
+		public static int GetColor (Context context, int color)
+		{
+			var tv = new Android.Util.TypedValue ();
+			context.Theme.ResolveAttribute (color, tv, true);
+			return tv.Data;
+		}
 
-        /// <summary>
-        /// Converts dps to pixels nicely.
-        /// </summary>
-        /// <returns>dimension in pixels</returns>
-        /// <param name="context">Context for getting the resources</param>
-        /// <param name="dp">dimension in dps</param>
-        public static int DpToPixel(Context context, float dp)
-        {
-            var resources = context.Resources;
-            var metrics = resources.DisplayMetrics;
-            return (int)(dp * ((int)metrics.DensityDpi / 160f));
-        }
+		/// <summary>
+		/// Converts dps to pixels nicely.
+		/// </summary>
+		/// <returns>dimension in pixels</returns>
+		/// <param name="context">Context for getting the resources</param>
+		/// <param name="dp">dimension in dps</param>
+		public static int DpToPixel (Context context, float dp)
+		{
+			var resources = context.Resources;
+			var metrics = resources.DisplayMetrics;
 
-        /// <summary>
-        /// Gets the width of the screen.
-        /// </summary>
-        /// <returns>The screen width.</returns>
-        /// <param name="context">Context to get resources and device specific display metrics.</param>
-        public static int GetScreenWidth(Context context)
-        {
-            var displayMetrics = context.Resources.DisplayMetrics;
-            return (int)(displayMetrics.WidthPixels / displayMetrics.Density);
-        }
+			try 
+			{
+				return (int)(dp * (metrics.DensityDpi / 160f));
+			}
+			catch (Java.Lang.NoSuchFieldError ignored) 
+			{
+				return (int)TypedValue.ApplyDimension (ComplexUnitType.Dip, dp, metrics);
+			}
 
-        /// <summary>
-        /// A hacky method for inflating menus from xml resources to an array of BottomBarTabs.
-        /// </summary>
-        /// <returns>an Array of BottomBarTabs.</returns>
-        /// <param name="activity">the activity context for retrieving the MenuInflater.</param>
-        /// <param name="menuRes">the xml menu resource to inflate.</param>
-        public static BottomBarTab[] InflateMenuFromResource(Activity activity, int menuRes)
-        {
-            // A bit hacky, but hey hey what can I do
-            var popupMenu = new PopupMenu(activity, null);
-            var menu = popupMenu.Menu;
-            activity.MenuInflater.Inflate(menuRes, menu);
+		}
+
+		/// <summary>
+		/// Gets the width of the screen.
+		/// </summary>
+		/// <returns>The screen width.</returns>
+		/// <param name="context">Context to get resources and device specific display metrics.</param>
+		public static int GetScreenWidth (Context context)
+		{
+			var displayMetrics = context.Resources.DisplayMetrics;
+			return (int)(displayMetrics.WidthPixels / displayMetrics.Density);
+		}
+
+		/// <summary>
+		/// A hacky method for inflating menus from xml resources to an array of BottomBarTabs.
+		/// </summary>
+		/// <returns>an Array of BottomBarTabs.</returns>
+		/// <param name="activity">the activity context for retrieving the MenuInflater.</param>
+		/// <param name="menuRes">the xml menu resource to inflate.</param>
+		public static BottomBarTab[] InflateMenuFromResource (Activity activity, int menuRes)
+		{
+			// A bit hacky, but hey hey what can I do
+			var popupMenu = new PopupMenu (activity, null);
+			var menu = popupMenu.Menu;
+			activity.MenuInflater.Inflate (menuRes, menu);
         
-            int menuSize = menu.Size();
-            var tabs = new BottomBarTab[menuSize];
+			int menuSize = menu.Size ();
+			var tabs = new BottomBarTab[menuSize];
         
-            for (int i = 0; i < menuSize; i++)
-            {
-                var item = menu.GetItem(i);
-                BottomBarTab tab = new BottomBarTab(item.Icon, item.TitleFormatted.ToString());
-                tab.Id = item.ItemId;
-                tabs[i] = tab;
-            }
+			for (int i = 0; i < menuSize; i++) {
+				var item = menu.GetItem (i);
+				BottomBarTab tab = new BottomBarTab (item.Icon, item.TitleFormatted.ToString ());
+				tab.Id = item.ItemId;
+				tabs [i] = tab;
+			}
         
-            return tabs;
-        }
+			return tabs;
+		}
 
-        /// <summary>
-        /// Animate a background color change. Uses Circular Reveal if supported, otherwise crossfades the background color in.
-        /// </summary>
-        /// <param name="clickedView">the view that was clicked for calculating the start position for the Circular Reveal.</param>
-        /// <param name="backgroundView">the currently showing background color.</param>
-        /// <param name="bgOverlay">the overlay view for the new background color that will be animated in.</param>
-        /// <param name="newColor">the new color.</param>
-        [TargetApiAttribute(Value = (int)BuildVersionCodes.Lollipop)]
-        public static void AnimateBGColorChange(View clickedView, View backgroundView, View bgOverlay, int newColor)
-        {
-            int centerX = (int)(ViewCompat.GetX(clickedView) + (clickedView.MeasuredWidth / 2));
-            int centerY = clickedView.MeasuredHeight / 2;
-            int finalRadius = backgroundView.Width;
+		/// <summary>
+		/// Animate a background color change. Uses Circular Reveal if supported, otherwise crossfades the background color in.
+		/// </summary>
+		/// <param name="clickedView">the view that was clicked for calculating the start position for the Circular Reveal.</param>
+		/// <param name="backgroundView">the currently showing background color.</param>
+		/// <param name="bgOverlay">the overlay view for the new background color that will be animated in.</param>
+		/// <param name="newColor">the new color.</param>
+		[TargetApiAttribute (Value = (int)BuildVersionCodes.Lollipop)]
+		public static void AnimateBGColorChange (View clickedView, View backgroundView, View bgOverlay, int newColor)
+		{
+			int centerX = (int)(ViewCompat.GetX (clickedView) + (clickedView.MeasuredWidth / 2));
+			int centerY = clickedView.MeasuredHeight / 2;
+			int finalRadius = backgroundView.Width;
 
-            backgroundView.ClearAnimation();
-            bgOverlay.ClearAnimation();
+			backgroundView.ClearAnimation ();
+			bgOverlay.ClearAnimation ();
 
-            Object animator;
+			Object animator;
 
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
-            {
-                if (!bgOverlay.IsAttachedToWindow)
-                {
-                    return;
-                }
+			if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop) {
+				if (!bgOverlay.IsAttachedToWindow) {
+					return;
+				}
 
-                animator = ViewAnimationUtils.CreateCircularReveal(bgOverlay, centerX, centerY, 0, finalRadius);
-            }
-            else
-            {
-                ViewCompat.SetAlpha(bgOverlay, 0);
-                animator = ViewCompat.Animate(bgOverlay).Alpha(1);
-            }
+				animator = ViewAnimationUtils.CreateCircularReveal (bgOverlay, centerX, centerY, 0, finalRadius);
+			} else {
+				ViewCompat.SetAlpha (bgOverlay, 0);
+				animator = ViewCompat.Animate (bgOverlay).Alpha (1);
+			}
 
-            if (animator is ViewPropertyAnimatorCompat)
-            {
-                ((ViewPropertyAnimatorCompat)animator)
-                    .SetListener(new CustomViewPropertyAnimatorListenerAdapter(backgroundView, newColor, bgOverlay))
-                    .Start();
-            }
-            else if (animator != null)
-            {
-                ((Animator)animator).AddListener(new CustomAnimatorListenerAdapter(backgroundView, newColor, bgOverlay));
-                ((Animator)animator).Start();
-            }
+			if (animator is ViewPropertyAnimatorCompat) {
+				((ViewPropertyAnimatorCompat)animator)
+                    .SetListener (new CustomViewPropertyAnimatorListenerAdapter (backgroundView, newColor, bgOverlay))
+                    .Start ();
+			} else if (animator != null) {
+				((Animator)animator).AddListener (new CustomAnimatorListenerAdapter (backgroundView, newColor, bgOverlay));
+				((Animator)animator).Start ();
+			}
 
-            bgOverlay.SetBackgroundColor(new Color(newColor));
-            bgOverlay.Visibility = ViewStates.Visible;
-        }
+			bgOverlay.SetBackgroundColor (new Color (newColor));
+			bgOverlay.Visibility = ViewStates.Visible;
+		}
 
-        /// <summary>
-        /// A convenience method for setting text appearance.
-        /// </summary>
-        /// <param name="textView">TextView which textAppearance to modify.</param>
-        /// <param name="resId">style resource for the text appearance.</param>
-        public static void SetTextAppearance(TextView textView, int resId)
-        {
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
-                textView.SetTextAppearance(resId);
-            else
-                textView.SetTextAppearance(textView.Context, resId);
-        }
+		/// <summary>
+		/// A convenience method for setting text appearance.
+		/// </summary>
+		/// <param name="textView">TextView which textAppearance to modify.</param>
+		/// <param name="resId">style resource for the text appearance.</param>
+		public static void SetTextAppearance (TextView textView, int resId)
+		{
+			if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
+				textView.SetTextAppearance (resId);
+			else
+				textView.SetTextAppearance (textView.Context, resId);
+		}
 
 		/// <summary>
 		/// Determine if the current UI Mode is Night Mode.
 		/// </summary>
 		/// <returns><c>true</c>, if the night mode is enabled, <c>false</c> otherwise.</returns>
 		/// <param name="context">Context to get the configuration.</param>
-		public static bool IsNightMode(Context context)
+		public static bool IsNightMode (Context context)
 		{
 			return context.Resources.Configuration.UiMode == UiMode.NightYes;
 		}
@@ -172,23 +174,23 @@ namespace BottomNavigationBar
 		/// <param name="tab">tab to animate.</param>
 		/// <param name="start">starting width.</param>
 		/// <param name="end">final width after animation.</param>
-		public static void ResizeTab(View tab, float start, float end)
+		public static void ResizeTab (View tab, float start, float end)
 		{
-			ValueAnimator animator = ValueAnimator.OfFloat(start, end);
-			animator.SetDuration(150);
+			ValueAnimator animator = ValueAnimator.OfFloat (start, end);
+			animator.SetDuration (150);
 			animator.AddUpdateListener (new ResizeTabAnimatorUpdateListener (tab, animator));
-			animator.Start();
+			animator.Start ();
 		}
 
 		public static void ResizePaddingTop (View icon, int start, int end, long duration)
 		{
 			var paddingAnimator = ValueAnimator.OfInt (start, end);
-			paddingAnimator.AddUpdateListener (new ResizePaddingTopAnimatorUpdateListener(icon));
+			paddingAnimator.AddUpdateListener (new ResizePaddingTopAnimatorUpdateListener (icon));
 			paddingAnimator.SetDuration (duration);
 			paddingAnimator.Start ();
 		}
 
 
-    }
+	}
 }
 
