@@ -56,9 +56,9 @@ namespace BottomNavigationBar
 
 			try 
 			{
-				return (int)(dp * (metrics.DensityDpi / 160f));
+				return (int)(dp * ((int)metrics.DensityDpi / 160f));
 			}
-			catch (Java.Lang.NoSuchFieldError ignored) 
+			catch (Java.Lang.NoSuchFieldError) 
 			{
 				return (int)TypedValue.ApplyDimension (ComplexUnitType.Dip, dp, metrics);
 			}
