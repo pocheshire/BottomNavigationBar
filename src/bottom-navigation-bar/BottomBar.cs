@@ -1428,6 +1428,9 @@ namespace BottomNavigationBar
 		/// </summary>
 		private void UpdateTitleBottomPadding()
 		{
+			if (ItemContainer == null)
+				return;
+			
 			var childCount = ItemContainer.ChildCount;
 
 			for (int i = 0; i < childCount; i++) 
