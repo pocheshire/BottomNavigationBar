@@ -193,11 +193,14 @@ namespace BottomNavigationBar
 
             int size = Math.Max(Width, Height);
 
-            var lp = LayoutParameters;
-            lp.Width = size;
-            lp.Height = size;
+			if (LayoutParameters.Width != size || LayoutParameters.Height != size) 
+			{
+				var lp = LayoutParameters;
+				lp.Width = size;
+				lp.Height = size;
 
-            LayoutParameters = lp;
+				LayoutParameters = lp;
+			}
         }
 
         private void SetBackgroundCompat(Drawable background)
