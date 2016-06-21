@@ -1471,7 +1471,10 @@ namespace BottomNavigationBar
             {
                 CurrentTabPosition = savedInstanceState.GetInt(STATE_CURRENT_SELECTED_TAB, -1);
 
-                _badgeStateMap = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<int, bool>>(savedInstanceState.GetString(STATE_BADGE_STATES_BUNDLE));
+				if (savedInstanceState.ContainsKey(STATE_BADGE_STATES_BUNDLE))
+				{
+					_badgeStateMap = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<int, bool>> (savedInstanceState.GetString (STATE_BADGE_STATES_BUNDLE));
+				}
 
                 if (CurrentTabPosition == -1)
                 {
