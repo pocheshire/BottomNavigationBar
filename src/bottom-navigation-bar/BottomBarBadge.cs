@@ -145,7 +145,7 @@ namespace BottomNavigationBar
 
             LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
             Gravity = GravityFlags.Center;
-            SetTextAppearance(Resource.Style.BB_BottomBarBadge_Text);
+            SetTextAppearance(context, Resource.Style.BB_BottomBarBadge_Text);
 
             int three = MiscUtils.DpToPixel(context, 3);
             ShapeDrawable backgroundCircle = BadgeCircle.Make(three * 3, backgroundColor);
