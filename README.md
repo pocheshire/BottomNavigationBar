@@ -50,7 +50,8 @@ public class MainActivity : AppCompatActivity, BottomNavigationBar.Listeners.IOn
         SetContentView(Resource.Layout.MainActivity);
 
         _bottomBar = BottomBar.Attach(this, bundle);
-        _bottomBar.SetItemsFromMenu(Resource.Menu.bottombar_menu, this);
+        _bottomBar.SetItems(Resource.Menu.bottombar_menu);
+        _bottomBar.SetOnMenuTabClickListener (this);
         
         // Setting colors for different tabs when there's more than three of them.
         // You can set colors for tabs in three different ways as shown below.
