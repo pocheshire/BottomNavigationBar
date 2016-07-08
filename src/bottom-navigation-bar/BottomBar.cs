@@ -754,6 +754,60 @@ namespace BottomNavigationBar
 				SelectTabAtPosition (CurrentTabPosition, false);
         }
 
+		/// <summary>
+		/// Set a custom color for inactive icons in fixed mode.
+		/// NOTE: This value is ignored if not in fixed mode.
+		/// </summary>
+		/// <returns>The fixed inactive icon color.</returns>
+		/// <param name="iconColor">a hex color used for icons, such as "#00FF000"</param>
+		public void SetFixedInactiveIconColor(String iconColor)
+		{
+			_inActiveColor = Color.ParseColor (iconColor);
+
+			if (_items != null && _items.Length > 0)
+				throw new InvalidOperationException ("This BottomBar " +
+					"already has items! You must call SetFixedInactiveIconColor() " +
+					"before setting any items.");
+		}
+
+		/// <summary>
+		/// Set a custom color for inactive icons in fixed mode.
+		/// NOTE: This value is ignored if not in fixed mode.
+		/// </summary>
+		/// <returns>The fixed inactive icon color.</returns>
+		/// <param name="iconColor">a color used for icons</param>
+		public void SetFixedInactiveIconColor (Color iconColor)
+		{
+			_inActiveColor = iconColor;
+
+			if (_items != null && _items.Length > 0)
+				throw new InvalidOperationException ("This BottomBar " +
+					"already has items! You must call SetFixedInactiveIconColor() " +
+					"before setting any items.");
+		}
+
+		/// <summary>
+		/// Set a custom color for icons in shifting mode.
+		/// NOTE: This value is ignored in fixed mode.
+		/// </summary>
+		/// <returns>The shifting icon color.</returns>
+		/// <param name="iconColor">a hex color used for icons, such as "#00FF000"</param>
+		public void SetShiftingIconColor(String iconColor)
+		{
+			
+		}
+
+		/// <summary>
+		/// Set a custom color for icons in shifting mode.
+		/// NOTE: This value is ignored in fixed mode.
+		/// </summary>
+		/// <returns>The shifting icon color.</returns>
+		/// <param name="iconColor">a color used for icons</param>
+		public void SetShiftingIconColor (Color iconColor)
+		{
+
+		}
+
         /// <summary>
         /// Creates a new Badge (for example, an indicator for unread messages) for a Tab at the specified position.
         /// </summary>
