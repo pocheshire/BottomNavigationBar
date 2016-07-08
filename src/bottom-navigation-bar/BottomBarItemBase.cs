@@ -29,6 +29,8 @@ namespace BottomNavigationBar
         protected int _titleResource;
         protected String _title;
         protected int _color;
+        protected bool _isEnabled;
+        protected bool _isVisible;
 
         public Drawable GetIcon(Context context)
         {
@@ -38,6 +40,30 @@ namespace BottomNavigationBar
         public String GetTitle(Context context)
         {
             return this._titleResource != 0 ? context.GetString(this._titleResource) : this._title;
+        }
+
+        public bool IsEnabled
+        {
+            get
+            {
+                return this._isEnabled;
+            }
+            set
+            {
+                this._isEnabled = value;
+            }
+        }
+
+        public bool IsVisible
+        {
+            get
+            {
+                return this._isVisible;
+            }
+            set
+            {
+                this._isVisible = value;
+            }
         }
     }
 }
