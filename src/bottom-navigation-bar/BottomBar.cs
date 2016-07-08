@@ -61,6 +61,20 @@ namespace BottomNavigationBar
         private Color _darkBackgroundColor;
         private Color _whiteColor;
 
+		private float _tabAlpha = 0.6f;
+		public float TabAlpha 
+		{
+			get { return _tabAlpha; }
+			set 
+			{ 
+				if (_items != null)
+					throw new InvalidOperationException ("This BottomBar already has items! " +
+						"You must set TabAlpha before specifying any items.");
+				
+				_tabAlpha = value;
+			}
+		}
+
         private int _screenWidth;
         private int _tenDp;
 		private int _sixDp;
@@ -224,6 +238,22 @@ namespace BottomNavigationBar
 
             return bottomBar;
         }
+
+		public static BottomBar Attach (Activity activity, Bundle savedInstanceState, 
+		                                Color backgroundColor, Color activeIconColor, float alpha)
+		{
+			BottomBar bottomBar = new BottomBar (activity, backgroundColor, activeIconColor, alpha);
+			bottomBar.OnRestoreInstanceState (savedInstanceState);
+
+			ViewGroup contentView = (ViewGroup)activity.FindViewById (Android.Resource.Id.Content);
+			View oldLayout = contentView.GetChildAt (0);
+			contentView.RemoveView (oldLayout);
+
+			bottomBar.PendingUserContentView = oldLayout;
+			contentView.AddView (bottomBar, 0);
+
+			return bottomBar;
+		}
 
         /// <summary>
         /// Bind the BottomBar to your Activity, and inflate your layout here.
@@ -794,7 +824,12 @@ namespace BottomNavigationBar
 		/// <param name="iconColor">a hex color used for icons, such as "#00FF000"</param>
 		public void SetShiftingIconColor(String iconColor)
 		{
-			
+			_whiteColor = Color.ParseColor (iconColor);
+
+			if (_items != null && _items.Length > 0)
+				throw new InvalidOperationException ("This BottomBar " +
+					"already has items! You must call SetFixedInactiveIconColor() " +
+					"before setting any items.");
 		}
 
 		/// <summary>
@@ -805,7 +840,12 @@ namespace BottomNavigationBar
 		/// <param name="iconColor">a color used for icons</param>
 		public void SetShiftingIconColor (Color iconColor)
 		{
+			_whiteColor = iconColor;
 
+			if (_items != null && _items.Length > 0)
+				throw new InvalidOperationException ("This BottomBar " +
+					"already has items! You must call SetFixedInactiveIconColor() " +
+					"before setting any items.");
 		}
 
         /// <summary>
@@ -1122,14 +1162,29 @@ namespace BottomNavigationBar
             Init(context, attrs, defStyleAttr, defStyleRes);
         }
 
-        private void Init(Context context, IAttributeSet attrs, int defStyleAttr, int defStyleRes)
+		public BottomBar (Context context, Color backgroundColor, Color activeColor, float alpha)
+			: base (context)
+		{
+			_tabAlpha = alpha;
+			_whiteColor = activeColor;
+			_primaryColor = backgroundColor;
+
+			Init (context, null, 0, 0, true);
+		}
+
+		private void Init(Context context, IAttributeSet attrs, int defStyleAttr, int defStyleRes, bool colorsInitialized = false)
         {
             _context = context;
 
             _darkBackgroundColor = new Color(ContextCompat.GetColor(Context, Resource.Color.bb_darkBackgroundColor));
-            _whiteColor = new Color(ContextCompat.GetColor(Context, Resource.Color.white));
-            _primaryColor = new Color(MiscUtils.GetColor(Context, Resource.Attribute.colorPrimary));
-            _inActiveColor = new Color(ContextCompat.GetColor(Context, Resource.Color.bb_inActiveBottomBarItemColor));
+
+			if (!colorsInitialized)
+			{
+				_whiteColor = new Color (ContextCompat.GetColor (Context, Resource.Color.white));
+				_primaryColor = new Color (MiscUtils.GetColor (Context, Resource.Attribute.colorPrimary));
+			}
+
+			_inActiveColor = new Color(ContextCompat.GetColor(Context, Resource.Color.bb_inActiveBottomBarItemColor));
 
             _screenWidth = MiscUtils.GetScreenWidth(_context);
             _tenDp = MiscUtils.DpToPixel(_context, 10);
@@ -1575,16 +1630,16 @@ namespace BottomNavigationBar
 
             int tabPosition = FindItemPosition(tab);
 
-            if (!_isShiftingMode || _isTabletMode)
-            {
-                var activeColor = _customActiveTabColor != 0 ? new Color(_customActiveTabColor) : _primaryColor;
-                icon.SetColorFilter(activeColor);
+			if (!_isShiftingMode || _isTabletMode) 
+			{
+				var activeColor = _customActiveTabColor != 0 ? new Color (_customActiveTabColor) : _primaryColor;
+				icon.SetColorFilter (activeColor);
 
-                if (title != null)
-                {
-                    title.SetTextColor(activeColor);
-                }
-            }
+				if (title != null) 
+					title.SetTextColor (activeColor);
+			} 
+			else
+				title.SetTextColor (_whiteColor);
 
 			if (_isDarkTheme && _useDarkThemeAlpha)
             {
@@ -1663,9 +1718,9 @@ namespace BottomNavigationBar
             if (_isDarkTheme && _useDarkThemeAlpha)
             {
 				if (title != null)
-					ViewCompat.SetAlpha (title, 0.6f);
+					ViewCompat.SetAlpha (title, _tabAlpha);
 
-                ViewCompat.SetAlpha(icon, 0.6f);
+                ViewCompat.SetAlpha(icon, _tabAlpha);
             }
 
             if (title == null)
@@ -1694,7 +1749,7 @@ namespace BottomNavigationBar
                 {
                     ViewCompat.Animate(icon)
                         .SetDuration(ANIMATION_DURATION)
-                        .Alpha(0.6f)
+                        .Alpha(_tabAlpha)
                         .Start();
                 }
             }
@@ -1707,7 +1762,7 @@ namespace BottomNavigationBar
 
                 if (_isShiftingMode)
                 {
-                    ViewCompat.SetAlpha(icon, 0.6f);
+                    ViewCompat.SetAlpha(icon, _tabAlpha);
                     ViewCompat.SetAlpha(title, 0);
                 }
             }
