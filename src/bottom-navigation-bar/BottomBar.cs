@@ -156,6 +156,11 @@ namespace BottomNavigationBar
         }
 
         private bool _ignoreShiftingResize;
+		/// <summary>
+		/// Get or set resize or not the tabs when selecting a new one, so every tab is the same if you have more than three
+		/// tabs. The text still displays the scale animation and the icon moves up, but the badass width animation is ignored.
+		/// </summary>
+		/// <value><c>true</c>if ignore shifting resize, overwise <c>false</c>.</value>
 		public bool IgnoreShiftingResize 
         { 
             get { return _ignoreShiftingResize; }
@@ -163,12 +168,31 @@ namespace BottomNavigationBar
             {
                 if (_items == null)
                     throw new InvalidOperationException("This BottomBar already has items! "
-                        + "You must call noResizeGoodness() before setting the items, preferably "
+                        + "You must set IgnoreShiftingResize before setting the items, preferably "
                         + "right after attaching it to your layout.");
                 
                 _ignoreShiftingResize = value;
             }
         }
+
+		private bool _ignoreScalingResize;
+		/// <summary>
+		/// Gets or sets the ignore or not scaling of the text when selecting a new tab. The text still displays the badass width animation
+		/// but the scale animation is ignored.
+		/// </summary>
+		/// <value>The ignore scaling resize.</value>
+		public bool IgnoreScalingResize 
+		{
+			get { return _ignoreScalingResize; }
+			set {
+				if (_items == null)
+					throw new InvalidOperationException ("This BottomBar already has items! "
+						+ "You must set IgnoreScalingResize before setting the items, preferably "
+						+ "right after attaching it to your layout.");
+
+				_ignoreScalingResize = value;
+			}
+		}
 
         public bool Hidden { get; private set; }
 
@@ -201,7 +225,7 @@ namespace BottomNavigationBar
             return bottomBar;
         }
 
-        // <summary>
+        /// <summary>
         /// Bind the BottomBar to your Activity, and inflate your layout here.
         /// Remember to also call <seealso cref="OnRestoreInstanceState(Bundle)"/> inside
         /// of your <seealso cref="Activity.OnRestoreInstanceState(Bundle)"/> to restore the state.
@@ -1132,8 +1156,8 @@ namespace BottomNavigationBar
             {
 				var oldTab = FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE);
 
-				UnselectTab(oldTab, true);
-				SelectTab(v, true);
+				UnselectTab(oldTab, !IgnoreScalingResize);
+				SelectTab(v, !IgnoreScalingResize);
 
                 ShiftingMagic(oldTab, v, true);
             }

@@ -104,30 +104,31 @@ namespace BottomNavigationBar
         /// <summary>
         /// Shows the badge with a neat little scale animation.
         /// </summary>
-        public void Show()
+		public void Show(bool animated = true)
         {
             if (_needUpdateLayout)
             {
-                OnLayoutUpdated = Show;
+				OnLayoutUpdated = () => Show(false);
                 return;
             }
 
             IsVisible = true;
+
             ViewCompat.Animate(this)
-            .SetDuration(_animationDuration)
-            .ScaleX(1)
-            .ScaleY(1)
-            .Start();
+	            .SetDuration(animated ? _animationDuration : 0)
+	            .ScaleX(1)
+	            .ScaleY(1)
+	            .Start();
         }
 
         /// <summary>
         /// Hides the badge with a neat little scale animation.
         /// </summary>
-        public void Hide()
+		public void Hide(bool animated = true)
         {
             IsVisible = false;
             ViewCompat.Animate(this)
-                .SetDuration(_animationDuration)
+                .SetDuration(animated ? _animationDuration : 0)
                 .ScaleX(0)
                 .ScaleY(0)
                 .Start();
@@ -213,13 +214,14 @@ namespace BottomNavigationBar
 
         public void OnGlobalLayout()
         {
-            AdjustPositionAndSize(_tabToAddTo);
             var obs = ViewTreeObserver;
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBean)
                 obs.RemoveOnGlobalLayoutListener(this);
             else
                 obs.RemoveGlobalOnLayoutListener(this);
+
+			AdjustPositionAndSize (_tabToAddTo);
 
             _needUpdateLayout = false;
 
