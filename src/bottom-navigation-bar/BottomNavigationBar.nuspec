@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>BottomNavigationBar</id>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
     <title>BottomNavigationBar</title>
     <authors>pocheshire</authors>
     <owners>pocheshire</owners>
@@ -14,13 +14,13 @@
     <copyright>Copyright 2016</copyright>
     <tags>XamarinAndroid Xamarin Android BottomNavigationBar Bottom Navigation Bar</tags>
 	<dependencies>
-      <dependency id="Newtonsoft.Json" version="8.0.3" />
-	  <dependency id="Xamarin.Android.Support.Animated.Vector.Drawable" version="23.3.0" />
-	  <dependency id="Xamarin.Android.Support.Design" version="23.3.0" />
-	  <dependency id="Xamarin.Android.Support.v4" version="23.3.0" />
-	  <dependency id="Xamarin.Android.Support.v7.AppCompat" version="23.3.0" />
-	  <dependency id="Xamarin.Android.Support.v7.RecyclerView" version="23.3.0" />
-	  <dependency id="Xamarin.Android.Support.Vector.Drawable" version="23.3.0" />
+      <dependency id="Newtonsoft.Json" version="9.0.1" />
+	  <dependency id="Xamarin.Android.Support.Animated.Vector.Drawable" version="23.4.0" />
+	  <dependency id="Xamarin.Android.Support.Design" version="23.4.0" />
+	  <dependency id="Xamarin.Android.Support.v4" version="23.4.0" />
+	  <dependency id="Xamarin.Android.Support.v7.AppCompat" version="23.4.0" />
+	  <dependency id="Xamarin.Android.Support.v7.RecyclerView" version="23.4.0" />
+	  <dependency id="Xamarin.Android.Support.Vector.Drawable" version="23.4.0" />
     </dependencies>
   </metadata>
   <files>

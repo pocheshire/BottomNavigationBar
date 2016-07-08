@@ -33,6 +33,7 @@ using Android.Content.Res;
 using Android.Support.V4.View.Animation;
 using Android.Views.Animations;
 using BottomNavigationBar.Utils;
+using Android.Support.V7.Widget;
 
 namespace BottomNavigationBar
 {
@@ -561,7 +562,7 @@ namespace BottomNavigationBar
         {
             if (_items != null)
                 throw new InvalidOperationException("This BottomBar already has items! " +
-                    "You must call the forceFixedMode() method before specifying any items.");
+                    "You must call the UseFixedMode() method before specifying any items.");
             _maxFixedTabCount = -1;
         }
 
@@ -719,7 +720,7 @@ namespace BottomNavigationBar
                 for (int i = 0; i < ItemContainer.ChildCount; i++)
                 {
                     View bottomBarTab = ItemContainer.GetChildAt(i);
-                    ((ImageView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_icon)).SetColorFilter(_whiteColor);
+                    ((AppCompatImageView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_icon)).SetColorFilter(_whiteColor);
 
                     if (i == CurrentTabPosition)
                     {
@@ -1445,7 +1446,7 @@ namespace BottomNavigationBar
                 }
 
                 View bottomBarTab = View.Inflate(_context, layoutResource, null);
-                ImageView icon = (ImageView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_icon);
+                var icon = (AppCompatImageView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_icon);
 
                 icon.SetImageDrawable(bottomBarItemBase.GetIcon(_context));
 
@@ -1625,7 +1626,7 @@ namespace BottomNavigationBar
         private void SelectTab(View tab, bool animate)
         {
             tab.Tag = TAG_BOTTOM_BAR_VIEW_ACTIVE;
-            ImageView icon = (ImageView)tab.FindViewById(Resource.Id.bb_bottom_bar_icon);
+            var icon = (AppCompatImageView)tab.FindViewById(Resource.Id.bb_bottom_bar_icon);
             TextView title = (TextView)tab.FindViewById(Resource.Id.bb_bottom_bar_title);
 
             int tabPosition = FindItemPosition(tab);
@@ -1701,7 +1702,7 @@ namespace BottomNavigationBar
         {
             tab.Tag = (TAG_BOTTOM_BAR_VIEW_INACTIVE);
 
-            ImageView icon = (ImageView)tab.FindViewById(Resource.Id.bb_bottom_bar_icon);
+            var icon = (AppCompatImageView)tab.FindViewById(Resource.Id.bb_bottom_bar_icon);
             TextView title = (TextView)tab.FindViewById(Resource.Id.bb_bottom_bar_title);
 
             if (!_isShiftingMode || _isTabletMode)
