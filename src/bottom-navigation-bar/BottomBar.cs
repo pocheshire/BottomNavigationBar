@@ -1,4 +1,4 @@
-﻿/*
+/*
  * C# port BottomBar library for Android
  * Copyright (c) 2016 Iiro Krankka (http://github.com/roughike).
  *
@@ -34,6 +34,7 @@ using Android.Support.V4.View.Animation;
 using Android.Views.Animations;
 using BottomNavigationBar.Utils;
 using Android.Support.V7.Widget;
+using System.Linq;
 
 namespace BottomNavigationBar
 {
@@ -464,8 +465,13 @@ namespace BottomNavigationBar
 		{
 			_listener = listener;
 
-			if (_listener != null && _items != null && _items.Length > 0)
-				listener.OnTabSelected (CurrentTabPosition);
+            if (_listener != null && _items != null && _items.Length > 0)
+            {
+                if (_items[CurrentTabPosition].IsEnabled)
+                {
+                    listener.OnTabSelected(CurrentTabPosition);
+                }
+            }
 		}
 
         public void SetOnMenuTabClickListener(IOnMenuTabClickListener listener)
@@ -475,8 +481,10 @@ namespace BottomNavigationBar
             if (_menuListener != null && _items != null && _items.Length > 0)
             {
                 var tab = (BottomBarTab)_items[CurrentTabPosition];
-                if (tab != null)
+                if (tab != null && tab.IsEnabled)
+                {
                     listener.OnMenuTabSelected(tab.Id);
+                }
             }
         }
 
@@ -1430,9 +1438,10 @@ namespace BottomNavigationBar
                 }
             }
 
-            View[] viewsToAdd = new View[bottomBarItems.Length];
+            var listOfBottomBarItems = new List<BottomBarItemBase>(bottomBarItems)?.Where(i => i.IsVisible)?.ToList();
+            View[] viewsToAdd = new View[listOfBottomBarItems.Count];
 
-            foreach (var bottomBarItemBase in bottomBarItems)
+            foreach (var bottomBarItemBase in listOfBottomBarItems)
             {
                 int layoutResource;
 
@@ -1447,6 +1456,7 @@ namespace BottomNavigationBar
 
                 View bottomBarTab = View.Inflate(_context, layoutResource, null);
                 var icon = (AppCompatImageView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_icon);
+                bottomBarTab.Enabled = bottomBarItemBase.IsEnabled;
 
                 icon.SetImageDrawable(bottomBarItemBase.GetIcon(_context));
 
@@ -1460,6 +1470,11 @@ namespace BottomNavigationBar
                         MiscUtils.SetTextAppearance(title, _pendingTextAppearance);
                     }
 
+                    if (!bottomBarItemBase.IsEnabled)
+                    {
+                        title.Alpha = 0.5F;
+                    }
+
                     if (_pendingTypeface != null)
                     {
                         title.Typeface = (_pendingTypeface);
@@ -1471,12 +1486,17 @@ namespace BottomNavigationBar
                     icon.SetColorFilter(_whiteColor);
                 }
 
+                if (!bottomBarItemBase.IsEnabled)
+                {
+                    icon.Alpha = 0.5F;
+                }
+
                 if (bottomBarItemBase is BottomBarTab)
                 {
                     bottomBarTab.Id = (((BottomBarTab)bottomBarItemBase).Id);
                 }
 
-                if (index == CurrentTabPosition)
+                if (index == CurrentTabPosition && bottomBarItemBase.IsEnabled)
                 {
                     SelectTab(bottomBarTab, false);
                 }
