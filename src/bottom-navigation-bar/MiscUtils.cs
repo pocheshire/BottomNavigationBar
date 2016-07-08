@@ -91,13 +91,17 @@ namespace BottomNavigationBar
         
 			int menuSize = menu.Size ();
 			var tabs = new BottomBarTab[menuSize];
-        
-			for (int i = 0; i < menuSize; i++) {
-				var item = menu.GetItem (i);
-				BottomBarTab tab = new BottomBarTab (item.Icon, item.TitleFormatted.ToString ());
-				tab.Id = item.ItemId;
-				tabs [i] = tab;
-			}
+
+            for (int i = 0; i < menuSize; i++)
+            {
+                var item = menu.GetItem(i);
+
+                BottomBarTab tab = new BottomBarTab(item.Icon, item.TitleFormatted.ToString());
+                tab.IsEnabled = item.IsEnabled;
+                tab.IsVisible = item.IsVisible;
+                tab.Id = item.ItemId;
+                tabs[i] = tab;
+            }
         
 			return tabs;
 		}
