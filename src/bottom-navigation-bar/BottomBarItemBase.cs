@@ -30,18 +30,8 @@ namespace BottomNavigationBar
         protected int _titleResource;
         protected String _title;
         protected int _color;
-        protected bool _isEnabled;
-        protected bool _isVisible;
-
-        public Drawable GetIcon(Context context)
-        {
-			return this._iconResource != 0 ? AppCompatDrawableManager.Get ().GetDrawable(context, this._iconResource) : this._icon;
-        }
-
-        public String GetTitle(Context context)
-        {
-            return this._titleResource != 0 ? context.GetString(this._titleResource) : this._title;
-        }
+        protected bool _isEnabled = true;
+        protected bool _isVisible = true;
 
         public bool IsEnabled
         {
@@ -65,6 +55,16 @@ namespace BottomNavigationBar
             {
                 this._isVisible = value;
             }
+        }
+
+        public Drawable GetIcon(Context context)
+        {
+			return this._iconResource != 0 ? AppCompatDrawableManager.Get ().GetDrawable(context, this._iconResource) : this._icon;
+        }
+
+        public String GetTitle(Context context)
+        {
+            return this._titleResource != 0 ? context.GetString(this._titleResource) : this._title;
         }
     }
 }

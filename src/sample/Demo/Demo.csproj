@@ -118,6 +118,7 @@
     <AndroidResource Include="Resources\layout\Shifting.axml" />
     <AndroidResource Include="Resources\layout\Main.axml" />
     <AndroidResource Include="Resources\layout\Fixed.axml" />
+    <AndroidResource Include="Resources\menu\bottombar_menu_new.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

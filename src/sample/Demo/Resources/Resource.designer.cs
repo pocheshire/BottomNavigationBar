@@ -4142,6 +4142,9 @@ namespace Demo
 			// aapt resource value: 0x7f0c0000
 			public const int bottombar_menu = 2131492864;
 			
+			// aapt resource value: 0x7f0c0001
+			public const int bottombar_menu_new = 2131492865;
+			
 			static Menu()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();

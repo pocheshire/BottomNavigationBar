@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
@@ -12,11 +12,13 @@
     <item
         android:id="@+id/bb_menu_nearby"
         android:icon="@drawable/ic_nearby"
-        android:title="Nearby"/>
+        android:title="Nearby"
+        android:visible="false"/>
     <item
         android:id="@+id/bb_menu_friends"
         android:icon="@drawable/ic_friends"
-        android:title="Friends"/>
+        android:title="Friends"
+        android:enabled="false"/>
     <item
         android:id="@+id/bb_menu_food"
         android:icon="@drawable/ic_restaurants"
