@@ -14,6 +14,10 @@ A custom view component that mimics the new [Material Design Bottom Navigation p
 
 Yes! It's currently available like [BottomNavigationBar](https://www.nuget.org/packages/BottomNavigationBar) package.
 
+##Xamarin Forms
+
+Yes! Thanks [Thrive GmbH](https://github.com/thrive-now) for  [BottomNavigationBarXF](https://github.com/thrive-now/BottomNavigationBarXF) implementation.
+
 ## MinSDK version
 
 The current minSDK version is **API level 11 (Honeycomb).**
