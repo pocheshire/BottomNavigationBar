@@ -1869,7 +1869,7 @@ namespace BottomNavigationBar
                 {
                     for (int i = 0; i < childCount; i++)
                     {
-                        ItemContainer.RemoveView(ItemContainer.GetChildAt(i));
+                        ItemContainer.RemoveView(ItemContainer.GetChildAt(0));
                     }
                 }
             }
