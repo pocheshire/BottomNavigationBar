@@ -29,7 +29,7 @@ Global
 		$1.ResourceNamePolicy = FileFormatDefault
 		$0.TextStylePolicy = $2
 		$2.inheritsSet = null
-		$2.scope = application/xml
+		$2.scope = application/config+xml
 		$2.FileWidth = 120
 		$2.TabsToSpaces = False
 		$2.inheritsScope = text/plain
@@ -189,6 +189,6 @@ Global
 		$31.NamingStyle = PascalCase
 		$31.IncludeInstanceMembers = True
 		$31.IncludeStaticEntities = True
-		version = 1.1.3
+		version = 1.4.0.1
 	EndGlobalSection
 EndGlobal

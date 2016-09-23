@@ -16,7 +16,7 @@
     <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ReleaseVersion>1.1.3</ReleaseVersion>
+    <ReleaseVersion>1.4.0.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
