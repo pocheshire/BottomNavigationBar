@@ -127,8 +127,23 @@ namespace BottomNavigationBar
 
         protected View PendingUserContentView { get; set; }
         protected ViewGroup UserContainer { get; set; }
-        
-        protected bool DrawBehindNavBar { get; set; }
+
+		private bool _drawBehindNavBar;
+        public bool DrawBehindNavBar 
+		{ 
+			get { return _drawBehindNavBar; } 
+			set
+			{
+				if (_items != null) {
+					throw new Java.Lang.UnsupportedOperationException ("This BottomBar already has items! " +
+						"You must call noNavBarGoodness() before setting the items, preferably " +
+						"right after attaching it to your layout.");
+				}
+
+				_drawBehindNavBar = value;
+			}
+		}
+
         protected bool UseOnlyStatusbarOffset { get; set; }
 
         public BottomBarItemBase[] Items { get { return _items; } }
