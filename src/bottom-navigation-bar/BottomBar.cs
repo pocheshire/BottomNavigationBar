@@ -1863,15 +1863,7 @@ namespace BottomNavigationBar
         {
             if (ItemContainer != null)
             {
-                int childCount = ItemContainer.ChildCount;
-
-                if (childCount > 0)
-                {
-                    for (int i = 0; i < childCount; i++)
-                    {
-                        ItemContainer.RemoveView(ItemContainer.GetChildAt(0));
-                    }
-                }
+				ItemContainer.RemoveAllViews ();
             }
 
             if (_fragmentManager != null)
