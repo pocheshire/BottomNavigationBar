@@ -44,11 +44,8 @@ namespace Demo.Views
             _bottomBar.UseFixedMode();
             _bottomBar.UseDarkThemeWithAlpha();
 
-            _bottomBar.SetItems(new [] {
-                new BottomBarTab(Resource.Drawable.ic_recents, "Recents"),
-                new BottomBarTab(Resource.Drawable.ic_favorites, "Favorites"),
-                new BottomBarTab(Resource.Drawable.ic_nearby, "Nearby")
-            });
+            _bottomBar.SetItems(Resource.Xml.bottombar_tabs_five);
+
             _badge0 = _bottomBar.MakeBadgeForTabAt(0, Color.Green, 100);
             _badge0.AutoShowAfterUnSelection = true;
 

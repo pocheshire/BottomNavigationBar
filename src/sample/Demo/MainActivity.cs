@@ -12,6 +12,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Demo.Views;
+using BottomNavigationBar;
 
 namespace Demo
 {
@@ -30,6 +31,8 @@ namespace Demo
 
             FindViewById<Button>(Resource.Id.shiftingBtn).Click += ShowShiftingActivity;
             FindViewById<Button>(Resource.Id.fixedBtn).Click += ShowFixedActivity;
+
+            MiscUtils.InflateFromXMLResource(this, Resource.Xml.bottombar_tabs_five);
         }
 
         private void ShowShiftingActivity(object sender, EventArgs e)

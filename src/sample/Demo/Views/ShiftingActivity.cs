@@ -12,7 +12,7 @@ namespace Demo.Views
         Label = "Demo"
         , Icon = "@drawable/icon"
         , LaunchMode = LaunchMode.SingleInstance)]
-    public class ShiftingActivity : Activity, IOnMenuTabClickListener
+    public class ShiftingActivity : Activity, IOnTabClickListener
     {
         private BottomBar _bottomBar;
         private TextView _messageView;
@@ -27,7 +27,7 @@ namespace Demo.Views
 
             _bottomBar = BottomBar.Attach(this, savedInstanceState);
             _bottomBar.SetItems(Resource.Menu.bottombar_menu);
-            _bottomBar.SetOnMenuTabClickListener (this);
+            _bottomBar.SetOnTabClickListener (this);
 
             // Setting colors for different tabs when there's more than three of them.
             // You can set colors for tabs in two different ways as shown below.
@@ -75,14 +75,14 @@ namespace Demo.Views
             return message;
         }
 
-        #region IOnMenuTabClickListener implementation
+        #region IOnTabClickListener implementation
 
-        public void OnMenuTabSelected(int menuItemId)
+        public void OnTabSelected(int menuItemId)
         {
             _messageView.Text = GetMessage(menuItemId, false);
         }
 
-        public void OnMenuTabReSelected(int menuItemId)
+        public void OnTabReSelected(int menuItemId)
         {
             Toast.MakeText(ApplicationContext, GetMessage(menuItemId, true), ToastLength.Short).Show();
         }

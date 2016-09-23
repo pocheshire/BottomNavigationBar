@@ -16,7 +16,6 @@
     <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ReleaseVersion>1.4.0.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -92,6 +91,7 @@
     <Compile Include="Listeners\OnTabLongClickListener.cs" />
     <Compile Include="Listeners\ResizePaddingTopAnimatorUpdateListener.cs" />
     <Compile Include="Enums\BadgePosition.cs" />
+    <Compile Include="Parsers\TabParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -109,9 +109,9 @@
     <Folder Include="Listeners\" />
     <Folder Include="Utils\" />
     <Folder Include="Enums\" />
+    <Folder Include="Parsers\" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\values\attrs.xml" />
     <AndroidResource Include="Resources\values\bools.xml" />
     <AndroidResource Include="Resources\values\colors.xml" />
     <AndroidResource Include="Resources\values\strings.xml" />

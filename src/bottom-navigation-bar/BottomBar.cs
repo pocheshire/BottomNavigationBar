@@ -63,39 +63,39 @@ namespace BottomNavigationBar
         private Color _darkBackgroundColor;
         private Color _whiteColor;
 
-		private float _tabAlpha = 0.6f;
-		public float TabAlpha 
-		{
-			get { return _tabAlpha; }
-			set 
-			{ 
-				if (_items != null)
-					throw new InvalidOperationException ("This BottomBar already has items! " +
-						"You must set TabAlpha before specifying any items.");
-				
-				_tabAlpha = value;
-			}
-		}
+        private float _tabAlpha = 0.6f;
+        public float TabAlpha
+        {
+            get { return _tabAlpha; }
+            set
+            {
+                if (_items != null)
+                    throw new InvalidOperationException("This BottomBar already has items! " +
+                        "You must set TabAlpha before specifying any items.");
+
+                _tabAlpha = value;
+            }
+        }
 
         private int _screenWidth;
         private int _tenDp;
-		private int _sixDp;
-		private int _sixteenDp;
-		private int _eightDp;
+        private int _sixDp;
+        private int _sixteenDp;
+        private int _eightDp;
         private int _maxFixedItemWidth;
-		private int _maxInActiveShiftingItemWidth;
-		private int _inActiveShiftingItemWidth;
-		private int _activeShiftingItemWidth;
+        private int _maxInActiveShiftingItemWidth;
+        private int _inActiveShiftingItemWidth;
+        private int _activeShiftingItemWidth;
 
-		private IOnTabClickListener _listener;
-		private IOnMenuTabClickListener _menuListener;
+        private IOnTabClickListener _listener;
+        private IOnMenuTabClickListener _menuListener;
 
         private bool _isShiftingMode;
 
         private Java.Lang.Object _fragmentManager;
         private int _fragmentContainer;
 
-        private BottomBarTab[] _items;
+        private List<BottomBarTab> _items;
         private Dictionary<int, Color> _colorMap;
         private Dictionary<int, Java.Lang.Object> _badgeMap;
         private Dictionary<int, bool> _badgeStateMap;
@@ -104,8 +104,8 @@ namespace BottomNavigationBar
         private Color _defaultBackgroundColor;
 
         private bool _isDarkTheme;
-		private bool _useDarkThemeAlpha;
-		private bool _ignoreNightMode;
+        private bool _useDarkThemeAlpha;
+        private bool _ignoreNightMode;
         private int _customActiveTabColor;
 
         private int _pendingTextAppearance = -1;
@@ -125,40 +125,41 @@ namespace BottomNavigationBar
         protected View PendingUserContentView { get; set; }
         protected ViewGroup UserContainer { get; set; }
 
-		private bool _drawBehindNavBar;
-        public bool DrawBehindNavBar 
-		{ 
-			get { return _drawBehindNavBar; } 
-			set
-			{
-				if (_items != null) {
-					throw new Java.Lang.UnsupportedOperationException ("This BottomBar already has items! " +
-						"You must call noNavBarGoodness() before setting the items, preferably " +
-						"right after attaching it to your layout.");
-				}
+        private bool _drawBehindNavBar;
+        public bool DrawBehindNavBar
+        {
+            get { return _drawBehindNavBar; }
+            set
+            {
+                if (_items != null)
+                {
+                    throw new Java.Lang.UnsupportedOperationException("This BottomBar already has items! " +
+                        "You must call noNavBarGoodness() before setting the items, preferably " +
+                        "right after attaching it to your layout.");
+                }
 
-				_drawBehindNavBar = value;
-			}
-		}
+                _drawBehindNavBar = value;
+            }
+        }
 
         protected bool UseOnlyStatusbarOffset { get; set; }
 
-        public BottomBarTab[] Items { get { return _items; } }
+        public List<BottomBarTab> Items { get { return _items; } }
 
-		public ViewGroup ItemContainer { get; private set; }
+        public ViewGroup ItemContainer { get; private set; }
 
-		/// <summary>
-		/// Get the actual BottomBar that has the tabs inside it for whatever what you may want
-		/// to do with it.
-		/// </summary>
-		/// <value>The BottomBar</value>
-		public ViewGroup OuterContainer { get; protected set; }
+        /// <summary>
+        /// Get the actual BottomBar that has the tabs inside it for whatever what you may want
+        /// to do with it.
+        /// </summary>
+        /// <value>The BottomBar</value>
+        public ViewGroup OuterContainer { get; protected set; }
 
-		/// <summary>
-		/// Gets the current tab position.
-		/// </summary>
-		/// <value>the position of currently selected tab.</value>
-		public int CurrentTabPosition { get; private set; }
+        /// <summary>
+        /// Gets the current tab position.
+        /// </summary>
+        /// <value>the position of currently selected tab.</value>
+        public int CurrentTabPosition { get; private set; }
 
         public bool UseExtraOffset { get; private set; }
 
@@ -174,8 +175,8 @@ namespace BottomNavigationBar
         public int MaxFixedTabCount
         {
             get { return _maxFixedTabCount; }
-            set 
-            { 
+            set
+            {
                 if (_items != null)
                     throw new InvalidOperationException("This BottomBar already has items! " +
                         "You must set MaxFixedTabCount before specifying any items.");
@@ -184,13 +185,13 @@ namespace BottomNavigationBar
         }
 
         private bool _ignoreShiftingResize;
-		/// <summary>
-		/// Get or set resize or not the tabs when selecting a new one, so every tab is the same if you have more than three
-		/// tabs. The text still displays the scale animation and the icon moves up, but the badass width animation is ignored.
-		/// </summary>
-		/// <value><c>true</c>if ignore shifting resize, overwise <c>false</c>.</value>
-		public bool IgnoreShiftingResize 
-        { 
+        /// <summary>
+        /// Get or set resize or not the tabs when selecting a new one, so every tab is the same if you have more than three
+        /// tabs. The text still displays the scale animation and the icon moves up, but the badass width animation is ignored.
+        /// </summary>
+        /// <value><c>true</c>if ignore shifting resize, overwise <c>false</c>.</value>
+        public bool IgnoreShiftingResize
+        {
             get { return _ignoreShiftingResize; }
             set
             {
@@ -198,29 +199,30 @@ namespace BottomNavigationBar
                     throw new InvalidOperationException("This BottomBar already has items! "
                         + "You must set IgnoreShiftingResize before setting the items, preferably "
                         + "right after attaching it to your layout.");
-                
+
                 _ignoreShiftingResize = value;
             }
         }
 
-		private bool _ignoreScalingResize;
-		/// <summary>
-		/// Gets or sets the ignore or not scaling of the text when selecting a new tab. The text still displays the badass width animation
-		/// but the scale animation is ignored.
-		/// </summary>
-		/// <value>The ignore scaling resize.</value>
-		public bool IgnoreScalingResize 
-		{
-			get { return _ignoreScalingResize; }
-			set {
-				if (_items == null)
-					throw new InvalidOperationException ("This BottomBar already has items! "
-						+ "You must set IgnoreScalingResize before setting the items, preferably "
-						+ "right after attaching it to your layout.");
+        private bool _ignoreScalingResize;
+        /// <summary>
+        /// Gets or sets the ignore or not scaling of the text when selecting a new tab. The text still displays the badass width animation
+        /// but the scale animation is ignored.
+        /// </summary>
+        /// <value>The ignore scaling resize.</value>
+        public bool IgnoreScalingResize
+        {
+            get { return _ignoreScalingResize; }
+            set
+            {
+                if (_items == null)
+                    throw new InvalidOperationException("This BottomBar already has items! "
+                        + "You must set IgnoreScalingResize before setting the items, preferably "
+                        + "right after attaching it to your layout.");
 
-				_ignoreScalingResize = value;
-			}
-		}
+                _ignoreScalingResize = value;
+            }
+        }
 
         public bool Hidden { get; private set; }
 
@@ -253,21 +255,21 @@ namespace BottomNavigationBar
             return bottomBar;
         }
 
-		public static BottomBar Attach (Activity activity, Bundle savedInstanceState, 
-		                                Color backgroundColor, Color activeIconColor, float alpha)
-		{
-			BottomBar bottomBar = new BottomBar (activity, backgroundColor, activeIconColor, alpha);
-			bottomBar.OnRestoreInstanceState (savedInstanceState);
+        public static BottomBar Attach(Activity activity, Bundle savedInstanceState,
+                                        Color backgroundColor, Color activeIconColor, float alpha)
+        {
+            BottomBar bottomBar = new BottomBar(activity, backgroundColor, activeIconColor, alpha);
+            bottomBar.OnRestoreInstanceState(savedInstanceState);
 
-			ViewGroup contentView = (ViewGroup)activity.FindViewById (Android.Resource.Id.Content);
-			View oldLayout = contentView.GetChildAt (0);
-			contentView.RemoveView (oldLayout);
+            ViewGroup contentView = (ViewGroup)activity.FindViewById(Android.Resource.Id.Content);
+            View oldLayout = contentView.GetChildAt(0);
+            contentView.RemoveView(oldLayout);
 
-			bottomBar.PendingUserContentView = oldLayout;
-			contentView.AddView (bottomBar, 0);
+            bottomBar.PendingUserContentView = oldLayout;
+            contentView.AddView(bottomBar, 0);
 
-			return bottomBar;
-		}
+            return bottomBar;
+        }
 
         /// <summary>
         /// Bind the BottomBar to your Activity, and inflate your layout here.
@@ -336,54 +338,31 @@ namespace BottomNavigationBar
         }
 
         /// <summary>
-        /// Set tabs and fragments for this BottomBar. When setting more than 3 items,
-        /// only the icons will show by default, but the selected item will have the text visible.
-        /// </summary>
-        /// <param name="bottomBarTabs">an array of <see cref="BottomBarTab"/> objects.</param>
-        public void SetItems(BottomBarTab[] bottomBarTabs)
-        {
-            ClearItems();
-            _items = bottomBarTabs;
-            UpdateItems(_items);
-        }
-
-        /// <summary>
         /// Set items for this BottomBar from an XML menu resource file.
         /// When setting more than 3 items, only the icons will show by
         /// default, but the selected item will have the text visible.
         /// </summary>
-        /// <param name="menuRes">the menu resource to inflate items from.</param>
-        public void SetItems (int menuRes)
+        /// <param name="xmlRes">the menu resource to inflate items from.</param>
+        public void SetItems(int xmlRes)
         {
             ClearItems();
-            _items = MiscUtils.InflateMenuFromResource((Activity)Context, menuRes);
+            _items = MiscUtils.InflateFromXMLResource((Activity)Context, xmlRes);
             UpdateItems(_items);
         }
 
-		/// <summary>
-		/// Set a listener that gets fired when the selected tab changes.
+        /// <summary>
+        /// Set a listener that gets fired when the selected tab changes.
         /// Note: If listener is set after items are added to the BottomBar, OnTabSelected 
         /// will be immediately called for the currently selected tab
-		/// </summary>
-		/// <param name="listener">a listener for monitoring changes in tab selection.</param>
+        /// </summary>
+        /// <param name="listener">a listener for monitoring changes in tab selection.</param>
         public void SetOnTabClickListener(IOnTabClickListener listener)
-		{
-			_listener = listener;
-
-            if (_listener != null && _items != null && _items.Length > 0)
-            {
-                    listener.OnTabSelected(CurrentTabPosition);
-            }
-		}
-
-        public void SetOnMenuTabClickListener(IOnMenuTabClickListener listener)
         {
-            _menuListener = listener;
+            _listener = listener;
 
-            if (_menuListener != null && _items != null && _items.Length > 0)
+            if (_listener != null && _items != null && _items.Count > 0)
             {
-                var tab = (BottomBarTab)_items[CurrentTabPosition];
-				listener.OnMenuTabSelected(tab.Id);
+                listener.OnTabSelected(CurrentTabPosition);
             }
         }
 
@@ -394,12 +373,12 @@ namespace BottomNavigationBar
         /// <param name="animate">If set to <c>true</c> animate.</param>
         public void SelectTabAtPosition(int position, bool animate)
         {
-            if (_items == null || _items.Length == 0)
+            if (_items == null || _items.Count == 0)
             {
                 throw new InvalidOperationException("Can't select tab at " +
                     "position " + position + ". This BottomBar has no items set yet.");
             }
-            else if (position > _items.Length - 1 || position < 0)
+            else if (position > _items.Count - 1 || position < 0)
             {
                 throw new ArgumentOutOfRangeException("Can't select tab at position " +
                     position + ". This BottomBar has no items at that position.");
@@ -412,34 +391,34 @@ namespace BottomNavigationBar
             SelectTab(newTab, animate);
 
             UpdateSelectedTab(position);
-			ShiftingMagic(oldTab, newTab, animate);
+            ShiftingMagic(oldTab, newTab, animate);
         }
 
-		/// <summary>
-		/// Sets the default tab for this BottomBar that is shown until the user changes
-		/// the selection.
-		/// </summary>
-		/// <param name="defaultTabPosition">the default tab position.</param>
-		public void SetDefaultTabPosition(int defaultTabPosition)
-		{
-			if (_items == null)
+        /// <summary>
+        /// Sets the default tab for this BottomBar that is shown until the user changes
+        /// the selection.
+        /// </summary>
+        /// <param name="defaultTabPosition">the default tab position.</param>
+        public void SetDefaultTabPosition(int defaultTabPosition)
+        {
+            if (_items == null)
             {
                 CurrentTabPosition = defaultTabPosition;
                 return;
             }
-            else if (_items.Length == 0 || defaultTabPosition > _items.Length - 1 || defaultTabPosition < 0)
-				throw new ArgumentOutOfRangeException("Can't set default tab at position " +
-					defaultTabPosition + ". This BottomBar has no items at that position.");
+            else if (_items.Count == 0 || defaultTabPosition > _items.Count - 1 || defaultTabPosition < 0)
+                throw new ArgumentOutOfRangeException("Can't set default tab at position " +
+                    defaultTabPosition + ". This BottomBar has no items at that position.");
 
-			if (!_isComingFromRestoredState)
-				SelectTabAtPosition (defaultTabPosition, false);
-		}
+            if (!_isComingFromRestoredState)
+                SelectTabAtPosition(defaultTabPosition, false);
+        }
 
-		/// <summary>
+        /// <summary>
         /// Hide the BottomBar with or without animation.
-		/// </summary>
-        public void Hide(bool animated) 
-		{
+        /// </summary>
+        public void Hide(bool animated)
+        {
             if (!animated)
                 SetBarVisibility(ViewStates.Gone);
 
@@ -447,25 +426,25 @@ namespace BottomNavigationBar
                 AnimateOffset(OuterContainer.Height, !animated);
 
             Hidden = true;
-		}
+        }
 
-		/// <summary>
-		/// Show the BottomBar with or without animation.
-		/// </summary>
-        public void Show(bool animated) 
-		{
+        /// <summary>
+        /// Show the BottomBar with or without animation.
+        /// </summary>
+        public void Show(bool animated)
+        {
             if (!animated)
                 SetBarVisibility(ViewStates.Visible);
 
             AnimateOffset(0, !animated);
 
             Hidden = false;
-		}
+        }
 
         /// <summary>
         /// Always show the titles and icons also on inactive tabs, even if there's more than three of them.
         /// </summary>
-        public void UseFixedMode ()
+        public void UseFixedMode()
         {
             if (_items != null)
                 throw new InvalidOperationException("This BottomBar already has items! " +
@@ -505,17 +484,17 @@ namespace BottomNavigationBar
             }
         }
 
-		private void SetBarVisibility(ViewStates visibility)
-		{
-			if (OuterContainer != null)
-				OuterContainer.Visibility = visibility;
+        private void SetBarVisibility(ViewStates visibility)
+        {
+            if (OuterContainer != null)
+                OuterContainer.Visibility = visibility;
 
-			if (_backgroundView != null)
-				_backgroundView.Visibility = visibility;
+            if (_backgroundView != null)
+                _backgroundView.Visibility = visibility;
 
-			if (_backgroundOverlay != null)
-				_backgroundOverlay.Visibility = visibility;
-		}
+            if (_backgroundOverlay != null)
+                _backgroundOverlay.Visibility = visibility;
+        }
 
 
         /// <summary>
@@ -552,12 +531,12 @@ namespace BottomNavigationBar
         /// <param name="color">a hex color for the tab, such as 0xFF00FF00.</param>
         public void MapColorForTab(int tabPosition, Color color)
         {
-            if (_items == null || _items.Length == 0)
+            if (_items == null || _items.Count == 0)
             {
                 throw new Java.Lang.UnsupportedOperationException("You have no BottomBar Tabs set yet. " +
                     "Please set them first before calling the mapColorForTab method.");
             }
-            else if (tabPosition > _items.Length - 1 || tabPosition < 0)
+            else if (tabPosition > _items.Count - 1 || tabPosition < 0)
             {
                 throw new Java.Lang.IndexOutOfBoundsException("Cant map color for Tab " +
                     "index " + tabPosition + ". You have no BottomBar Tabs at that position.");
@@ -601,9 +580,9 @@ namespace BottomNavigationBar
             UseDarkTheme();
         }
 
-		public void UseDarkTheme()
+        public void UseDarkTheme()
         {
-            if (!_isDarkTheme && _items != null && _items.Length > 0)
+            if (!_isDarkTheme && _items != null && _items.Count > 0)
             {
                 DarkThemeMagic();
 
@@ -626,31 +605,32 @@ namespace BottomNavigationBar
             _isDarkTheme = true;
         }
 
-		/// <summary>
-		/// Apply the dark theme
-		/// </summary>
-		/// <param name="useDarkThemeAlpha">If set to <c>true</c> change alpha for icon and title when tab unselected.</param>
-		public void UseDarkThemeWithAlpha (bool useDarkThemeAlpha = true)
-		{
-			_useDarkThemeAlpha = useDarkThemeAlpha;
+        /// <summary>
+        /// Apply the dark theme
+        /// </summary>
+        /// <param name="useDarkThemeAlpha">If set to <c>true</c> change alpha for icon and title when tab unselected.</param>
+        public void UseDarkThemeWithAlpha(bool useDarkThemeAlpha = true)
+        {
+            _useDarkThemeAlpha = useDarkThemeAlpha;
 
-			UseDarkTheme ();
-		}
+            UseDarkTheme();
+        }
 
-		/// <summary>
-		/// Ignore the automatic Night Mode detection and use a light theme by default,
-		/// even if the Night Mode is on.
-		/// </summary>
-		public void IgnoreNightMode()
-		{
-			if (_items != null && _items.Length > 0) {
-				throw new InvalidOperationException("This BottomBar " +
-					"already has items! You must call ignoreNightMode() " +
-					"before setting any items.");
-			}
+        /// <summary>
+        /// Ignore the automatic Night Mode detection and use a light theme by default,
+        /// even if the Night Mode is on.
+        /// </summary>
+        public void IgnoreNightMode()
+        {
+            if (_items != null && _items.Count > 0)
+            {
+                throw new InvalidOperationException("This BottomBar " +
+                    "already has items! You must call ignoreNightMode() " +
+                    "before setting any items.");
+            }
 
-			_ignoreNightMode = true;
-		}
+            _ignoreNightMode = true;
+        }
 
         /// <summary>
         /// Set a custom color for an active tab when there's three or less items.
@@ -671,73 +651,73 @@ namespace BottomNavigationBar
         {
             _customActiveTabColor = activeTabColor;
 
-			if (_items != null && _items.Length > 0)
-				SelectTabAtPosition (CurrentTabPosition, false);
+            if (_items != null && _items.Count > 0)
+                SelectTabAtPosition(CurrentTabPosition, false);
         }
 
-		/// <summary>
-		/// Set a custom color for inactive icons in fixed mode.
-		/// NOTE: This value is ignored if not in fixed mode.
-		/// </summary>
-		/// <returns>The fixed inactive icon color.</returns>
-		/// <param name="iconColor">a hex color used for icons, such as "#00FF000"</param>
-		public void SetFixedInactiveIconColor(String iconColor)
-		{
-			_inActiveColor = Color.ParseColor (iconColor);
+        /// <summary>
+        /// Set a custom color for inactive icons in fixed mode.
+        /// NOTE: This value is ignored if not in fixed mode.
+        /// </summary>
+        /// <returns>The fixed inactive icon color.</returns>
+        /// <param name="iconColor">a hex color used for icons, such as "#00FF000"</param>
+        public void SetFixedInactiveIconColor(String iconColor)
+        {
+            _inActiveColor = Color.ParseColor(iconColor);
 
-			if (_items != null && _items.Length > 0)
-				throw new InvalidOperationException ("This BottomBar " +
-					"already has items! You must call SetFixedInactiveIconColor() " +
-					"before setting any items.");
-		}
+            if (_items != null && _items.Count > 0)
+                throw new InvalidOperationException("This BottomBar " +
+                    "already has items! You must call SetFixedInactiveIconColor() " +
+                    "before setting any items.");
+        }
 
-		/// <summary>
-		/// Set a custom color for inactive icons in fixed mode.
-		/// NOTE: This value is ignored if not in fixed mode.
-		/// </summary>
-		/// <returns>The fixed inactive icon color.</returns>
-		/// <param name="iconColor">a color used for icons</param>
-		public void SetFixedInactiveIconColor (Color iconColor)
-		{
-			_inActiveColor = iconColor;
+        /// <summary>
+        /// Set a custom color for inactive icons in fixed mode.
+        /// NOTE: This value is ignored if not in fixed mode.
+        /// </summary>
+        /// <returns>The fixed inactive icon color.</returns>
+        /// <param name="iconColor">a color used for icons</param>
+        public void SetFixedInactiveIconColor(Color iconColor)
+        {
+            _inActiveColor = iconColor;
 
-			if (_items != null && _items.Length > 0)
-				throw new InvalidOperationException ("This BottomBar " +
-					"already has items! You must call SetFixedInactiveIconColor() " +
-					"before setting any items.");
-		}
+            if (_items != null && _items.Count > 0)
+                throw new InvalidOperationException("This BottomBar " +
+                    "already has items! You must call SetFixedInactiveIconColor() " +
+                    "before setting any items.");
+        }
 
-		/// <summary>
-		/// Set a custom color for icons in shifting mode.
-		/// NOTE: This value is ignored in fixed mode.
-		/// </summary>
-		/// <returns>The shifting icon color.</returns>
-		/// <param name="iconColor">a hex color used for icons, such as "#00FF000"</param>
-		public void SetShiftingIconColor(String iconColor)
-		{
-			_whiteColor = Color.ParseColor (iconColor);
+        /// <summary>
+        /// Set a custom color for icons in shifting mode.
+        /// NOTE: This value is ignored in fixed mode.
+        /// </summary>
+        /// <returns>The shifting icon color.</returns>
+        /// <param name="iconColor">a hex color used for icons, such as "#00FF000"</param>
+        public void SetShiftingIconColor(String iconColor)
+        {
+            _whiteColor = Color.ParseColor(iconColor);
 
-			if (_items != null && _items.Length > 0)
-				throw new InvalidOperationException ("This BottomBar " +
-					"already has items! You must call SetFixedInactiveIconColor() " +
-					"before setting any items.");
-		}
+            if (_items != null && _items.Count > 0)
+                throw new InvalidOperationException("This BottomBar " +
+                    "already has items! You must call SetFixedInactiveIconColor() " +
+                    "before setting any items.");
+        }
 
-		/// <summary>
-		/// Set a custom color for icons in shifting mode.
-		/// NOTE: This value is ignored in fixed mode.
-		/// </summary>
-		/// <returns>The shifting icon color.</returns>
-		/// <param name="iconColor">a color used for icons</param>
-		public void SetShiftingIconColor (Color iconColor)
-		{
-			_whiteColor = iconColor;
+        /// <summary>
+        /// Set a custom color for icons in shifting mode.
+        /// NOTE: This value is ignored in fixed mode.
+        /// </summary>
+        /// <returns>The shifting icon color.</returns>
+        /// <param name="iconColor">a color used for icons</param>
+        public void SetShiftingIconColor(Color iconColor)
+        {
+            _whiteColor = iconColor;
 
-			if (_items != null && _items.Length > 0)
-				throw new InvalidOperationException ("This BottomBar " +
-					"already has items! You must call SetFixedInactiveIconColor() " +
-					"before setting any items.");
-		}
+            if (_items != null && _items.Count > 0)
+                throw new InvalidOperationException("This BottomBar " +
+                    "already has items! You must call SetFixedInactiveIconColor() " +
+                    "before setting any items.");
+        }
 
         /// <summary>
         /// Creates a new Badge (for example, an indicator for unread messages) for a Tab at the specified position.
@@ -760,12 +740,12 @@ namespace BottomNavigationBar
         /// <param name="initialCount">text displayed initially for this Badge.</param>
         public BottomBarBadge MakeBadgeForTabAt(int tabPosition, Color backgroundColor, int initialCount)
         {
-            if (_items == null || _items.Length == 0)
+            if (_items == null || _items.Count == 0)
             {
                 throw new InvalidOperationException("You have no BottomBar Tabs set yet. " +
                     "Please set them first before calling the makeBadgeForTabAt() method.");
             }
-            else if (tabPosition > _items.Length - 1 || tabPosition < 0)
+            else if (tabPosition > _items.Count - 1 || tabPosition < 0)
             {
                 throw new ArgumentOutOfRangeException("Cant make a Badge for Tab " +
                     "index " + tabPosition + ". You have no BottomBar Tabs at that position.");
@@ -777,8 +757,8 @@ namespace BottomNavigationBar
             badge.Tag = (TAG_BADGE + tabPosition);
             badge.Count = initialCount;
 
-            tab.SetOnClickListener(new OnTabClickListener (() => HandleClick((View)tab.Parent)));
-            tab.SetOnLongClickListener(new OnTabLongClickListener (() => HandleLongClick((View)tab.Parent)));
+            tab.SetOnClickListener(new OnTabClickListener(() => HandleClick((View)tab.Parent)));
+            tab.SetOnLongClickListener(new OnTabLongClickListener(() => HandleLongClick((View)tab.Parent)));
 
             if (_badgeMap == null)
             {
@@ -812,12 +792,12 @@ namespace BottomNavigationBar
         {
             var tabPosition = badge.TabPosition;
 
-            if (_items == null || _items.Length == 0)
+            if (_items == null || _items.Count == 0)
             {
                 throw new InvalidOperationException("You have no BottomBar Tabs set yet. " +
                     "Please set them first before calling the makeBadgeForTabAt() method.");
             }
-            else if (tabPosition > _items.Length - 1 || tabPosition < 0)
+            else if (tabPosition > _items.Count - 1 || tabPosition < 0)
             {
                 throw new ArgumentOutOfRangeException("Cant make a Badge for Tab " +
                     "index " + tabPosition + ". You have no BottomBar Tabs at that position.");
@@ -828,8 +808,8 @@ namespace BottomNavigationBar
             badge.AddBadgeToTab(_context, tab);
             badge.Tag = (TAG_BADGE + tabPosition);
 
-            tab.SetOnClickListener(new OnTabClickListener (() => HandleClick((View)tab.Parent)));
-            tab.SetOnLongClickListener(new OnTabLongClickListener (() => HandleLongClick((View)tab.Parent)));
+            tab.SetOnClickListener(new OnTabClickListener(() => HandleClick((View)tab.Parent)));
+            tab.SetOnLongClickListener(new OnTabLongClickListener(() => HandleLongClick((View)tab.Parent)));
 
             if (_badgeMap == null)
             {
@@ -874,7 +854,7 @@ namespace BottomNavigationBar
 
             if (_badgeMap.ContainsKey(tabPosition))
                 _badgeMap.Remove(tabPosition);
-            
+
             if (_badgeStateMap != null && _badgeStateMap.ContainsKey(tabPosition))
                 _badgeStateMap.Remove(tabPosition);
         }
@@ -989,22 +969,23 @@ namespace BottomNavigationBar
             _ignoreTabletLayout = true;
         }
 
-		/// <summary>
-		/// Get this BottomBar's height (or width), depending if the BottomBar
-		/// is on the bottom (phones) or the left (tablets) of the screen.
-		/// </summary>
-		/// <param name="listener">listener <see cref="IOnSizeDeterminedListener"/> to get the size when it's ready.</param>
-		public void GetBarSize(IOnSizeDeterminedListener listener)
-		{
-			int sizeCandidate = _isTabletMode ? OuterContainer.Width : OuterContainer.Height;
+        /// <summary>
+        /// Get this BottomBar's height (or width), depending if the BottomBar
+        /// is on the bottom (phones) or the left (tablets) of the screen.
+        /// </summary>
+        /// <param name="listener">listener <see cref="IOnSizeDeterminedListener"/> to get the size when it's ready.</param>
+        public void GetBarSize(IOnSizeDeterminedListener listener)
+        {
+            int sizeCandidate = _isTabletMode ? OuterContainer.Width : OuterContainer.Height;
 
-			if (sizeCandidate == 0) {
-				OuterContainer.ViewTreeObserver.AddOnGlobalLayoutListener(new BarSizeOnGlobalLayoutListener(listener, _isTabletMode, OuterContainer));
-				return;
-			}
+            if (sizeCandidate == 0)
+            {
+                OuterContainer.ViewTreeObserver.AddOnGlobalLayoutListener(new BarSizeOnGlobalLayoutListener(listener, _isTabletMode, OuterContainer));
+                return;
+            }
 
-			listener.OnSizeReady(sizeCandidate);
-		}
+            listener.OnSizeReady(sizeCandidate);
+        }
 
 
         /* ------------------ Super ugly hacks ------------------------- */
@@ -1042,7 +1023,7 @@ namespace BottomNavigationBar
         public BottomBar(Context context, IAttributeSet attrs, int defStyleAttr)
             : base(context, attrs, defStyleAttr)
         {
-            
+
             Init(context, attrs, defStyleAttr, 0);
         }
 
@@ -1053,47 +1034,47 @@ namespace BottomNavigationBar
             Init(context, attrs, defStyleAttr, defStyleRes);
         }
 
-		public BottomBar (Context context, Color backgroundColor, Color activeColor, float alpha)
-			: base (context)
-		{
-			_tabAlpha = alpha;
-			_whiteColor = activeColor;
-			_primaryColor = backgroundColor;
+        public BottomBar(Context context, Color backgroundColor, Color activeColor, float alpha)
+            : base(context)
+        {
+            _tabAlpha = alpha;
+            _whiteColor = activeColor;
+            _primaryColor = backgroundColor;
 
-			Init (context, null, 0, 0, true);
-		}
+            Init(context, null, 0, 0, true);
+        }
 
-		private void Init(Context context, IAttributeSet attrs, int defStyleAttr, int defStyleRes, bool colorsInitialized = false)
+        private void Init(Context context, IAttributeSet attrs, int defStyleAttr, int defStyleRes, bool colorsInitialized = false)
         {
             _context = context;
 
             _darkBackgroundColor = new Color(ContextCompat.GetColor(Context, Resource.Color.bb_darkBackgroundColor));
 
-			if (!colorsInitialized)
-			{
-				_whiteColor = new Color (ContextCompat.GetColor (Context, Resource.Color.white));
-				_primaryColor = new Color (MiscUtils.GetColor (Context, Resource.Attribute.colorPrimary));
-			}
+            if (!colorsInitialized)
+            {
+                _whiteColor = new Color(ContextCompat.GetColor(Context, Resource.Color.white));
+                _primaryColor = new Color(MiscUtils.GetColor(Context, Resource.Attribute.colorPrimary));
+            }
 
-			_inActiveColor = new Color(ContextCompat.GetColor(Context, Resource.Color.bb_inActiveBottomBarItemColor));
+            _inActiveColor = new Color(ContextCompat.GetColor(Context, Resource.Color.bb_inActiveBottomBarItemColor));
 
             _screenWidth = MiscUtils.GetScreenWidth(_context);
             _tenDp = MiscUtils.DpToPixel(_context, 10);
-			_sixteenDp = MiscUtils.DpToPixel (_context, 16);
-			_sixDp = MiscUtils.DpToPixel (_context, 6);
-			_eightDp = MiscUtils.DpToPixel (_context, 8);
+            _sixteenDp = MiscUtils.DpToPixel(_context, 16);
+            _sixDp = MiscUtils.DpToPixel(_context, 6);
+            _eightDp = MiscUtils.DpToPixel(_context, 8);
             _maxFixedItemWidth = MiscUtils.DpToPixel(_context, 168);
-			_maxInActiveShiftingItemWidth = MiscUtils.DpToPixel(_context, 96);
+            _maxInActiveShiftingItemWidth = MiscUtils.DpToPixel(_context, 96);
         }
 
         private void InitializeViews()
         {
             _isTabletMode = !_ignoreTabletLayout && _context.Resources.GetBoolean(Resource.Boolean.bb_bottom_bar_is_tablet_mode);
 
-			ViewCompat.SetElevation(this, MiscUtils.DpToPixel(_context, 8));
+            ViewCompat.SetElevation(this, MiscUtils.DpToPixel(_context, 8));
 
             View rootView = Inflate(_context,
-                _isTabletMode ? Resource.Layout.bb_bottom_bar_item_container_tablet : Resource.Layout.bb_bottom_bar_item_container, 
+                _isTabletMode ? Resource.Layout.bb_bottom_bar_item_container_tablet : Resource.Layout.bb_bottom_bar_item_container,
                 this);
             _tabletRightBorder = rootView.FindViewById(Resource.Id.bb_tablet_right_border);
 
@@ -1131,7 +1112,7 @@ namespace BottomNavigationBar
 
             if (IsShy && !_isTabletMode)
             {
-				ViewTreeObserver.AddOnGlobalLayoutListener(new InitializeViewsOnGlobalLayoutListener(ShyHeightAlreadyCalculated, ((CoordinatorLayout.LayoutParams)LayoutParameters), OuterContainer, ViewTreeObserver, IsShy, _isTabletMode));
+                ViewTreeObserver.AddOnGlobalLayoutListener(new InitializeViewsOnGlobalLayoutListener(ShyHeightAlreadyCalculated, ((CoordinatorLayout.LayoutParams)LayoutParameters), OuterContainer, ViewTreeObserver, IsShy, _isTabletMode));
             }
         }
 
@@ -1150,29 +1131,29 @@ namespace BottomNavigationBar
             HandleClick(v);
         }
 
-        public void HandleClick (View v)
+        public void HandleClick(View v)
         {
             if (v.Tag.Equals(TAG_BOTTOM_BAR_VIEW_INACTIVE))
             {
-				var oldTab = FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE);
+                var oldTab = FindViewWithTag(TAG_BOTTOM_BAR_VIEW_ACTIVE);
 
-				UnselectTab(oldTab, !IgnoreScalingResize);
-				SelectTab(v, !IgnoreScalingResize);
+                UnselectTab(oldTab, !IgnoreScalingResize);
+                SelectTab(v, !IgnoreScalingResize);
 
                 ShiftingMagic(oldTab, v, true);
             }
-			UpdateSelectedTab(FindItemPosition(v));
+            UpdateSelectedTab(FindItemPosition(v));
         }
 
-        private void ShiftingMagic (View oldTab, View newTab, bool animate)
+        private void ShiftingMagic(View oldTab, View newTab, bool animate)
         {
-            if (!_isTabletMode && _isShiftingMode && !IgnoreShiftingResize) 
+            if (!_isTabletMode && _isShiftingMode && !IgnoreShiftingResize)
             {
                 if (oldTab is FrameLayout)
-                    oldTab = ((FrameLayout) oldTab).GetChildAt(0);
+                    oldTab = ((FrameLayout)oldTab).GetChildAt(0);
                 if (newTab is FrameLayout)
-                    newTab = ((FrameLayout) newTab).GetChildAt(0);
-                
+                    newTab = ((FrameLayout)newTab).GetChildAt(0);
+
                 if (animate)
                 {
                     MiscUtils.ResizeTab(oldTab, oldTab.Width, _inActiveShiftingItemWidth);
@@ -1188,45 +1169,33 @@ namespace BottomNavigationBar
 
         private void UpdateSelectedTab(int newPosition)
         {
-			var notifyMenuListener = _menuListener != null && _items is BottomBarTab[];
-			var notifyRegularListener = _listener != null;
+            int tabId = _items[CurrentTabPosition].Id;
 
-			if (newPosition != CurrentTabPosition)
+            if (newPosition != CurrentTabPosition)
             {
                 HandleBadgeVisibility(CurrentTabPosition, newPosition);
                 CurrentTabPosition = newPosition;
-
-				if (notifyRegularListener)
-					NotifyRegularListener (_listener, false, CurrentTabPosition);
-
-				if (notifyMenuListener)
-					NotifyMenuListener (_menuListener, false, ((BottomBarTab)_items [CurrentTabPosition]).Id);
-			}
-			else
-			{
-				if (notifyRegularListener)
-					NotifyRegularListener (_listener, true, CurrentTabPosition);
-
-				if (notifyMenuListener && _menuListener is IOnMenuTabClickListener)
-					NotifyMenuListener (_menuListener, true, ((BottomBarTab)_items [CurrentTabPosition]).Id);
-			}
+                _listener.OnTabSelected(tabId);
+            }
+            else
+                _listener.OnTabReSelected(tabId);
         }
 
-		private void NotifyRegularListener(IOnTabClickListener listener, bool isReselection, int position)
-		{
-			if (!isReselection) 
-				listener.OnTabSelected(position);
-			else
-				listener.OnTabReSelected(position);
-		}
+        private void NotifyRegularListener(IOnTabClickListener listener, bool isReselection, int position)
+        {
+            if (!isReselection)
+                listener.OnTabSelected(position);
+            else
+                listener.OnTabReSelected(position);
+        }
 
-		private void NotifyMenuListener(IOnMenuTabClickListener listener, bool isReselection, int menuItemId)
-		{
-			if (!isReselection) 
-				listener.OnMenuTabSelected(menuItemId);
-			else
-				listener.OnMenuTabReSelected(menuItemId);
-		}
+        private void NotifyMenuListener(IOnMenuTabClickListener listener, bool isReselection, int menuItemId)
+        {
+            if (!isReselection)
+                listener.OnMenuTabSelected(menuItemId);
+            else
+                listener.OnMenuTabReSelected(menuItemId);
+        }
 
 
         private void HandleBadgeVisibility(int oldPosition, int newPosition)
@@ -1253,8 +1222,8 @@ namespace BottomNavigationBar
             if (_badgeMap.ContainsKey(newPosition))
             {
                 BottomBarBadge newBadge = (BottomBarBadge)OuterContainer.FindViewWithTag(_badgeMap[newPosition]);
-				if (newBadge.AutoHideWhenSelection)
-					newBadge.Hide();
+                if (newBadge.AutoHideWhenSelection)
+                    newBadge.Hide();
             }
         }
 
@@ -1267,26 +1236,26 @@ namespace BottomNavigationBar
         {
             if ((_isShiftingMode || _isTabletMode) && v.Tag.Equals(TAG_BOTTOM_BAR_VIEW_INACTIVE))
             {
-                Toast.MakeText(_context, _items[FindItemPosition(v)].GetTitle(_context), ToastLength.Short).Show();
+                Toast.MakeText(_context, _items[FindItemPosition(v)].Title, ToastLength.Short).Show();
             }
 
             return true;
         }
 
-        private void UpdateItems(BottomBarTab[] bottomBarItems)
+        private void UpdateItems(List<BottomBarTab> bottomBarItems)
         {
-			if (ItemContainer == null)
-				InitializeViews ();
+            if (ItemContainer == null)
+                InitializeViews();
 
             int index = 0;
             int biggestWidth = 0;
-            _isShiftingMode = MaxFixedTabCount >= 0 && MaxFixedTabCount < bottomBarItems.Length;
+            _isShiftingMode = MaxFixedTabCount >= 0 && MaxFixedTabCount < bottomBarItems.Count;
 
-			if (!_isDarkTheme && !_ignoreNightMode && MiscUtils.IsNightMode (_context))
-				_isDarkTheme = true;
+            if (!_isDarkTheme && !_ignoreNightMode && MiscUtils.IsNightMode(_context))
+                _isDarkTheme = true;
 
             if (_isDarkTheme)
-                DarkThemeMagic(); 
+                DarkThemeMagic();
             else if (!_isTabletMode && _isShiftingMode)
             {
                 _defaultBackgroundColor = _currentBackgroundColor = _primaryColor;
@@ -1298,7 +1267,8 @@ namespace BottomNavigationBar
                 }
             }
 
-			View[] viewsToAdd = new View[bottomBarItems.Length];
+            View[] viewsToAdd = new View[bottomBarItems.Count];
+            var drawableManager = AppCompatDrawableManager.Get();
 
             foreach (var bottomBarItemBase in bottomBarItems)
             {
@@ -1316,12 +1286,12 @@ namespace BottomNavigationBar
                 View bottomBarTab = View.Inflate(_context, layoutResource, null);
                 var icon = (AppCompatImageView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_icon);
 
-                icon.SetImageDrawable(bottomBarItemBase.GetIcon(_context));
+                icon.SetImageDrawable(drawableManager.GetDrawable(_context, bottomBarItemBase.IconResId));
 
                 if (!_isTabletMode)
                 {
                     TextView title = (TextView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_title);
-                    title.Text = bottomBarItemBase.GetTitle(_context);
+                    title.Text = bottomBarItemBase.Title;
 
                     if (_pendingTextAppearance != -1)
                     {
@@ -1339,7 +1309,7 @@ namespace BottomNavigationBar
                     icon.SetColorFilter(_whiteColor);
                 }
 
-				bottomBarTab.Id = bottomBarItemBase.Id;
+                bottomBarTab.Id = bottomBarItemBase.Id;
 
                 if (index == CurrentTabPosition)
                 {
@@ -1372,27 +1342,27 @@ namespace BottomNavigationBar
             if (!_isTabletMode)
             {
                 int proposedItemWidth = Math.Min(
-                                            MiscUtils.DpToPixel(_context, _screenWidth / bottomBarItems.Length),
+                    MiscUtils.DpToPixel(_context, _screenWidth / bottomBarItems.Count),
                                             _maxFixedItemWidth
                                         );
 
-				_inActiveShiftingItemWidth = (int) (proposedItemWidth * 0.9);
-				_activeShiftingItemWidth = (int) (proposedItemWidth + (proposedItemWidth * (bottomBarItems.Length * 0.1)));
+                _inActiveShiftingItemWidth = (int)(proposedItemWidth * 0.9);
+                _activeShiftingItemWidth = (int)(proposedItemWidth + (proposedItemWidth * (bottomBarItems.Count * 0.1)));
 
-				var height = (int)Math.Round (_context.Resources.GetDimension (Resource.Dimension.bb_height));
+                var height = (int)Math.Round(_context.Resources.GetDimension(Resource.Dimension.bb_height));
                 foreach (var bottomBarView in viewsToAdd)
                 {
-					LinearLayout.LayoutParams param;
+                    LinearLayout.LayoutParams param;
 
-					if (_isShiftingMode && !IgnoreShiftingResize)
-					{
-						if (TAG_BOTTOM_BAR_VIEW_ACTIVE.Equals (bottomBarView.Tag))
-							param = new LinearLayout.LayoutParams (_activeShiftingItemWidth, height);
-						else
-							param = new LinearLayout.LayoutParams (_inActiveShiftingItemWidth, height);
-					} 
-					else
-						param = new LinearLayout.LayoutParams (proposedItemWidth, height);
+                    if (_isShiftingMode && !IgnoreShiftingResize)
+                    {
+                        if (TAG_BOTTOM_BAR_VIEW_ACTIVE.Equals(bottomBarView.Tag))
+                            param = new LinearLayout.LayoutParams(_activeShiftingItemWidth, height);
+                        else
+                            param = new LinearLayout.LayoutParams(_inActiveShiftingItemWidth, height);
+                    }
+                    else
+                        param = new LinearLayout.LayoutParams(proposedItemWidth, height);
 
 
                     bottomBarView.LayoutParameters = param;
@@ -1411,45 +1381,45 @@ namespace BottomNavigationBar
             }
         }
 
-		protected override void OnLayout (bool changed, int left, int top, int right, int bottom)
-		{
-			base.OnLayout (changed, left, top, right, bottom);
+        protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
+        {
+            base.OnLayout(changed, left, top, right, bottom);
 
-			if (changed)
-				UpdateTitleBottomPadding ();
-		}
+            if (changed)
+                UpdateTitleBottomPadding();
+        }
 
-		/// <summary>
-		/// Material Design specify that there should be a 10dp padding under the text, it seems that
-		/// it means 10dp starting from the text baseline.
-		/// This method takes care of calculating the amount of padding that needs to be added to the
-		/// Title TextView in order to comply with the Material Design specifications.
-		/// </summary>
-		private void UpdateTitleBottomPadding()
-		{
-			if (ItemContainer == null)
-				return;
-			
-			var childCount = ItemContainer.ChildCount;
+        /// <summary>
+        /// Material Design specify that there should be a 10dp padding under the text, it seems that
+        /// it means 10dp starting from the text baseline.
+        /// This method takes care of calculating the amount of padding that needs to be added to the
+        /// Title TextView in order to comply with the Material Design specifications.
+        /// </summary>
+        private void UpdateTitleBottomPadding()
+        {
+            if (ItemContainer == null)
+                return;
 
-			for (int i = 0; i < childCount; i++) 
-			{
-				var tab = ItemContainer.GetChildAt (i);
-				var title = (TextView)tab.FindViewById (Resource.Id.bb_bottom_bar_title);
+            var childCount = ItemContainer.ChildCount;
 
-				if (title == null)
-					continue;
+            for (int i = 0; i < childCount; i++)
+            {
+                var tab = ItemContainer.GetChildAt(i);
+                var title = (TextView)tab.FindViewById(Resource.Id.bb_bottom_bar_title);
 
-				var baseline = title.Baseline;
-				// Height already includes any possible top/bottom padding
-				var height = title.Height;
-				var paddingInsideTitle = height - baseline;
-				var missingPadding = _tenDp - paddingInsideTitle;
-				if (missingPadding > 0)
-					// Only update the padding if really needed
-					title.SetPadding (title.PaddingLeft, title.PaddingTop, title.PaddingRight, missingPadding + title.PaddingBottom);	
-			}
-		}
+                if (title == null)
+                    continue;
+
+                var baseline = title.Baseline;
+                // Height already includes any possible top/bottom padding
+                var height = title.Height;
+                var paddingInsideTitle = height - baseline;
+                var missingPadding = _tenDp - paddingInsideTitle;
+                if (missingPadding > 0)
+                    // Only update the padding if really needed
+                    title.SetPadding(title.PaddingLeft, title.PaddingTop, title.PaddingRight, missingPadding + title.PaddingBottom);
+            }
+        }
 
         private void DarkThemeMagic()
         {
@@ -1470,10 +1440,10 @@ namespace BottomNavigationBar
             {
                 CurrentTabPosition = savedInstanceState.GetInt(STATE_CURRENT_SELECTED_TAB, -1);
 
-				if (savedInstanceState.ContainsKey(STATE_BADGE_STATES_BUNDLE))
-				{
-					_badgeStateMap = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<int, bool>> (savedInstanceState.GetString (STATE_BADGE_STATES_BUNDLE));
-				}
+                if (savedInstanceState.ContainsKey(STATE_BADGE_STATES_BUNDLE))
+                {
+                    _badgeStateMap = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<int, bool>>(savedInstanceState.GetString(STATE_BADGE_STATES_BUNDLE));
+                }
 
                 if (CurrentTabPosition == -1)
                 {
@@ -1495,18 +1465,18 @@ namespace BottomNavigationBar
 
             int tabPosition = FindItemPosition(tab);
 
-			if (!_isShiftingMode || _isTabletMode) 
-			{
-				var activeColor = _customActiveTabColor != 0 ? new Color (_customActiveTabColor) : _primaryColor;
-				icon.SetColorFilter (activeColor);
+            if (!_isShiftingMode || _isTabletMode)
+            {
+                var activeColor = _customActiveTabColor != 0 ? new Color(_customActiveTabColor) : _primaryColor;
+                icon.SetColorFilter(activeColor);
 
-				if (title != null) 
-					title.SetTextColor (activeColor);
-			} 
-			else
-				title.SetTextColor (_whiteColor);
+                if (title != null)
+                    title.SetTextColor(activeColor);
+            }
+            else
+                title.SetTextColor(_whiteColor);
 
-			if (_isDarkTheme && _useDarkThemeAlpha)
+            if (_isDarkTheme && _useDarkThemeAlpha)
             {
                 if (title != null)
                 {
@@ -1533,9 +1503,9 @@ namespace BottomNavigationBar
 
                 titleAnimator.Start();
 
-				// We only want to animate the icon to avoid moving the title
-				// Shifting or fixed the padding above icon is always 6dp
-				MiscUtils.ResizePaddingTop(icon, icon.PaddingTop, _sixDp, ANIMATION_DURATION);
+                // We only want to animate the icon to avoid moving the title
+                // Shifting or fixed the padding above icon is always 6dp
+                MiscUtils.ResizePaddingTop(icon, icon.PaddingTop, _sixDp, ANIMATION_DURATION);
 
                 if (_isShiftingMode)
                 {
@@ -1552,7 +1522,7 @@ namespace BottomNavigationBar
                 ViewCompat.SetScaleX(title, 1);
                 ViewCompat.SetScaleY(title, 1);
 
-				icon.SetPadding(icon.PaddingLeft, _sixDp, icon.PaddingRight, icon.PaddingBottom);				
+                icon.SetPadding(icon.PaddingLeft, _sixDp, icon.PaddingRight, icon.PaddingBottom);
 
                 if (_isShiftingMode)
                 {
@@ -1582,8 +1552,8 @@ namespace BottomNavigationBar
 
             if (_isDarkTheme && _useDarkThemeAlpha)
             {
-				if (title != null)
-					ViewCompat.SetAlpha (title, _tabAlpha);
+                if (title != null)
+                    ViewCompat.SetAlpha(title, _tabAlpha);
 
                 ViewCompat.SetAlpha(icon, _tabAlpha);
             }
@@ -1594,7 +1564,7 @@ namespace BottomNavigationBar
             }
 
             float scale = _isShiftingMode ? 0 : 0.86f;
-			int iconPaddingTop = _isShiftingMode ? _sixteenDp : _eightDp;
+            int iconPaddingTop = _isShiftingMode ? _sixteenDp : _eightDp;
 
             if (animate)
             {
@@ -1608,7 +1578,7 @@ namespace BottomNavigationBar
 
                 titleAnimator.Start();
 
-				MiscUtils.ResizePaddingTop(icon, icon.PaddingTop, iconPaddingTop, ANIMATION_DURATION);
+                MiscUtils.ResizePaddingTop(icon, icon.PaddingTop, iconPaddingTop, ANIMATION_DURATION);
 
                 if (_isShiftingMode)
                 {
@@ -1622,8 +1592,8 @@ namespace BottomNavigationBar
             {
                 ViewCompat.SetScaleX(title, scale);
                 ViewCompat.SetScaleY(title, scale);
-                
-				icon.SetPadding(icon.PaddingLeft, iconPaddingTop, icon.PaddingRight, icon.PaddingBottom);
+
+                icon.SetPadding(icon.PaddingLeft, iconPaddingTop, icon.PaddingRight, icon.PaddingBottom);
 
                 if (_isShiftingMode)
                 {
@@ -1679,7 +1649,7 @@ namespace BottomNavigationBar
         {
             if (ItemContainer != null)
             {
-				ItemContainer.RemoveAllViews ();
+                ItemContainer.RemoveAllViews();
             }
 
             if (_fragmentManager != null)
@@ -1723,10 +1693,10 @@ namespace BottomNavigationBar
                 return;
             }
 
-            if (Build.VERSION.SdkInt < Build.VERSION_CODES.JellyBeanMr1 && 
+            if (Build.VERSION.SdkInt < Build.VERSION_CODES.JellyBeanMr1 &&
                 (!(softMenuIdentifier > 0 && res.GetBoolean(softMenuIdentifier))))
                 return;
-            
+
             /* Copy-paste coding made possible by: http://stackoverflow.com/a/14871974/940036 */
             if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBeanMr1)
             {
@@ -1772,7 +1742,7 @@ namespace BottomNavigationBar
                     {
                         offset = MiscUtils.DpToPixel(activity, 25);
                     }
-                  
+
                     if (!bottomBar.UseOnlyStatusbarOffset)
                     {
                         TypedValue tv = new TypedValue();

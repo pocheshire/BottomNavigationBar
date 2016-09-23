@@ -19,77 +19,25 @@ using System;
 using Android.Content;
 using Android.Graphics.Drawables;
 using Android.Support.V7.Widget;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace BottomNavigationBar
 {
+    [XmlRoot("tab")]
     public class BottomBarTab
     {
-		private int _titleResource;
-		private Drawable _icon;
-		private int _iconResource;
-		private string _title;
+        [XmlAttribute("id")]
+        public int Id { get; set; } = -1;
 
-		internal int Id = -1;
+        [XmlAttribute("icon")]
+        public int IconResId { get; set; }
 
-        /// <summary>
-        /// Creates a new Tab for the BottomBar
-        /// </summary>
-        /// <param name="iconResource">a resource for the Tab icon.</param>
-        /// <param name="title">title for the Tab.</param>
-        public BottomBarTab(int iconResource, String title)
-        {
-            this._iconResource = iconResource;
-            this._title = title;
-        }
+        [XmlAttribute("title")]
+        public string Title { get; set; }
 
-        /// <summary>
-        /// Creates a new Tab for the BottomBar.
-        /// </summary>
-        /// <param name="icon">an icon for the Tab.</param>
-        /// <param name="title">title title for the Tab.</param>
-        public BottomBarTab(Drawable icon, String title)
-        {
-            this._icon = icon;
-            this._title = title;
-        }
-
-        /// <summary>
-        /// Creates a new Tab for the BottomBar.
-        /// </summary>
-        /// <param name="icon">an icon for the Tab.</param>
-        /// <param name="titleResource">resource for the title.</param>
-        public BottomBarTab(Drawable icon, int titleResource)
-        {
-            this._icon = icon;
-            this._titleResource = titleResource;
-        }
-
-        /// <summary>
-        /// Creates a new Tab for the BottomBar.
-        /// </summary>
-        /// <param name="iconResource">a resource for the Tab icon.</param>
-        /// <param name="titleResource">resource for the title.</param>
-        public BottomBarTab(int iconResource, int titleResource)
-        {
-            this._iconResource = iconResource;
-            this._titleResource = titleResource;
-        }
-
-		internal Drawable GetIcon (Context context)
-		{
-			if (_iconResource != 0)
-				return AppCompatDrawableManager.Get ().GetDrawable (context, _iconResource);
-			else
-				return _icon;
-		}
-
-		internal string GetTitle (Context context)
-		{
-			if (_titleResource != 0)
-				return context.GetString (_titleResource);
-			else
-				return _title;
-		}
+        [XmlAttribute("color")]
+        public int Color { get; set; }
     }
 }
 

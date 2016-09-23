@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using Android.Animation;
 using Android.Annotation;
 using Android.App;
@@ -29,10 +30,12 @@ using Android.Util;
 using Android.Views;
 using BottomNavigationBar.Adapters;
 using BottomNavigationBar.Listeners;
+using Org.Apache.Http.Impl.IO;
+using BottomNavigationBar.Parsers;
 
 namespace BottomNavigationBar
 {
-	internal static class MiscUtils
+    public static class MiscUtils
 	{
 		public static int GetColor (Context context, int color)
 		{
@@ -74,32 +77,10 @@ namespace BottomNavigationBar
 			return (int)(displayMetrics.WidthPixels / displayMetrics.Density);
 		}
 
-		/// <summary>
-		/// A hacky method for inflating menus from xml resources to an array of BottomBarTabs.
-		/// </summary>
-		/// <returns>an Array of BottomBarTabs.</returns>
-		/// <param name="activity">the activity context for retrieving the MenuInflater.</param>
-		/// <param name="menuRes">the xml menu resource to inflate.</param>
-		public static BottomBarTab[] InflateMenuFromResource (Activity activity, int menuRes)
+		public static List<BottomBarTab> InflateFromXMLResource(Context context, int xmlRes)
 		{
-			// A bit hacky, but hey hey what can I do
-			var popupMenu = new PopupMenu (activity, null);
-			var menu = popupMenu.Menu;
-			activity.MenuInflater.Inflate (menuRes, menu);
-        
-			int menuSize = menu.Size ();
-			var tabs = new BottomBarTab[menuSize];
-
-            for (int i = 0; i < menuSize; i++)
-            {
-                var item = menu.GetItem(i);
-
-                BottomBarTab tab = new BottomBarTab(item.Icon, item.TitleFormatted.ToString());
-                tab.Id = item.ItemId;
-                tabs[i] = tab;
-            }
-        
-			return tabs;
+			var parser = new TabParser (context, xmlRes);
+			return parser.Tabs;
 		}
 
 		/// <summary>
