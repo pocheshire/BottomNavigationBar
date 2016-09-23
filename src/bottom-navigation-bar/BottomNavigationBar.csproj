@@ -79,10 +79,6 @@
     <Compile Include="Adapters\CustomViewPropertyAnimatorListenerAdapter.cs" />
     <Compile Include="Adapters\CustomAnimatorListenerAdapter.cs" />
     <Compile Include="BottomBarTab.cs" />
-    <Compile Include="BottomBarItemBase.cs" />
-    <Compile Include="Listeners\IOnMenuTabSelectedListener.cs" />
-    <Compile Include="Listeners\IOnTabSelectedListener.cs" />
-    <Compile Include="BottomBarFragment.cs" />
     <Compile Include="BottomBar.cs" />
     <Compile Include="Listeners\BarSizeOnGlobalLayoutListener.cs" />
     <Compile Include="Listeners\IOnSizeDeterminedListener.cs" />

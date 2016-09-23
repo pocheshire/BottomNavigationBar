@@ -87,15 +87,15 @@ namespace BottomNavigationBar
 		private int _inActiveShiftingItemWidth;
 		private int _activeShiftingItemWidth;
 
-		private Object _listener;
-		private Object _menuListener;
+		private IOnTabClickListener _listener;
+		private IOnMenuTabClickListener _menuListener;
 
         private bool _isShiftingMode;
 
         private Java.Lang.Object _fragmentManager;
         private int _fragmentContainer;
 
-        private BottomBarItemBase[] _items;
+        private BottomBarTab[] _items;
         private Dictionary<int, Color> _colorMap;
         private Dictionary<int, Java.Lang.Object> _badgeMap;
         private Dictionary<int, bool> _badgeStateMap;
@@ -114,9 +114,6 @@ namespace BottomNavigationBar
         private bool _animationStarted;
         private ViewPropertyAnimatorCompat _translationAnimator;
         private static readonly IInterpolator INTERPOLATOR = new LinearOutSlowInInterpolator();
-
-        // For fragment state restoration
-        private bool _shouldUpdateFragmentInitially;
 
         private bool _useTopOffset = true;
         protected bool UseTopOffset
@@ -146,7 +143,7 @@ namespace BottomNavigationBar
 
         protected bool UseOnlyStatusbarOffset { get; set; }
 
-        public BottomBarItemBase[] Items { get { return _items; } }
+        public BottomBarTab[] Items { get { return _items; } }
 
 		public ViewGroup ItemContainer { get; private set; }
 
@@ -339,77 +336,6 @@ namespace BottomNavigationBar
         }
 
         /// <summary>
-		/// Deprecated
-		/// 
-		/// Use either <see cref="SetItems(BottomBarTab...)"/> or
-		/// <see cref="SetItemsFromMenu(int, IOnMenuTabClickListener)"/> and add a listener using
-		/// <see cref="SetOnTabClickListener(IOnTabClickListener) to handle tab changes by yourself."/>
-        /// </summary>
-		[Obsolete("Deprecated")]
-        public void SetFragmentItems(Android.App.FragmentManager fragmentManager, int containerResource, BottomBarFragment[] fragmentItems)
-        {
-            if (fragmentItems.Length > 0)
-            {
-                int index = 0;
-
-                foreach (var fragmentItem in fragmentItems)
-                {
-                    if (fragmentItem.Fragment == null
-                        && fragmentItem.SupportFragment != null)
-                    {
-                        throw new ArgumentException("Conflict: cannot use android.app.FragmentManager " +
-                            "to handle a android.support.v4.app.Fragment object at position " + index +
-                            ". If you want BottomBar to handle support Fragments, use getSupportFragment" +
-                            "Manager() instead of getFragmentManager().");
-                    }
-
-                    index++;
-                }
-            }
-
-            ClearItems();
-            _fragmentManager = fragmentManager;
-            _fragmentContainer = containerResource;
-            _items = fragmentItems;
-            UpdateItems(_items);
-        }
-
-		/// <summary>
-		/// Deprecated
-		/// 
-		/// Use either <see cref="SetItems(BottomBarTab...)"/> or
-		/// <see cref="SetItemsFromMenu(int, IOnMenuTabClickListener)"/> and add a listener using
-		/// <see cref="SetOnTabClickListener(IOnTabClickListener) to handle tab changes by yourself."/>
-		/// </summary>
-		[Obsolete("Deprecated")]
-        public void SetFragmentItems(Android.Support.V4.App.FragmentManager fragmentManager, int containerResource, BottomBarFragment[] fragmentItems)
-        {
-            if (fragmentItems.Length > 0)
-            {
-                int index = 0;
-
-                foreach (var fragmentItem in fragmentItems)
-                {
-                    if (fragmentItem.SupportFragment == null
-                        && fragmentItem.Fragment != null)
-                    {
-                        throw new ArgumentException("Conflict: cannot use android.support.v4.app.FragmentManager " +
-                            "to handle a android.app.Fragment object at position " + index +
-                            ". If you want BottomBar to handle normal Fragments, use getFragment" +
-                            "Manager() instead of getSupportFragmentManager().");
-                    }
-
-                    index++;
-                }
-            }
-            ClearItems();
-            _fragmentManager = fragmentManager;
-            _fragmentContainer = containerResource;
-            _items = fragmentItems;
-            UpdateItems(_items);
-        }
-
-        /// <summary>
         /// Set tabs and fragments for this BottomBar. When setting more than 3 items,
         /// only the icons will show by default, but the selected item will have the text visible.
         /// </summary>
@@ -434,42 +360,6 @@ namespace BottomNavigationBar
             UpdateItems(_items);
         }
 
-        /// <summary>
-        /// Deprecated, use <see cref="SetItems(int menuRes)"/> and <see cref="SetOnMenuTabClickListener(IOnMenuTabClickListener listener)"/> instead
-        /// </summary>
-		[Obsolete("Deprecated")]
-        public void SetItemsFromMenu(int menuRes, IOnMenuTabSelectedListener listener)
-        {
-            ClearItems();
-            _items = MiscUtils.InflateMenuFromResource((Activity)Context, menuRes);
-            _menuListener = listener;
-            UpdateItems(_items);
-        }
-
-        /// <summary>
-        /// Deprecated, use <see cref="SetItems(int menuRes)"/> and <see cref="SetOnMenuTabClickListener(IOnMenuTabClickListener listener)"/> instead
-        /// </summary>
-        [Obsolete("Deprecated")]
-		public void SetItemsFromMenu(int menuRes, IOnMenuTabClickListener listener)
-		{
-			ClearItems();
-			_items = MiscUtils.InflateMenuFromResource((Activity)Context, menuRes);
-			_menuListener = listener;
-			UpdateItems(_items);
-
-			if (_items != null && _items.Length > 0 && _items is BottomBarTab[])
-				listener.OnMenuTabSelected (((BottomBarTab)_items [CurrentTabPosition]).Id);
-		}
-
-		/// <summary>
-		/// Deprecated, use <see cref="SetOnItemSelectedListener(IOnTabClickListener listener)"/> instead
-		/// </summary>
-		[Obsolete("Deprecated")]
-        public void SetOnItemSelectedListener(IOnTabSelectedListener listener)
-        {
-            _listener = listener;
-        }
-
 		/// <summary>
 		/// Set a listener that gets fired when the selected tab changes.
         /// Note: If listener is set after items are added to the BottomBar, OnTabSelected 
@@ -482,10 +372,7 @@ namespace BottomNavigationBar
 
             if (_listener != null && _items != null && _items.Length > 0)
             {
-                if (_items[CurrentTabPosition].IsEnabled)
-                {
                     listener.OnTabSelected(CurrentTabPosition);
-                }
             }
 		}
 
@@ -496,10 +383,7 @@ namespace BottomNavigationBar
             if (_menuListener != null && _items != null && _items.Length > 0)
             {
                 var tab = (BottomBarTab)_items[CurrentTabPosition];
-                if (tab != null && tab.IsEnabled)
-                {
-                    listener.OnMenuTabSelected(tab.Id);
-                }
+				listener.OnMenuTabSelected(tab.Id);
             }
         }
 
@@ -658,23 +542,6 @@ namespace BottomNavigationBar
                 }
 
                 outState.PutString(STATE_BADGE_STATES_BUNDLE, Newtonsoft.Json.JsonConvert.SerializeObject(_badgeStateMap));
-            }
-
-            if (_fragmentManager != null
-                && _fragmentContainer != 0
-                && _items != null
-                && _items is BottomBarFragment[])
-            {
-                BottomBarFragment bottomBarFragment = (BottomBarFragment)_items[CurrentTabPosition];
-
-                if (bottomBarFragment.Fragment != null)
-                {
-                    bottomBarFragment.Fragment.OnSaveInstanceState(outState);
-                }
-                else if (bottomBarFragment.SupportFragment != null)
-                {
-                    bottomBarFragment.SupportFragment.OnSaveInstanceState(outState);
-                }
             }
         }
 
@@ -1334,8 +1201,6 @@ namespace BottomNavigationBar
 
 				if (notifyMenuListener)
 					NotifyMenuListener (_menuListener, false, ((BottomBarTab)_items [CurrentTabPosition]).Id);
-
-				UpdateCurrentFragment();
 			}
 			else
 			{
@@ -1347,40 +1212,20 @@ namespace BottomNavigationBar
 			}
         }
 
-		private void NotifyRegularListener(Object listener, bool isReselection, int position)
+		private void NotifyRegularListener(IOnTabClickListener listener, bool isReselection, int position)
 		{
-			if (listener is IOnTabClickListener)
-			{
-				var onTabClickListener = (IOnTabClickListener) listener;
-				if (!isReselection) 
-					onTabClickListener.OnTabSelected(position);
-				else
-					onTabClickListener.OnTabReSelected(position);
-			}
-			else if (_listener is IOnTabSelectedListener)
-			{
-				var onTabSelectedListener = (IOnTabSelectedListener) listener;
-				if (!isReselection)
-					onTabSelectedListener.OnItemSelected(position);
-			}
+			if (!isReselection) 
+				listener.OnTabSelected(position);
+			else
+				listener.OnTabReSelected(position);
 		}
 
-		private void NotifyMenuListener(Object listener, bool isReselection, int menuItemId)
+		private void NotifyMenuListener(IOnMenuTabClickListener listener, bool isReselection, int menuItemId)
 		{
-			if (listener is IOnMenuTabClickListener)
-			{
-				var onMenuTabClickListener = (IOnMenuTabClickListener) listener;
-				if (!isReselection) 
-					onMenuTabClickListener.OnMenuTabSelected(menuItemId);
-				else
-					onMenuTabClickListener.OnMenuTabReSelected(menuItemId);
-			}
-			else if (_listener is IOnMenuTabSelectedListener)
-			{
-				var onMenuTabSelectedListener = (IOnMenuTabSelectedListener) listener;
-				if (!isReselection)
-					onMenuTabSelectedListener.OnMenuItemSelected(menuItemId);
-			}
+			if (!isReselection) 
+				listener.OnMenuTabSelected(menuItemId);
+			else
+				listener.OnMenuTabReSelected(menuItemId);
 		}
 
 
@@ -1428,7 +1273,7 @@ namespace BottomNavigationBar
             return true;
         }
 
-        private void UpdateItems(BottomBarItemBase[] bottomBarItems)
+        private void UpdateItems(BottomBarTab[] bottomBarItems)
         {
 			if (ItemContainer == null)
 				InitializeViews ();
@@ -1453,10 +1298,9 @@ namespace BottomNavigationBar
                 }
             }
 
-            var listOfBottomBarItems = new List<BottomBarItemBase>(bottomBarItems)?.Where(i => i.IsVisible)?.ToList();
-            View[] viewsToAdd = new View[listOfBottomBarItems.Count];
+			View[] viewsToAdd = new View[bottomBarItems.Length];
 
-            foreach (var bottomBarItemBase in listOfBottomBarItems)
+            foreach (var bottomBarItemBase in bottomBarItems)
             {
                 int layoutResource;
 
@@ -1471,7 +1315,6 @@ namespace BottomNavigationBar
 
                 View bottomBarTab = View.Inflate(_context, layoutResource, null);
                 var icon = (AppCompatImageView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_icon);
-                bottomBarTab.Enabled = bottomBarItemBase.IsEnabled;
 
                 icon.SetImageDrawable(bottomBarItemBase.GetIcon(_context));
 
@@ -1485,11 +1328,6 @@ namespace BottomNavigationBar
                         MiscUtils.SetTextAppearance(title, _pendingTextAppearance);
                     }
 
-                    if (!bottomBarItemBase.IsEnabled)
-                    {
-                        title.Alpha = 0.5F;
-                    }
-
                     if (_pendingTypeface != null)
                     {
                         title.Typeface = (_pendingTypeface);
@@ -1501,17 +1339,9 @@ namespace BottomNavigationBar
                     icon.SetColorFilter(_whiteColor);
                 }
 
-                if (!bottomBarItemBase.IsEnabled)
-                {
-                    icon.Alpha = 0.5F;
-                }
+				bottomBarTab.Id = bottomBarItemBase.Id;
 
-                if (bottomBarItemBase is BottomBarTab)
-                {
-                    bottomBarTab.Id = (((BottomBarTab)bottomBarItemBase).Id);
-                }
-
-                if (index == CurrentTabPosition && bottomBarItemBase.IsEnabled)
+                if (index == CurrentTabPosition)
                 {
                     SelectTab(bottomBarTab, false);
                 }
@@ -1654,7 +1484,6 @@ namespace BottomNavigationBar
                 }
 
                 _isComingFromRestoredState = true;
-                _shouldUpdateFragmentInitially = true;
             }
         }
 
@@ -1844,34 +1673,6 @@ namespace BottomNavigationBar
             }
 
             return position;
-        }
-
-        private void UpdateCurrentFragment()
-        {
-            if (!_shouldUpdateFragmentInitially && _fragmentManager != null
-                && _fragmentContainer != 0
-                && _items != null
-                && _items is BottomBarFragment[])
-            {
-                var newFragment = ((BottomBarFragment)_items[CurrentTabPosition]);
-
-                if (_fragmentManager is Android.Support.V4.App.FragmentManager
-                    && newFragment.SupportFragment != null)
-                {
-                    ((Android.Support.V4.App.FragmentManager)_fragmentManager).BeginTransaction()
-                        .Replace(_fragmentContainer, newFragment.SupportFragment)
-                        .Commit();
-                }
-                else if (_fragmentManager is Android.App.FragmentManager
-                         && newFragment.Fragment != null)
-                {
-                    ((Android.App.FragmentManager)_fragmentManager).BeginTransaction()
-                        .Replace(_fragmentContainer, newFragment.Fragment)
-                        .Commit();
-                }
-            }
-
-            _shouldUpdateFragmentInitially = false;
         }
 
         private void ClearItems()

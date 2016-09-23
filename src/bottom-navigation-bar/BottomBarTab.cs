@@ -16,13 +16,20 @@
  */
 
 using System;
+using Android.Content;
 using Android.Graphics.Drawables;
+using Android.Support.V7.Widget;
 
 namespace BottomNavigationBar
 {
-    public class BottomBarTab : BottomBarItemBase
+    public class BottomBarTab
     {
-        public int Id = -1;
+		private int _titleResource;
+		private Drawable _icon;
+		private int _iconResource;
+		private string _title;
+
+		internal int Id = -1;
 
         /// <summary>
         /// Creates a new Tab for the BottomBar
@@ -67,6 +74,22 @@ namespace BottomNavigationBar
             this._iconResource = iconResource;
             this._titleResource = titleResource;
         }
+
+		internal Drawable GetIcon (Context context)
+		{
+			if (_iconResource != 0)
+				return AppCompatDrawableManager.Get ().GetDrawable (context, _iconResource);
+			else
+				return _icon;
+		}
+
+		internal string GetTitle (Context context)
+		{
+			if (_titleResource != 0)
+				return context.GetString (_titleResource);
+			else
+				return _title;
+		}
     }
 }
 

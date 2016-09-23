@@ -95,8 +95,6 @@ namespace BottomNavigationBar
                 var item = menu.GetItem(i);
 
                 BottomBarTab tab = new BottomBarTab(item.Icon, item.TitleFormatted.ToString());
-                tab.IsEnabled = item.IsEnabled;
-                tab.IsVisible = item.IsVisible;
                 tab.Id = item.ItemId;
                 tabs[i] = tab;
             }
