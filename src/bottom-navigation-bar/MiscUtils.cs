@@ -16,21 +16,19 @@
  */
 
 using System;
-using Android.Content;
-using Android.Views;
-using Android.OS;
-using Android.Widget;
-using Android.Support.V4.View;
-using Android.Runtime;
-using Android.Annotation;
-using Android.Graphics;
-using BottomNavigationBar.Adapters;
 using Android.Animation;
+using Android.Annotation;
 using Android.App;
-using System.Diagnostics.CodeAnalysis;
+using Android.Content;
 using Android.Content.Res;
-using BottomNavigationBar.Listeners;
+using Android.Graphics;
+using Android.OS;
+using Android.Support.V4.View;
+using Android.Support.V7.Widget;
 using Android.Util;
+using Android.Views;
+using BottomNavigationBar.Adapters;
+using BottomNavigationBar.Listeners;
 
 namespace BottomNavigationBar
 {
@@ -154,7 +152,7 @@ namespace BottomNavigationBar
 		/// </summary>
 		/// <param name="textView">TextView which textAppearance to modify.</param>
 		/// <param name="resId">style resource for the text appearance.</param>
-		public static void SetTextAppearance (TextView textView, int resId)
+		public static void SetTextAppearance (Android.Widget.TextView textView, int resId)
 		{
 			if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
 				textView.SetTextAppearance (resId);
