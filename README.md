@@ -1,12 +1,12 @@
 # BottomNavigationBar
-<img src="https://raw.githubusercontent.com/roughike/BottomBar/master/scrolling_demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/demo_shifting.gif" width="30%" /> <img src="https://raw.githubusercontent.com/roughike/BottomBar/master/screenshot_tablet.png" width="33%" /> 
+<img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/scrolling_demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/demo_shifting.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/screenshot_tablet.png" width="33%" /> 
 
 **[How to contribute](https://github.com/pocheshire/BottomNavigationBar/blob/master/README.md#contributions)**
 
 [Common problems and solutions](https://github.com/pocheshire/BottomNavigationBar/blob/master/README.md#common-problems-and-solutions)
 
 ## What?
-[BottomBar](https://github.com/roughike/BottomBar) ported to C#
+[BottomBar](https://github.com/pocheshire/BottomNavigationBar) ported to C#
 
 A custom view component that mimics the new [Material Design Bottom Navigation pattern](https://www.google.com/design/spec/components/bottom-navigation.html).
 
@@ -171,7 +171,7 @@ _bottomBar.SetItems(
 );
 ```
 
-For a working example, refer to [the sample app](https://github.com/roughike/BottomBar/tree/master/app/src/main).
+For a working example, refer to [the sample app](https://github.com/pocheshire/BottomNavigationBar/tree/master/src/sample).
 
 ## Common problems and solutions
 
