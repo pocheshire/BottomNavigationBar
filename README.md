@@ -1,9 +1,9 @@
 # BottomNavigationBar
-<img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/scrolling_demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/demo_shifting.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/screenshot_tablet.png" width="33%" /> 
+<img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/v1/scrolling_demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/v1/demo_shifting.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/v1/screenshot_tablet.png" width="33%" /> 
 
-**[How to contribute](https://github.com/pocheshire/BottomNavigationBar/blob/master/README.md#contributions)**
+**[How to contribute](https://github.com/pocheshire/BottomNavigationBar/blob/v1/README.md#contributions)**
 
-[Common problems and solutions](https://github.com/pocheshire/BottomNavigationBar/blob/master/README.md#common-problems-and-solutions)
+[Common problems and solutions](https://github.com/pocheshire/BottomNavigationBar/blob/v1/README.md#common-problems-and-solutions)
  
 ## What?
 [BottomBar](https://github.com/pocheshire/BottomNavigationBar) ported to C#
@@ -171,7 +171,7 @@ _bottomBar.SetItems(
 );
 ```
 
-For a working example, refer to [the sample app](https://github.com/pocheshire/BottomNavigationBar/tree/master/src/sample).
+For a working example, refer to [the sample app](https://github.com/pocheshire/BottomNavigationBar/tree/v1/src/sample).
 
 ## Common problems and solutions
 
