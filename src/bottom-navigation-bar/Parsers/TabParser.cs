@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 using Android.Content;
@@ -18,52 +19,60 @@ namespace BottomNavigationBar.Parsers
 
         public TabParser(Context context, int tabsXmlResId)
         {
-            //_context = context;
-            //_reader = context.Resources.GetXml(tabsXmlResId);
+            _context = context;
+            _reader = context.Resources.GetXml(tabsXmlResId);
 
-            //_tabs = new List<BottomBarTab>();
+            _tabs = new List<BottomBarTab>();
 
-            //Parse();
+            Parse();
         }
 
         private void Parse()
         {
-            //try
-            //{
-            //    while(_reader.Read())
-            //    {
-            //        switch (_reader.NodeType)
-            //        {
-            //            case XmlNodeType.Element:
-            //                var elementName = _reader.LocalName;
-            //                if (elementName == "tab")
-            //                {
-            //                    //_tabs.Add(ParseNewTab(_reader));
-            //                    var s = new XmlSerializer(typeof(BottomBarTab));
-            //                    var tab = s.Deserialize(_reader);
-            //                }
-            //                break;
-                            
-            //        }
-            //    }
-            //}
-            //catch (XmlPullParserException e)
-            //{
-            //    e.PrintStackTrace();
-            //}
-            //catch (IOException e)
-            //{
-            //    e.PrintStackTrace();
-            //}
+            try
+            {
+                while(_reader.Read())
+                {
+                    switch (_reader.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            var elementName = _reader.LocalName;
+                            if (elementName == "tab")
+                            {
+                                ParseNewTab(_reader);
+                            }
+                            break;
+                        case XmlNodeType.EndElement:
+                            if (_workingTab != null)
+                            {
+                                _tabs.Add(_workingTab);
+                                _workingTab = null;
+                            }
+                            break;
+                    }
+                }
+            }
+            catch (XmlPullParserException e)
+            {
+                e.PrintStackTrace();
+            }
+            catch (IOException e)
+            {
+                e.PrintStackTrace();
+            }
         }
 
-        private BottomBarTab ParseNewTab(XmlReader parser)
+        private void ParseNewTab(XmlReader parser)
         {
-            var tab = new BottomBarTab();
+            if (_workingTab == null)
+                _workingTab = TabWithDefaults();
 
-            //for (int i = 0; i < parser.AttributeCount; i++)
-            //{
-                var attrName = parser.Name;
+            parser.MoveToFirstAttribute();
+
+            //_workingTab.SetIndexInContainer(_tabs.Count);
+            for (int i = 0; i < parser.AttributeCount; i++)
+            {
+                var attrName = parser.LocalName;
                 //switch (attrName)
                 //{
                 //    case "id":
@@ -79,9 +88,8 @@ namespace BottomNavigationBar.Parsers
                 //        tab.IconResId = parser.Value(i, 0);
                 //        break;
                 //}
-            //}
-
-            return tab;
+                parser.MoveToNextAttribute();
+            }
         }
 
         //private string GetTitleValue(int attrIndex, XmlReader parser)
@@ -97,5 +105,10 @@ namespace BottomNavigationBar.Parsers
 
         //    return colorResource != 0 ? ContextCompat.GetColor(_context, colorResource) : Color.ParseColor(parser.GetAttributeValue(attrIndex));
         //}
-   }
+
+        private BottomBarTab TabWithDefaults()
+        {
+            return new BottomBarTab();
+        }
+    }
 }
