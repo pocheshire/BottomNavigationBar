@@ -1,10 +1,10 @@
 # BottomNavigationBar
-<img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/v1/scrolling_demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/v1/demo_shifting.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/v1/screenshot_tablet.png" width="33%" /> 
+<img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/v1/src/bottom-navigation-bar/demo1.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/v1/src/bottom-navigation-bar/demo_shifting.gif" width="30%" /> 
 
 **[How to contribute](https://github.com/pocheshire/BottomNavigationBar/blob/v1/README.md#contributions)**
 
 [Common problems and solutions](https://github.com/pocheshire/BottomNavigationBar/blob/v1/README.md#common-problems-and-solutions)
- 
+
 ## What?
 [BottomBar](https://github.com/pocheshire/BottomNavigationBar) ported to C#
 
