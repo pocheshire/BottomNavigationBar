@@ -1,5 +1,5 @@
 # BottomNavigationBar
-<img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/scrolling_demo.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/demo_shifting.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/screenshot_tablet.png" width="33%" /> 
+<img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/src/bottom-navigation-bar/demo1.gif" width="30%" /> <img src="https://raw.githubusercontent.com/pocheshire/BottomNavigationBar/master/src/bottom-navigation-bar/demo_shifting.gif" width="30%" /> 
 
 **[How to contribute](https://github.com/pocheshire/BottomNavigationBar/blob/master/README.md#contributions)**
 
