@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="bb_darkBackgroundColor">#000000</color>
+	<color name="bb_darkInActiveBottomBarItemColor">#FF0000</color>
 </resources>

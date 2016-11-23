@@ -18,6 +18,8 @@ Yes! It's currently available like [BottomNavigationBar](https://www.nuget.org/p
 
 Yes! Thanks [Thrive GmbH](https://github.com/thrive-now) for  [BottomNavigationBarXF](https://github.com/thrive-now/BottomNavigationBarXF) implementation.
 
+*1.4.0.3 version breaks support Xamarin.Forms. You SHOULD use 1.4.0.2 version*
+
 ## MinSDK version
 
 The current minSDK version is **API level 11 (Honeycomb).**

@@ -61,7 +61,7 @@ namespace BottomNavigationBar
         private Color _primaryColor;
         private Color _inActiveColor;
         private Color _darkBackgroundColor;
-        private Color _whiteColor;
+        private Color _darkInActiveColor;
 
 		private float _tabAlpha = 0.6f;
 		public float TabAlpha 
@@ -743,7 +743,7 @@ namespace BottomNavigationBar
                 for (int i = 0; i < ItemContainer.ChildCount; i++)
                 {
                     View bottomBarTab = ItemContainer.GetChildAt(i);
-                    ((AppCompatImageView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_icon)).SetColorFilter(_whiteColor);
+                    ((AppCompatImageView)bottomBarTab.FindViewById(Resource.Id.bb_bottom_bar_icon)).SetColorFilter(_darkInActiveColor);
 
                     if (i == CurrentTabPosition)
                     {
@@ -848,7 +848,7 @@ namespace BottomNavigationBar
 		/// <param name="iconColor">a hex color used for icons, such as "#00FF000"</param>
 		public void SetShiftingIconColor(String iconColor)
 		{
-			_whiteColor = Color.ParseColor (iconColor);
+			_darkInActiveColor = Color.ParseColor (iconColor);
 
 			if (_items != null && _items.Length > 0)
 				throw new InvalidOperationException ("This BottomBar " +
@@ -864,7 +864,7 @@ namespace BottomNavigationBar
 		/// <param name="iconColor">a color used for icons</param>
 		public void SetShiftingIconColor (Color iconColor)
 		{
-			_whiteColor = iconColor;
+			_darkInActiveColor = iconColor;
 
 			if (_items != null && _items.Length > 0)
 				throw new InvalidOperationException ("This BottomBar " +
@@ -1190,7 +1190,7 @@ namespace BottomNavigationBar
 			: base (context)
 		{
 			_tabAlpha = alpha;
-			_whiteColor = activeColor;
+			_darkInActiveColor = activeColor;
 			_primaryColor = backgroundColor;
 
 			Init (context, null, 0, 0, true);
@@ -1204,7 +1204,7 @@ namespace BottomNavigationBar
 
 			if (!colorsInitialized)
 			{
-				_whiteColor = new Color (ContextCompat.GetColor (Context, Resource.Color.white));
+                _darkInActiveColor = new Color (ContextCompat.GetColor (Context, Resource.Color.bb_darkInActiveBottomBarItemColor));
 				_primaryColor = new Color (MiscUtils.GetColor (Context, Resource.Attribute.colorPrimary));
 			}
 
@@ -1498,7 +1498,7 @@ namespace BottomNavigationBar
 
                 if (_isDarkTheme || (!_isTabletMode && _isShiftingMode))
                 {
-                    icon.SetColorFilter(_whiteColor);
+                    icon.SetColorFilter(_darkInActiveColor);
                 }
 
                 if (!bottomBarItemBase.IsEnabled)
@@ -1675,7 +1675,7 @@ namespace BottomNavigationBar
 					title.SetTextColor (activeColor);
 			} 
 			else
-				title.SetTextColor (_whiteColor);
+				title.SetTextColor (_darkInActiveColor);
 
 			if (_isDarkTheme && _useDarkThemeAlpha)
             {
@@ -1742,7 +1742,7 @@ namespace BottomNavigationBar
 
             if (!_isShiftingMode || _isTabletMode)
             {
-                var inActiveColor = _isDarkTheme ? _whiteColor : _inActiveColor;
+                var inActiveColor = _isDarkTheme ? _darkInActiveColor : _inActiveColor;
                 icon.SetColorFilter(inActiveColor);
 
                 if (title != null)
