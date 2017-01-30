@@ -33,6 +33,13 @@ namespace BottomNavigationBar
     {
         private View _tabToAddTo;
 
+        private int badgeCut { get; set; }
+        private Context _context { get; set; }
+
+        private Color _backgroundColor {get;set;}
+
+        private ShapeDrawable backgroundCircle { get; set; }
+
         private static bool _needUpdateLayout;
 
         private Action OnLayoutUpdated { get; set; }
@@ -52,8 +59,70 @@ namespace BottomNavigationBar
             }
             set
             {
+
+                var params1 = this.LayoutParameters;
+
+                if (_count < 100 & value == 100) 
+                {
+                    if (_context != null && _backgroundColor != null)
+                    {
+                        params1.Width = ViewGroup.LayoutParams.WrapContent;
+                        this.LayoutParameters = params1;
+                    }
+                }
+
+                if (_count > 99 & value == 99)
+                {
+                    if (_context != null && _backgroundColor != null)
+                    {
+                        params1.Width = params1.Height;
+                        this.LayoutParameters = params1;
+                     }
+                }
+
+
                 _count = value;
-                SetText(_count.ToString(), BufferType.Normal);
+
+                if (_limitToShowInBadge == 0)
+                {
+                    SetText(_count.ToString(), BufferType.Normal);
+                }
+                else
+                {
+
+                    if (_count < setLimitToShowInBadge)
+                    {
+                        SetText(_count.ToString(), BufferType.Normal);
+                    }
+                    else
+                    {
+                        SetText("+" + (_limitToShowInBadge - 1).ToString(), BufferType.Normal);
+                    }
+                }
+            }
+        }
+
+        private int _limitToShowInBadge { get; set; } = 0;
+        /// <summary>
+        /// Gets or sets the number limit to be shown in counter, e.g +99 - limit set to 100
+        /// </summary>
+        /// <value>the value this Badge should show</value>
+        public int setLimitToShowInBadge
+        {
+            get { return _limitToShowInBadge; }
+            set { _limitToShowInBadge = value;}
+        }
+
+        protected override void OnDraw(Canvas canvas)
+        {
+            base.OnDraw(canvas);
+
+            var params1 = this.LayoutParameters;
+            if (params1.Height == params1.Width && _count > 99)
+            {
+                var cutTheHight = params1.Height / 5;
+                params1.Height = params1.Height - cutTheHight;
+                this.LayoutParameters = params1;
             }
         }
 
@@ -134,29 +203,35 @@ namespace BottomNavigationBar
                 .Start();
         }
 
-        public BottomBarBadge(Context context, int position, Color backgroundColor)
+        public BottomBarBadge(Context context, int position, Color backgroundColor, int badgeLimit)
             : base(context)
         {
             _needUpdateLayout = true;
+            _backgroundColor = backgroundColor;
+            _context = context;
+            _limitToShowInBadge = badgeLimit;
 
             AutoHideWhenSelection = true;
             Position = BadgePosition.Right;
+            
 
             TabPosition = position;
-
-            LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+            
             Gravity = GravityFlags.Center;
+             
             SetTextAppearance(context, Resource.Style.BB_BottomBarBadge_Text);
+            
+            SetBackgroundCompat(setBadgeSize(context, backgroundColor));
+      }
 
-            int three = MiscUtils.DpToPixel(context, 3);
-            ShapeDrawable backgroundCircle = BadgeCircle.Make(three * 3, backgroundColor);
-            SetPadding(three, three, three, three);
-            SetBackgroundCompat(backgroundCircle);
+        private Drawable setBadgeSize(Context context, Color backgroundColor)
+        {
+            return BadgeCircle.drawRoundCornerRectange(context,backgroundColor);
         }
 
         internal BottomBarBadge(Context context, int position, View tabToAddTo, // Rhyming accidentally! That's a Smoove Move!
-                                 Color backgroundColor)
-            : this(context, position, backgroundColor)
+                                 Color backgroundColor, int badgeLimit)
+            : this(context, position, backgroundColor, badgeLimit)
         {
             AddBadgeToTab(context, tabToAddTo);
         }
@@ -166,6 +241,7 @@ namespace BottomNavigationBar
             _tabToAddTo = tabToAddTo;
 
             var container = new FrameLayout(context);
+            
             container.LayoutParameters = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
 
             var parent = (ViewGroup)tabToAddTo.Parent;
@@ -212,6 +288,7 @@ namespace BottomNavigationBar
                 SetBackgroundDrawable(background);
         }
 
+       
         public void OnGlobalLayout()
         {
             var obs = ViewTreeObserver;

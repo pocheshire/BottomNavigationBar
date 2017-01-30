@@ -19,6 +19,8 @@ using System;
 using Android.Graphics.Drawables;
 using Android.Graphics.Drawables.Shapes;
 using Android.Graphics;
+using Android.Content;
+using Android.Support.V4.Content.Res;
 
 namespace BottomNavigationBar
 {
@@ -33,6 +35,14 @@ namespace BottomNavigationBar
             indicator.Paint.Color = color;
 
             return indicator;
+        }
+
+
+        internal static Drawable drawRoundCornerRectange(Context _context, Color color)
+        {
+            Drawable mybadge = Android.Support.V4.Content.ContextCompat.GetDrawable(_context, Resource.Drawable.bb_bottom_bar_Round_Rectangle_Shape);
+            mybadge.SetColorFilter(color, PorterDuff.Mode.Multiply);
+            return mybadge;
         }
     }
 }
