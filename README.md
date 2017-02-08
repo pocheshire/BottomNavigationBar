@@ -6,7 +6,7 @@
 [Common problems and solutions](https://github.com/pocheshire/BottomNavigationBar/blob/master/README.md#common-problems-and-solutions)
 
 ## What?
-[BottomBar](https://github.com/pocheshire/BottomNavigationBar) ported to C#
+[BottomBar](https://github.com/roughike/BottomBar) ported to C#
 
 A custom view component that mimics the new [Material Design Bottom Navigation pattern](https://www.google.com/design/spec/components/bottom-navigation.html).
 
