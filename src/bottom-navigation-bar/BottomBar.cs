@@ -283,8 +283,31 @@ namespace BottomNavigationBar
         public static BottomBar Attach(View view, Bundle savedInstanceState)
         {
             BottomBar bottomBar = new BottomBar(view.Context);
-            bottomBar.OnRestoreInstanceState(savedInstanceState);
+            Attach (view, savedInstanceState, bottomBar);
+            return bottomBar;
+        }
 
+        /// <summary>
+        /// Bind the BottomBar to your Activity, and inflate your layout here.
+        /// Remember to also call <seealso cref="OnRestoreInstanceState(Bundle)"/> inside
+        /// of your <seealso cref="Activity.OnRestoreInstanceState(Bundle)"/> to restore the state.
+        /// </summary>
+        /// <param name="view">a View, which parent we're going to attach to.</param>
+        /// <param name="savedInstanceState">savedInstanceState">a Bundle for restoring the state on configuration change.</param>
+        /// <param name="backgroundColor">the color of the BottomBar</param>
+        /// <param name="activeIconColor">the active color of the BottomBar</param>
+        /// <param name="alpha">the alpha of the BottomBar</param>
+        /// <returns>a BottomBar at the bottom of the screen.</returns>
+        public static BottomBar Attach(View view, Bundle savedInstanceState, Color backgroundColor, Color activeIconColor, float alpha)
+        {
+            BottomBar bottomBar = new BottomBar(view.Context, backgroundColor, activeIconColor, alpha);
+            Attach(view, savedInstanceState, bottomBar);
+            return bottomBar;
+        }
+
+        private static void Attach(View view, Bundle savedInstanceState, BottomBar bottomBar)
+        {
+            bottomBar.OnRestoreInstanceState(savedInstanceState);
             ViewGroup contentView = (ViewGroup)view.Parent;
 
             if (contentView != null)
@@ -299,8 +322,6 @@ namespace BottomNavigationBar
             {
                 bottomBar.PendingUserContentView = view;
             }
-
-            return bottomBar;
         }
 
         /// <summary>
