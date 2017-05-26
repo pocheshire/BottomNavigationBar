@@ -10,11 +10,11 @@
 
 A custom view component that mimics the new [Material Design Bottom Navigation pattern](https://www.google.com/design/spec/components/bottom-navigation.html).
 
-##NuGet package
+## NuGet package
 
 Yes! It's currently available like [BottomNavigationBar](https://www.nuget.org/packages/BottomNavigationBar) package.
 
-##Xamarin Forms
+## Xamarin Forms
 
 Yes! Thanks [Thrive GmbH](https://github.com/thrive-now) for  [BottomNavigationBarXF](https://github.com/thrive-now/BottomNavigationBarXF) implementation.
 
