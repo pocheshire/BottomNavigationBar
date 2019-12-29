@@ -879,9 +879,9 @@ namespace BottomNavigationBar
         /// <param name="tabPosition">zero-based index for the tab.</param>
         /// <param name="backgroundColor">a color for this badge, such as "#FF0000".</param>
         /// <param name="initialCount">text displayed initially for this Badge.</param>
-        public BottomBarBadge MakeBadgeForTabAt(int tabPosition, String backgroundColor, int initialCount)
+        public BottomBarBadge MakeBadgeForTabAt(int tabPosition,  String backgroundColor, int initialCount)
         {
-            return MakeBadgeForTabAt(tabPosition, Color.ParseColor(backgroundColor), initialCount);
+            return MakeBadgeForTabAt(tabPosition, Color.ParseColor(backgroundColor), initialCount, 0);
         }
 
         /// <summary>
@@ -891,7 +891,22 @@ namespace BottomNavigationBar
         /// <param name="tabPosition">zero-based index for the tab.</param>
         /// <param name="backgroundColor">a color for this badge, such as "#FF0000".</param>
         /// <param name="initialCount">text displayed initially for this Badge.</param>
-        public BottomBarBadge MakeBadgeForTabAt(int tabPosition, Color backgroundColor, int initialCount)
+
+        public BottomBarBadge MakeBadgeForTabAt(int tabPosition, String backgroundColor, int initialCount, int badgeLimit)
+        {
+            return MakeBadgeForTabAt(tabPosition, Color.ParseColor(backgroundColor), initialCount, badgeLimit);
+        }
+        /// <summary>
+        /// Creates a new Badge (for example, an indicator for unread messages) for a Tab at the specified position.
+        /// </summary>
+        /// <returns>The <see cref="BottomBar.BottomBarBadge"/> object.</returns>
+        /// <param name="tabPosition">zero-based index for the tab.</param>
+        /// <param name="backgroundColor">a color for this badge, such as "#FF0000".</param>
+        /// <param name="initialCount">text displayed initially for this Badge.</param>
+        /// <param name="badgeLimit">set the limit to number shown in the badge (if 100, badge will show +99).</param>
+
+
+        public BottomBarBadge MakeBadgeForTabAt(int tabPosition, Color backgroundColor, int initialCount, int badgeLimit)
         {
             if (_items == null || _items.Length == 0)
             {
@@ -906,7 +921,7 @@ namespace BottomNavigationBar
 
             var tab = ItemContainer.GetChildAt(tabPosition);
 
-            BottomBarBadge badge = new BottomBarBadge(_context, tabPosition, tab, backgroundColor);
+            BottomBarBadge badge = new BottomBarBadge(_context, tabPosition, tab, backgroundColor, badgeLimit);
             badge.Tag = (TAG_BADGE + tabPosition);
             badge.Count = initialCount;
 

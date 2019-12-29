@@ -13,7 +13,7 @@
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
     <AssemblyName>BottomNavigationBar</AssemblyName>
-    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ReleaseVersion>1.4.0.1</ReleaseVersion>
@@ -111,21 +111,30 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\src\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\src\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />
-  <ItemGroup />
   <ItemGroup>
     <AndroidResource Include="Resources\values\attrs.xml" />
     <AndroidResource Include="Resources\values\bools.xml" />
     <AndroidResource Include="Resources\values\colors.xml" />
     <AndroidResource Include="Resources\values\strings.xml" />
-    <AndroidResource Include="Resources\values\styles.xml" />
+    <AndroidResource Include="Resources\values\styles.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\layout\bb_bottom_bar_item_container_tablet.xml" />
     <AndroidResource Include="Resources\layout\bb_bottom_bar_item_container.xml" />
     <AndroidResource Include="Resources\layout\bb_bottom_bar_item_fixed_tablet.xml" />
     <AndroidResource Include="Resources\layout\bb_bottom_bar_item_fixed.xml" />
-    <AndroidResource Include="Resources\layout\bb_bottom_bar_item_shifting.xml" />
+    <AndroidResource Include="Resources\layout\bb_bottom_bar_item_shifting.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\drawable\bb_bottom_bar_top_shadow.xml" />
     <AndroidResource Include="Resources\values-sw600dp\bools.xml" />
     <AndroidResource Include="Resources\values\dimens.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\bb_bottom_Bar_Flexi_badge.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\bb_bottom_bar_Round_Rectangle_Shape.xml" />
   </ItemGroup>
   <Import Project="packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
